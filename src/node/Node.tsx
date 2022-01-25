@@ -35,8 +35,13 @@ const Node: Component<{
       h: canvasRect.height / scale,
     };
     let StartingDragPosition = node.position;
+    const isMulti =
+      state.chart.selected[node.id] &&
+      Object.entries(state.chart.selected).filter((e) => e[1]).length > 1;
     const nodeSize = { w: nodeRect.width / scale, h: nodeRect.height / scale };
-    const multiSelectOffsets: any = getMultiselectionSquareRectOffsets(scale);
+    const multiSelectOffsets: any = isMulti
+      ? getMultiselectionSquareRectOffsets(scale)
+      : {};
 
     // initial offset of pointer comapred to node position
     const mouseOffsetToNode = {
@@ -74,10 +79,6 @@ const Node: Component<{
         y: finalPosition.y - StartingDragPosition.y,
       };
       StartingDragPosition = finalPosition;
-
-      const isMulti =
-        state.chart.selected[node.id] &&
-        Object.entries(state.chart.selected).filter((e) => e[1]).length > 1;
 
       if (!isMulti) {
         actions.onNodeDrag({
