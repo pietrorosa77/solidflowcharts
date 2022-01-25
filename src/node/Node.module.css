@@ -1,0 +1,9 @@
+.Node {
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  /* opacity: 0.7; */
+  background-color: cornflowerblue;
+  will-change: transform;
+  transform: translateZ(0);
+}
