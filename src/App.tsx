@@ -1,5 +1,6 @@
 import type { Component } from "solid-js";
 import { IChart } from "../definitions";
+import theme from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
 
 export const getInitialSchema = (): IChart => {
@@ -51,7 +52,7 @@ export const getInitialSchema = (): IChart => {
 };
 
 const App: Component = () => {
-  return <Diagram chart={getInitialSchema()} />;
+  return <Diagram chart={getInitialSchema()} theme={theme} />;
 };
 
 export default App;

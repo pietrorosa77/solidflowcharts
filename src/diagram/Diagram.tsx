@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, JSX } from "solid-js";
 import { For, onMount, onCleanup } from "solid-js";
 import { IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
@@ -8,6 +8,7 @@ import { nanoid } from "nanoid";
 import styles from "./Diagram.module.css";
 import { ChartProvider, useChartStore } from "../store/chartStore";
 import { PanZoom } from "panzoom";
+import { getCssVariables, IDiagramTheme } from "../defaultTheme";
 
 const Diagram: Component = () => {
   const canvasId = nanoid(10);
@@ -30,8 +31,12 @@ const Diagram: Component = () => {
     actions.onScale(evt.getTransform().scale);
   };
 
+  const cssVariables: JSX.CSSProperties = {
+    ...getCssVariables(state.theme),
+  };
+
   return (
-    <div class={styles.Diagram}>
+    <div style={cssVariables} className={styles.Diagram}>
       <Canvas id={canvasId} onScale={onScale}>
         <For each={nodesArray()}>
           {(node, i) => {
@@ -46,9 +51,12 @@ const Diagram: Component = () => {
   );
 };
 
-const DiagramWrapper: Component<{ chart: IChart }> = ({ chart }) => {
+const DiagramWrapper: Component<{ chart: IChart; theme: IDiagramTheme }> = ({
+  chart,
+  theme,
+}) => {
   return (
-    <ChartProvider chart={chart}>
+    <ChartProvider chart={chart} theme={theme}>
       <Diagram />
     </ChartProvider>
   );

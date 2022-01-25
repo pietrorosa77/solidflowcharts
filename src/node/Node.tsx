@@ -119,6 +119,7 @@ const Node: Component<{
   return (
     <div
       onPointerDown={onPointerDown}
+      class={styles.Node}
       classList={{ "drag-hat-selected": true }}
       id={`${node.id}-drag-hat`}
       data-node-id={`${node.id}`}
@@ -126,11 +127,11 @@ const Node: Component<{
       style={{
         transform: `translate(${node.position.x}px, ${node.position.y}px)`,
         width: "250px",
-        "min-height": "250px",
+        "min-height": "100px",
         "max-height": "500px",
         position: "absolute",
         opacity: 0.7,
-        "background-color": "cornflowerblue",
+        "background-color": state.theme.palette.nodeBackground,
         "will-change": "transform",
       }}
     >

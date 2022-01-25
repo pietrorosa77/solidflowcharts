@@ -24,8 +24,8 @@ const Canvas: Component<{
   });
 
   return (
-    <div class={styles.CanvasWrapper} ref={cnv}>
-      <div class={styles.Canvas} id={id}>
+    <div class={styles.CanvasWrapper}>
+      <div class={styles.Canvas} id={id} ref={cnv}>
         {children}
       </div>
     </div>

@@ -1,6 +1,7 @@
 .CanvasWrapper {
   width: 100%;
   height: 100%;
+  background-color: var(--canvas-bg);
 }
 
 .Canvas {
@@ -11,11 +12,11 @@
     linear-gradient(90deg, rgba(81, 203, 238, 0.1) 2px, transparent 2px),
     linear-gradient(rgba(81, 203, 238, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(81, 203, 238, 0.1) 1px, transparent 1px);
-  background-color: #3a5584;
   background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
   outline: 1px dashed rgba(0, 0, 0, 0.1);
   position: relative;
   border: 1px solid rgba(81, 203, 238, 0.1);
+  background-color: var(--grid-bg);
   /* box-shadow: 0 3px 10px rgb(0 0 0 / 20%); */
   width: 3000px;
   height: 3000px;
