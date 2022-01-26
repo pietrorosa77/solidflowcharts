@@ -9,6 +9,7 @@ import styles from "./Diagram.module.css";
 import { ChartProvider, useChartStore } from "../store/chartStore";
 import { PanZoom } from "panzoom";
 import { getCssVariables, IDiagramTheme } from "../defaultTheme";
+import { createFontStyle } from "../store/utils";
 
 const Diagram: Component = () => {
   const canvasId = nanoid(10);
@@ -55,6 +56,7 @@ const DiagramWrapper: Component<{ chart: IChart; theme: IDiagramTheme }> = ({
   chart,
   theme,
 }) => {
+  createFontStyle(theme);
   return (
     <ChartProvider chart={chart} theme={theme}>
       <Diagram />

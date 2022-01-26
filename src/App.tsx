@@ -8,7 +8,8 @@ export const getInitialSchema = (): IChart => {
     nodes: {
       node1: {
         id: "node1",
-        title: "Start!",
+        title:
+          "Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu!",
         content: `Welcome *your* user with a nice **message**!😂`,
         position: {
           x: 300,

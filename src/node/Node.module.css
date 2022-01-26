@@ -1,4 +1,63 @@
 .Node {
   border-radius: 12px;
   border: 2px solid var(--node-border);
+  z-index: 1;
+  width: 250px;
+  min-height: 100px;
+  position: absolute;
+  opacity: 0.9;
+  cursor: move;
+  background-color: var(--node-bg-color);
+  will-change: transform;
 }
+
+.NodeSelected {
+  box-shadow: 0 0 20px 5px var(--accent-color);
+  border-color: var(--node-borderhover);
+}
+
+.Node:hover {
+  border-color: var(--node-borderhover);
+  z-index: 2;
+}
+
+.NodeHead {
+  display: flex;
+  box-sizing: border-box;
+  max-width: 100%;
+  background-color: var(--brand-color);
+  color: var(--node-font-color);
+  font-size: var(--node-head-font-size);
+  min-width: 0;
+  min-height: 0;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  padding: 5px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+}
+
+.NodeHeadTitle {
+  flex: 1 1 0%;
+  margin-left: 6px;
+}
+
+.NodeHeadTitle span {
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 145px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.NodeHead input[type="checkbox"] {
+}
+
+/* .NodeHead input[type="checkbox"][role="switch"]:disabled {
+  background: var(--border-color);
+}
+.NodeHead input[type="checkbox"][role="switch"]:disabled:before {
+  background: var(--border-color);
+} */

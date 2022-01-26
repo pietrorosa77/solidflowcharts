@@ -1,13 +1,35 @@
-import type { Component } from "solid-js";
+import { Component } from "solid-js";
 import { onMount, onCleanup } from "solid-js";
 import { ExtendedNode } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import {
+  blockTouchHandler,
   getMultiselectionSquareRectOffsets,
   getPositionWithParentBoundsSize,
 } from "../store/utils";
 
 import styles from "./Node.module.css";
+
+const NodeHead = (props: {
+  title: string;
+  selected: boolean;
+  onToggle: () => void;
+}) => {
+  return (
+    <div class={styles.NodeHead}>
+      <div>
+        <input
+          type="checkbox"
+          onInput={props.onToggle}
+          checked={props.selected}
+        ></input>
+      </div>
+      <div class={styles.NodeHeadTitle}>
+        <span>{props.title}</span>
+      </div>
+    </div>
+  );
+};
 
 const Node: Component<{
   node: ExtendedNode;
@@ -17,12 +39,29 @@ const Node: Component<{
   let nodeRef: any;
   const [state, actions] = useChartStore();
   console.log("rendering node!!!", node.id);
+
   onMount(() => {
     sizeObserver.observe(nodeRef);
+    (nodeRef as HTMLDivElement).addEventListener(
+      "touchstart",
+      blockTouchHandler,
+      { passive: false }
+    );
     console.log("mounting node", node.id);
   });
 
-  onCleanup(() => sizeObserver.unobserve(nodeRef));
+  onCleanup(() => {
+    sizeObserver.unobserve(nodeRef);
+    (nodeRef as HTMLDivElement).removeEventListener(
+      "touchstart",
+      blockTouchHandler
+    );
+  });
+
+  const onToggleSelection = () => {
+    const selected = state.chart.selected[node.id];
+    actions.onToggleNodeSelection(node.id, !selected);
+  };
 
   const onPointerDown = (e: PointerEvent) => {
     const scale = state.scale;
@@ -120,22 +159,23 @@ const Node: Component<{
     <div
       onPointerDown={onPointerDown}
       class={styles.Node}
-      classList={{ "drag-hat-selected": true }}
+      classList={{
+        "drag-hat-selected": state.chart.selected[node.id],
+        [`${styles.NodeSelected}`]: state.chart.selected[node.id],
+      }}
       id={`${node.id}-drag-hat`}
       data-node-id={`${node.id}`}
       ref={nodeRef}
       style={{
         transform: `translate(${node.position.x}px, ${node.position.y}px)`,
-        width: "250px",
-        "min-height": "100px",
-        "max-height": "500px",
-        position: "absolute",
-        opacity: 0.7,
-        "background-color": state.theme.palette.nodeBackground,
-        "will-change": "transform",
       }}
     >
-      Test drag and drop {state.scale as any}
+      <NodeHead
+        selected={state.chart.selected[node.id]}
+        title={node.title}
+        onToggle={onToggleSelection}
+      />
+      <div>{node.content}</div>
     </div>
   );
 };

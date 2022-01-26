@@ -14,7 +14,14 @@ const Canvas: Component<{
     onScale(e);
   };
   onMount(() => {
-    zoomInstance = panzoom(cnv, { minZoom: 0.3, maxZoom: 3 });
+    zoomInstance = panzoom(cnv, {
+      minZoom: 0.3,
+      maxZoom: 3,
+      onDoubleClick: function (e) {
+        // `e` - is current double click event.
+        return false; // tells the library to not preventDefault, and not stop propagation
+      },
+    });
     zoomInstance.on("transform", zoomHandler);
   });
 

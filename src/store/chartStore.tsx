@@ -17,12 +17,19 @@ interface IChartActions {
     delta: { x: number; y: number };
   }): void;
   onScale(scale: number): void;
+  onToggleNodeSelection(id: string, selected: boolean): void;
 }
 
-
-
-export function ChartProvider(props: { chart: IChart; children: any; theme: IDiagramTheme }) {
-  const [state, setChart] = createStore({ chart: props.chart, scale: 1, theme: props.theme }),
+export function ChartProvider(props: {
+  chart: IChart;
+  children: any;
+  theme: IDiagramTheme;
+}) {
+  const [state, setChart] = createStore({
+      chart: props.chart,
+      scale: 1,
+      theme: props.theme,
+    }),
     store = [
       state,
       {
@@ -43,6 +50,9 @@ export function ChartProvider(props: { chart: IChart; children: any; theme: IDia
         },
         onScale(scale: number) {
           onScale(scale);
+        },
+        onToggleNodeSelection(id: string, selected: boolean) {
+          onToggleNodeSelection(id, selected);
         },
       } as IChartActions,
     ];
@@ -70,6 +80,10 @@ export function ChartProvider(props: { chart: IChart; children: any; theme: IDia
     setChart("chart", "nodes", evt.nodeId, "position", () => {
       return evt.position;
     });
+  };
+
+  const onToggleNodeSelection = (id: string, selected: boolean): void => {
+    setChart("chart", "selected", id, () => selected);
   };
 
   const onMultiDrag = (evt: {

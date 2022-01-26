@@ -1,7 +1,32 @@
 /* put css for diagram */
 .Diagram {
+  --border-radius: 0.25em;
+  --round-border-radius: 50%;
+  --hair-line: 0.05em;
+  --normal-line: 0.125em;
+  --wide-line: 0.25em;
+  --accordion-icon: "\2303";
+  --breadcrumb-icon: " > ";
+  --stack-hide: -1;
+  --stack-base: 0;
+  --stack-dropdown: 1000;
+  --stack-sticky: 1100;
+  --stack-banner: 1200;
+  --stack-overlay: 1300;
+  --stack-modal: 1400;
+  --stack-bar: 1500;
+  --stack-skip-link: 1600;
+  --stack-toast: 1700;
+  --stack-tooltip: 1800;
   height: var(--diagram-height);
   width: var(--diagram-width);
   position: relative;
   overflow: hidden;
+  font-size: var(--diagram-font-size);
+}
+
+.Diagram * {
+  font-family: var(--diagram-font);
+
+  box-sizing: border-box;
 }
