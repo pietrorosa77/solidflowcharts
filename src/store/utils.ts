@@ -1,5 +1,4 @@
 import { IPosition } from "../../definitions";
-import { IDiagramTheme } from "../defaultTheme";
 
 export function getPositionWithParentBoundsSize(
   canvasSize: { w: number; h: number },
@@ -79,14 +78,14 @@ export const getMultiselectionSquareRectOffsets = (scale: number) => {
   return offsetsMap;
 };
 
-export const blockTouchHandler = (e: Event) => {
+export const blockEventHandler = (e: Event) => {
   e.preventDefault();
   e.stopImmediatePropagation();
   e.cancelBubble = true;
 };
 
-export const createFontStyle = (theme: IDiagramTheme) => {
+export const createFontStyle = (fontFace: string) => {
   const fontStyle = document.createElement('style');
-  fontStyle.appendChild(document.createTextNode(theme.fontFace));
+  fontStyle.appendChild(document.createTextNode(fontFace));
   document.head.appendChild(fontStyle);
 }

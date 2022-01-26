@@ -1,7 +1,6 @@
 import { createContext, useContext, batch } from "solid-js";
 import { createStore, DeepReadonly } from "solid-js/store";
 import { IChart, IPosition, ISize } from "../../definitions";
-import { IDiagramTheme } from "../defaultTheme";
 import { getPositionWithParentBoundsSize } from "./utils";
 
 const ChartContext = createContext();
@@ -23,12 +22,10 @@ interface IChartActions {
 export function ChartProvider(props: {
   chart: IChart;
   children: any;
-  theme: IDiagramTheme;
 }) {
   const [state, setChart] = createStore({
       chart: props.chart,
       scale: 1,
-      theme: props.theme,
     }),
     store = [
       state,
@@ -127,7 +124,6 @@ export function useChartStore(): [
   DeepReadonly<{
     chart: IChart;
     scale: number;
-    theme: IDiagramTheme;
   }>,
   IChartActions
 ] {

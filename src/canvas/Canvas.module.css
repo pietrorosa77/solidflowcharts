@@ -1,22 +1,22 @@
 .CanvasWrapper {
   width: 100%;
   height: 100%;
-  background-color: var(--canvas-bg);
+  background-color: var(--canvas-bg-color);
 }
 
 .Canvas {
   background-image: linear-gradient(
-      rgba(81, 203, 238, 0.1) 2px,
+      var(--grid-lines-color) 2px,
       transparent 2px
     ),
-    linear-gradient(90deg, rgba(81, 203, 238, 0.1) 2px, transparent 2px),
-    linear-gradient(rgba(81, 203, 238, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(81, 203, 238, 0.1) 1px, transparent 1px);
+    linear-gradient(90deg, var(--grid-lines-color) 2px, transparent 2px),
+    linear-gradient(var(--grid-lines-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-lines-color) 1px, transparent 1px);
   background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
-  outline: 1px dashed rgba(0, 0, 0, 0.1);
+  outline: 1px dashed var(--grid-lines-outline-color);
   position: relative;
-  border: 1px solid rgba(81, 203, 238, 0.1);
-  background-color: var(--grid-bg);
+  border: 1px solid var(--grid-lines-color);
+  background-color: var(--grid-bg-color);
   /* box-shadow: 0 3px 10px rgb(0 0 0 / 20%); */
   width: 3000px;
   height: 3000px;

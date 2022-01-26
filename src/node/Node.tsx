@@ -1,9 +1,10 @@
 import { Component } from "solid-js";
 import { onMount, onCleanup } from "solid-js";
 import { ExtendedNode } from "../../definitions";
+import { Checkbox } from "../components/Checkbox";
 import { useChartStore } from "../store/chartStore";
 import {
-  blockTouchHandler,
+  blockEventHandler,
   getMultiselectionSquareRectOffsets,
   getPositionWithParentBoundsSize,
 } from "../store/utils";
@@ -17,12 +18,8 @@ const NodeHead = (props: {
 }) => {
   return (
     <div class={styles.NodeHead}>
-      <div>
-        <input
-          type="checkbox"
-          onInput={props.onToggle}
-          checked={props.selected}
-        ></input>
+      <div onPointerDown={blockEventHandler}>
+        <Checkbox onInput={props.onToggle} checked={props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
         <span>{props.title}</span>
@@ -44,7 +41,7 @@ const Node: Component<{
     sizeObserver.observe(nodeRef);
     (nodeRef as HTMLDivElement).addEventListener(
       "touchstart",
-      blockTouchHandler,
+      blockEventHandler,
       { passive: false }
     );
     console.log("mounting node", node.id);
@@ -54,7 +51,7 @@ const Node: Component<{
     sizeObserver.unobserve(nodeRef);
     (nodeRef as HTMLDivElement).removeEventListener(
       "touchstart",
-      blockTouchHandler
+      blockEventHandler
     );
   });
 

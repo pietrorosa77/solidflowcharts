@@ -1,6 +1,6 @@
 .Node {
   border-radius: 12px;
-  border: 2px solid var(--node-border);
+  border: 2px solid var(--border-color);
   z-index: 1;
   width: 250px;
   min-height: 100px;
@@ -13,11 +13,11 @@
 
 .NodeSelected {
   box-shadow: 0 0 20px 5px var(--accent-color);
-  border-color: var(--node-borderhover);
+  border-color: var(--accent-color);
 }
 
 .Node:hover {
-  border-color: var(--node-borderhover);
+  border-color: var(--accent-color);
   z-index: 2;
 }
 
@@ -37,6 +37,7 @@
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   overflow: hidden;
+  align-items: center;
 }
 
 .NodeHeadTitle {
@@ -51,13 +52,3 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
-.NodeHead input[type="checkbox"] {
-}
-
-/* .NodeHead input[type="checkbox"][role="switch"]:disabled {
-  background: var(--border-color);
-}
-.NodeHead input[type="checkbox"][role="switch"]:disabled:before {
-  background: var(--border-color);
-} */

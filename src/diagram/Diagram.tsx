@@ -8,7 +8,7 @@ import { nanoid } from "nanoid";
 import styles from "./Diagram.module.css";
 import { ChartProvider, useChartStore } from "../store/chartStore";
 import { PanZoom } from "panzoom";
-import { getCssVariables, IDiagramTheme } from "../defaultTheme";
+import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
 
 const Diagram: Component = () => {
@@ -33,7 +33,7 @@ const Diagram: Component = () => {
   };
 
   const cssVariables: JSX.CSSProperties = {
-    ...getCssVariables(state.theme),
+    ...getCssVariables(),
   };
 
   return (
@@ -52,13 +52,13 @@ const Diagram: Component = () => {
   );
 };
 
-const DiagramWrapper: Component<{ chart: IChart; theme: IDiagramTheme }> = ({
+const DiagramWrapper: Component<{ chart: IChart; fontFace?: string }> = ({
   chart,
-  theme,
+  fontFace,
 }) => {
-  createFontStyle(theme);
+  createFontStyle(fontFace || defaultFontFace);
   return (
-    <ChartProvider chart={chart} theme={theme}>
+    <ChartProvider chart={chart}>
       <Diagram />
     </ChartProvider>
   );

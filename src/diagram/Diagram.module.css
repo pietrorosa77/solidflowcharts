@@ -1,6 +1,6 @@
 /* put css for diagram */
 .Diagram {
-  --border-radius: 0.25em;
+  /* --border-radius: 0.25em;
   --round-border-radius: 50%;
   --hair-line: 0.05em;
   --normal-line: 0.125em;
@@ -17,7 +17,7 @@
   --stack-bar: 1500;
   --stack-skip-link: 1600;
   --stack-toast: 1700;
-  --stack-tooltip: 1800;
+  --stack-tooltip: 1800; */
   height: var(--diagram-height);
   width: var(--diagram-width);
   position: relative;
@@ -26,7 +26,7 @@
 }
 
 .Diagram * {
-  font-family: var(--diagram-font);
+  font-family: var(--diagram-font-family);
 
   box-sizing: border-box;
 }
