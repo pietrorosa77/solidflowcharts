@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { onMount } from "solid-js";
 import { IChart, ILink, IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
@@ -81,37 +81,49 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
   let markerEl: any;
   const [state, actions] = useChartStore();
 
+  // onMount(() => {
+  //   console.log("rendering link", props.linkId)
+  // })
+
   return (
-    <svg class={styles.LinkStyle}>
-      <defs>
-        <marker
-          id={`lmark-${props.linkId}`}
-          viewBox="0 0 10 10"
-          refX="5"
-          refY="5"
-          markerWidth="4"
-          markerHeight="4"
-          orient="auto"
-        >
-          <path
-            class={styles.LineMarker}
-            d="M 0 0 L 10 5 L 0 10 z"
-            ref={markerEl}
-          />
-        </marker>
-      </defs>
-      <path
-        marker-end={`url(#lmark-${props.linkId})`}
-        ref={lineEl}
-        d={getLinePoints(
-          state.chart,
-          props.linkId,
-          state.portOffset,
-          props.creating ? state.newLink : undefined
-        )}
-        class={styles.Line}
-      />
-    </svg>
+    <Show
+      when={
+        props.creating ||
+        state.chart.links[props.linkId].from.nodeId !==
+          state.chart.links[props.linkId].to
+      }
+    >
+      <svg class={styles.LinkStyle}>
+        <defs>
+          <marker
+            id={`lmark-${props.linkId}`}
+            viewBox="0 0 10 10"
+            refX="5"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto"
+          >
+            <path
+              class={styles.LineMarker}
+              d="M 0 0 L 10 5 L 0 10 z"
+              ref={markerEl}
+            />
+          </marker>
+        </defs>
+        <path
+          marker-end={`url(#lmark-${props.linkId})`}
+          ref={lineEl}
+          d={getLinePoints(
+            state.chart,
+            props.linkId,
+            state.portOffset,
+            props.creating ? state.newLink : undefined
+          )}
+          class={styles.Line}
+        />
+      </svg>
+    </Show>
   );
 };
 

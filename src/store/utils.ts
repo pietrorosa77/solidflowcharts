@@ -1,4 +1,4 @@
-import { ILink, INode, IPosition } from "../../definitions";
+import { IChart, ILink, INode, IPosition } from "../../definitions";
 
 export function getPositionWithParentBoundsSize(
   canvasSize: { w: number; h: number },
@@ -123,3 +123,17 @@ export const getChartPaths = (links: { [id: string]: ILink }) =>
       [`${linksMapKey}`]: current.to,
     };
   }, {} as { [id: string]: string });
+
+export const getLinksForPort = (
+  chart: IChart,
+  nodeId: string,
+  portId: string
+) => {
+  return Object.keys(chart.links)
+    .filter(
+      (k) =>
+        chart.links[k].from.nodeId === nodeId &&
+        chart.links[k].from.portId === portId
+    )
+    .map((linkId) => chart.links[linkId]);
+};

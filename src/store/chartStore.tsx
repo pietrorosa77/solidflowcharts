@@ -1,8 +1,9 @@
 import { nanoid } from "nanoid";
 import { createContext, useContext, batch } from "solid-js";
-import { createStore, DeepReadonly } from "solid-js/store";
+import { createStore, DeepReadonly, reconcile } from "solid-js/store";
 import { IChart, ILink, IPosition, ISize } from "../../definitions";
 import {
+  getLinksForPort,
   getPositionWithParentBoundsSize,
   isValidLink,
   pointInNode,
@@ -11,19 +12,21 @@ import {
 const ChartContext = createContext();
 
 interface IChartActions {
-  nodesSizeChanged(evt: ResizeObserverEntry[]): void;
-  onNodeDrag(evt: { nodeId: string; position: IPosition }): void;
-  onMultiDrag(evt: {
+  nodesSizeChanged: (evt: ResizeObserverEntry[]) => void;
+  onNodeDrag: (evt: { nodeId: string; position: IPosition }) => void;
+  onMultiDrag: (evt: {
     leaderId: string;
     leaderPos: IPosition;
     canvasSize: ISize;
     multiSelectOffsets: any;
     delta: { x: number; y: number };
-  }): void;
-  onScale(scale: number): void;
-  onToggleNodeSelection(id: string, selected: boolean): void;
-  onCreatingLink(link: ILink): void;
-  onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]): void;
+  }) => void;
+  onScale: (scale: number) => void;
+  onToggleNodeSelection: (id: string, selected: boolean) => void;
+  onCreatingLink: (link: ILink) => void;
+  onEndConnection: (link: ILink, portLinks: DeepReadonly<ILink>[]) => void;
+  onRemoveLinks: (nodeId: string, portId: string) => void;
+  onDeleteNodes: (nodeIds: string[]) => void;
 }
 
 export function ChartProvider(props: { chart: IChart; children: any }) {
@@ -67,6 +70,12 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         },
         onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]) {
           onEndConnection(link, portLinks);
+        },
+        onRemoveLinks(nodeId: string, portId: string) {
+          onRemoveLinks(nodeId, portId);
+        },
+        onDeleteNodes(nodeIds: string[]) {
+          onDeleteNodes(nodeIds);
         },
       } as IChartActions,
     ];
@@ -163,6 +172,44 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
             return newPosition;
           });
         });
+    });
+  };
+
+  const onRemoveLinks = (nodeId: string, portId: string): void => {
+    const portLinks = getLinksForPort(state.chart, nodeId, portId);
+    batch(() => {
+      portLinks.forEach((l) => {
+        setChart("chart", "links", l.id, () => undefined);
+      });
+      setChart("chart", "paths", `${nodeId}-${portId}`, () => undefined);
+    });
+  };
+
+  const onDeleteNodes = (ids: string[]): void => {
+    const links = Object.keys(state.chart.links).filter((k) => {
+      const l = state.chart.links[k];
+      return ids.includes(l.to) || ids.includes(l.from.nodeId);
+    });
+
+    const paths = Object.keys(state.chart.paths).filter((k) => {
+      const pathsFrom = ids.filter((id) => k.startsWith(id)).length;
+      const pathTo = ids.includes(state.chart.paths[k]);
+      return pathsFrom || pathTo;
+    });
+
+    console.log("LINKS TO REMOVE", links);
+    console.log("PATHS TO REMOVE", paths);
+
+    batch(() => {
+      ids.forEach((id) => {
+        setChart("chart", "nodes", id, () => undefined);
+      });
+      links.forEach((l) => {
+        setChart("chart", "links", l, () => undefined);
+      });
+      paths.forEach((p) => {
+        setChart("chart", "paths", p, () => undefined);
+      });
     });
   };
 

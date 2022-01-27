@@ -59,5 +59,6 @@ export const getCssVariables = () => {
     "--node-bg-color": "#333333",
     "--node-head-font-size": "18px",
     "--bg-inactive": "rgb(153, 148, 148)",
+    "--warning-color": "rgb(248, 172, 59)",
   };
 };

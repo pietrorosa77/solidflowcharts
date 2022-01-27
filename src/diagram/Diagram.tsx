@@ -18,10 +18,10 @@ const Diagram: Component<{
   const canvasId = nanoid(10);
   const [state, actions] = useChartStore();
 
-  onMount(() => {
-    console.log("mounting diagram");
-  });
-  console.log("RENDERING DIAGRAM");
+  // onMount(() => {
+  //   console.log("mounting diagram");
+  // });
+  // console.log("RENDERING DIAGRAM");
 
   const onScale = (evt: PanZoom) => {
     actions.onScale(evt.getTransform().scale);

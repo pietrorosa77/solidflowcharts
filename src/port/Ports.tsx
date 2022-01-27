@@ -1,8 +1,11 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { onMount } from "solid-js";
-import { INode, IPort } from "../../definitions";
+import { IChart, INode, IPort } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Ports.module.css";
+import { TiArrowLoop } from "solid-icons/ti";
+import { BiTrash } from "solid-icons/bi";
+import { getLinksForPort } from "../store/utils";
 
 const getPortBgColor = (port: IPort) => {
   if (!port.bgColor) {
@@ -11,6 +14,7 @@ const getPortBgColor = (port: IPort) => {
 
   return port.bgColor;
 };
+
 const Port = (props: {
   portId: string;
   nodeId: string;
@@ -25,13 +29,8 @@ const Port = (props: {
   const handleMouseDown = (startEvent: PointerEvent) => {
     startEvent.preventDefault();
     startEvent.stopPropagation();
-    const portLinks = Object.keys(state.chart.links)
-      .filter(
-        (k) =>
-          state.chart.links[k].from.nodeId === props.nodeId &&
-          state.chart.links[k].from.portId === props.portId
-      )
-      .map((linkId) => state.chart.links[linkId]);
+
+    const portLinks = getLinksForPort(state.chart, props.nodeId, props.portId);
 
     if (!props.allowMultiple && portLinks.length > 0) {
       return;
@@ -102,6 +101,27 @@ const Port = (props: {
     });
   };
 
+  const onDeleteLink = (e: PointerEvent) => {
+    e.cancelBubble = true;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    e.stopPropagation();
+    actions.onRemoveLinks(props.nodeId, props.portId);
+  };
+
+  const hasLink = () => {
+    return !!state.chart.paths[`${props.nodeId}-${props.portId}`];
+  };
+
+  const hasLoop = () =>
+    hasLink() &&
+    state.chart.paths[`${props.nodeId}-${props.portId}`] === props.nodeId;
+
+  const deleteLinkAccessibilityProps = {
+    role: "button",
+    "aria-text": `delete link`,
+  };
+
   return (
     <div
       class={styles.PortContainer}
@@ -118,10 +138,27 @@ const Port = (props: {
         }}
       >
         <div class={styles.PortContent}>
-          {state.chart.nodes[props.nodeId].ports[props.portId].text}
+          <span class={styles.PortText}>
+            {state.chart.nodes[props.nodeId].ports[props.portId].text}
+          </span>
+          <Show when={hasLoop()}>
+            <TiArrowLoop
+              size={24}
+              class={styles.LoopPortIndicator}
+              title="this port has a loop link"
+            />
+          </Show>
         </div>
         <div class={styles.PortOutContainer} onPointerDown={handleMouseDown}>
-          <div class={styles.PortOutInner}></div>
+          <Show when={hasLink()} fallback={<div class={styles.PortOutInner} />}>
+            <BiTrash
+              title="delete link"
+              size={24}
+              onPointerDown={onDeleteLink}
+              class={styles.DeleteLinkIcon}
+              {...deleteLinkAccessibilityProps}
+            />
+          </Show>
         </div>
       </div>
     </div>

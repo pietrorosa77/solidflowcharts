@@ -61,3 +61,12 @@
 .NodeContent * {
   margin: 0;
 }
+
+.NodeCommands {
+  cursor: pointer;
+}
+
+.NodeCommands:hover {
+  cursor: pointer;
+  color: var(--accent-color);
+}

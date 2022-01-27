@@ -13,12 +13,15 @@ import styles from "./Node.module.css";
 import { nanoid } from "nanoid";
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
 import Ports from "../port/Ports";
+import { AiFillSetting } from "solid-icons/ai";
+import { BiTrash } from "solid-icons/bi";
 
 const NodeContent = (props: { content: string }) => {
   let mdContent: any;
   let tuiEditorInstance: any;
   const contentId = nanoid();
   onMount(() => {
+    console.log("MOUNTING NODE CONTENT");
     tuiEditorInstance = new Viewer({
       el: mdContent,
       initialValue: props.content,
@@ -31,14 +34,31 @@ const NodeHead = (props: {
   title: string;
   selected: boolean;
   onToggle: () => void;
+  onDeleteNode: () => void;
+  onNodeSettings: () => void;
 }) => {
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={blockEventHandler}>
-        <Checkbox onInput={props.onToggle} checked={props.selected} />
+        <Checkbox onChange={props.onToggle} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
         <span>{props.title}</span>
+      </div>
+      <div
+        class={styles.NodeCommandsContainer}
+        onPointerDown={blockEventHandler}
+      >
+        <AiFillSetting
+          size={24}
+          class={styles.NodeCommands}
+          onPointerDown={props.onNodeSettings}
+        />
+        <BiTrash
+          size={24}
+          class={styles.NodeCommands}
+          onPointerDown={props.onDeleteNode}
+        />
       </div>
     </div>
   );
@@ -52,7 +72,6 @@ const Node: Component<{
 }> = ({ nodeId, canvasId, sizeObserver, CustomNodeContent }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
-  console.log("rendering node!!!", nodeId);
 
   onMount(() => {
     sizeObserver.observe(nodeRef);
@@ -74,6 +93,7 @@ const Node: Component<{
 
   const onToggleSelection = () => {
     const selected = state.chart.selected[nodeId];
+    console.log("SELECTED", !!selected);
     actions.onToggleNodeSelection(nodeId, !selected);
   };
 
@@ -169,6 +189,15 @@ const Node: Component<{
     });
   };
 
+  const onDeleteNode = () => {
+    actions.onDeleteNodes([nodeId]);
+  };
+
+  const onNodeSettings = () => {
+    alert("Node settings to edit");
+    //actions.onNodeSettings(nodeId)
+  };
+
   return (
     <div
       onPointerDown={onPointerDown}
@@ -188,6 +217,8 @@ const Node: Component<{
         selected={state.chart.selected[nodeId]}
         title={state.chart.nodes[nodeId].title}
         onToggle={onToggleSelection}
+        onDeleteNode={onDeleteNode}
+        onNodeSettings={onNodeSettings}
       />
 
       <div class={styles.NodeContent}>
@@ -223,7 +254,7 @@ const Nodes: Component<{
   onMount(() => {
     console.log("mounting nodes");
   });
-  console.log("RENDERING NODES");
+
   onCleanup(() => observer.disconnect());
 
   return (
