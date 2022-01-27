@@ -52,7 +52,7 @@ export const getInitialSchema = (): IChart => {
       node2: {
         id: "node2",
         title: "Start!",
-        content: `Welcome *your* user with a nice **message**!😂`,
+        content: `:smile: Welcome *your* user with a nice **message**!😂`,
         position: {
           x: 600,
           y: 300,

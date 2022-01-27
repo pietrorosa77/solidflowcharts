@@ -114,12 +114,14 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         .find((n) => link.posTo && pointInNode(n, link.posTo));
 
       if (!nodeTo || !isValidLink(nodeTo.id, portLinks, link.from.nodeId)) {
+        setChart("newLink", () => undefined);
         return;
       }
 
       const newLink = {
         ...link,
         id: nanoid(),
+        posTo: undefined,
         to: nodeTo.id,
       };
 

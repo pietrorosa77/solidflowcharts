@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
 import { onMount } from "solid-js";
-import { IChart, IPosition } from "../../definitions";
+import { IChart, ILink, IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Link.module.css";
 
@@ -54,23 +54,29 @@ export function straightPath(startPos: IPosition, endPos: IPosition) {
   return `M ${x1} ${y1} ${x2} ${y2}`;
 }
 
-const getLinePoints = (chart: IChart, linkId: string, portOffset: number) => {
-  const link = chart.links[linkId];
+const getLinePoints = (
+  chart: IChart,
+  linkId: string,
+  portOffset: number,
+  newLink?: ILink
+) => {
+  const link = newLink || chart.links[linkId];
   const nodeFrom = chart.nodes[link.from.nodeId];
-  const nodeTo = chart.nodes[link.to];
+  const posTo = link.posTo || chart.nodes[link.to].position;
 
   const portIndex = nodeFrom.ports[link.from.portId].index;
   const { startPos, endPos } = calculatePosition(
     portOffset,
     nodeFrom.position,
-    nodeTo.position,
+    posTo,
     portIndex,
-    nodeFrom.size
+    nodeFrom.size,
+    newLink ? true : false
   );
   return defaultPath(startPos, endPos);
 };
 
-const Link = (props: { linkId: string }) => {
+export const Link = (props: { linkId: string; creating?: boolean }) => {
   let lineEl: any;
   let markerEl: any;
   const [state, actions] = useChartStore();
@@ -97,7 +103,12 @@ const Link = (props: { linkId: string }) => {
       <path
         marker-end={`url(#lmark-${props.linkId})`}
         ref={lineEl}
-        d={getLinePoints(state.chart, props.linkId, state.portOffset)}
+        d={getLinePoints(
+          state.chart,
+          props.linkId,
+          state.portOffset,
+          props.creating ? state.newLink : undefined
+        )}
         class={styles.Line}
       />
     </svg>

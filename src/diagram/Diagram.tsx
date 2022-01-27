@@ -1,4 +1,4 @@
-import { Component, JSX } from "solid-js";
+import { Component, JSX, Show } from "solid-js";
 import { onMount } from "solid-js";
 import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
@@ -10,13 +10,13 @@ import { ChartProvider, useChartStore } from "../store/chartStore";
 import { PanZoom } from "panzoom";
 import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
-import Links from "../link/Link";
+import Links, { Link as NewLink } from "../link/Link";
 
 const Diagram: Component<{
   CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
 }> = ({ CustomNodeContent }) => {
   const canvasId = nanoid(10);
-  const [_state, actions] = useChartStore();
+  const [state, actions] = useChartStore();
 
   onMount(() => {
     console.log("mounting diagram");
@@ -36,6 +36,9 @@ const Diagram: Component<{
       <Canvas id={canvasId} onScale={onScale}>
         <Nodes canvasId={canvasId} CustomNodeContent={CustomNodeContent} />
         <Links />
+        <Show when={!!state.newLink}>
+          <NewLink linkId="newLink" creating />
+        </Show>
       </Canvas>
     </div>
   );

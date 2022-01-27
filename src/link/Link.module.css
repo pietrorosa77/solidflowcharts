@@ -24,3 +24,11 @@
 .LinkStyle:hover {
   z-index: 500;
 }
+
+.LinkStyle:hover .LineMarker {
+  fill: var(--accent-color);
+}
+
+.LinkStyle:hover .Line {
+  stroke: var(--accent-color);
+}
