@@ -1,4 +1,4 @@
-import { IPosition } from "../../definitions";
+import { ILink, INode, IPosition } from "../../definitions";
 
 export function getPositionWithParentBoundsSize(
   canvasSize: { w: number; h: number },
@@ -85,7 +85,41 @@ export const blockEventHandler = (e: Event) => {
 };
 
 export const createFontStyle = (fontFace: string) => {
-  const fontStyle = document.createElement('style');
+  const fontStyle = document.createElement("style");
   fontStyle.appendChild(document.createTextNode(fontFace));
   document.head.appendChild(fontStyle);
-}
+};
+
+export const pointInNode = (node: INode, point: IPosition) => {
+  const nodeSize = node.size || {
+    h: 0,
+    w: 0,
+  };
+  const x1 = node.position.x;
+  const y1 = node.position.y;
+  const x2 = node.position.x + nodeSize.w;
+  const y2 = node.position.y + nodeSize.h;
+
+  return point.x > x1 && point.x < x2 && point.y > y1 && point.y < y2;
+};
+
+export const isValidLink = (
+  nodeToId: string,
+  links: ILink[],
+  fromNodeId: string
+) => {
+  console.log("from node id", fromNodeId);
+  return (
+    //nodeToId !== fromNodeId &&
+    links.filter((l) => l.to === nodeToId).length === 0
+  );
+};
+
+export const getChartPaths = (links: { [id: string]: ILink }) =>
+  Object.values(links).reduce((acc, current) => {
+    const linksMapKey = `${current.from.nodeId}-${current.from.portId}`;
+    return {
+      ...acc,
+      [`${linksMapKey}`]: current.to,
+    };
+  }, {} as { [id: string]: string });

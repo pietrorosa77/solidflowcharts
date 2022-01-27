@@ -17,6 +17,22 @@ const Canvas: Component<{
     zoomInstance = panzoom(cnv, {
       minZoom: 0.3,
       maxZoom: 3,
+      zoomDoubleClickSpeed: 0.5,
+      beforeWheel: function (e) {
+        // allow wheel-zoom only if altKey is down. Otherwise - ignore
+        const shouldIgnore = !e.altKey;
+        return shouldIgnore;
+      },
+      beforeMouseDown: function (e) {
+        // allow mouse-down panning only if altKey is down. Otherwise - ignore
+        var shouldIgnore = !e.altKey;
+        return shouldIgnore;
+      },
+      filterKey: function (e: any) {
+        const shouldIgnore = !e.altKey;
+        // don't let panzoom handle this event:
+        return shouldIgnore;
+      } as any,
       onDoubleClick: function (e) {
         // `e` - is current double click event.
         return false; // tells the library to not preventDefault, and not stop propagation

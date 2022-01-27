@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, For, JSX, Show } from "solid-js";
 import { onMount, onCleanup } from "solid-js";
 import { ExtendedNode } from "../../definitions";
 import { Checkbox } from "../components/Checkbox";
@@ -10,6 +10,22 @@ import {
 } from "../store/utils";
 
 import styles from "./Node.module.css";
+import { nanoid } from "nanoid";
+import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
+import Ports from "../port/Ports";
+
+const NodeContent = (props: { content: string }) => {
+  let mdContent: any;
+  let tuiEditorInstance: any;
+  const contentId = nanoid();
+  onMount(() => {
+    tuiEditorInstance = new Viewer({
+      el: mdContent,
+      initialValue: props.content,
+    });
+  });
+  return <div ref={mdContent} id={contentId} />;
+};
 
 const NodeHead = (props: {
   title: string;
@@ -29,13 +45,14 @@ const NodeHead = (props: {
 };
 
 const Node: Component<{
-  node: ExtendedNode;
+  nodeId: string;
   canvasId: string;
+  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
   sizeObserver: ResizeObserver;
-}> = ({ node, canvasId, sizeObserver }) => {
+}> = ({ nodeId, canvasId, sizeObserver, CustomNodeContent }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
-  console.log("rendering node!!!", node.id);
+  console.log("rendering node!!!", nodeId);
 
   onMount(() => {
     sizeObserver.observe(nodeRef);
@@ -44,7 +61,7 @@ const Node: Component<{
       blockEventHandler,
       { passive: false }
     );
-    console.log("mounting node", node.id);
+    console.log("mounting node", nodeId);
   });
 
   onCleanup(() => {
@@ -56,8 +73,8 @@ const Node: Component<{
   });
 
   const onToggleSelection = () => {
-    const selected = state.chart.selected[node.id];
-    actions.onToggleNodeSelection(node.id, !selected);
+    const selected = state.chart.selected[nodeId];
+    actions.onToggleNodeSelection(nodeId, !selected);
   };
 
   const onPointerDown = (e: PointerEvent) => {
@@ -70,9 +87,9 @@ const Node: Component<{
       w: canvasRect.width / scale,
       h: canvasRect.height / scale,
     };
-    let StartingDragPosition = node.position;
+    let StartingDragPosition = state.chart.nodes[nodeId].position;
     const isMulti =
-      state.chart.selected[node.id] &&
+      state.chart.selected[nodeId] &&
       Object.entries(state.chart.selected).filter((e) => e[1]).length > 1;
     const nodeSize = { w: nodeRect.width / scale, h: nodeRect.height / scale };
     const multiSelectOffsets: any = isMulti
@@ -105,7 +122,7 @@ const Node: Component<{
       const finalPosition = getPositionWithParentBoundsSize(
         canvasSize,
         nodeSize,
-        multiSelectOffsets[`${node.id}-drag-hat`] as any,
+        multiSelectOffsets[`${nodeId}-drag-hat`] as any,
         x,
         y
       );
@@ -118,12 +135,12 @@ const Node: Component<{
 
       if (!isMulti) {
         actions.onNodeDrag({
-          nodeId: node.id,
+          nodeId: nodeId,
           position: finalPosition,
         });
       } else {
         actions.onMultiDrag({
-          leaderId: node.id,
+          leaderId: nodeId,
           leaderPos: finalPosition,
           canvasSize,
           delta,
@@ -157,24 +174,72 @@ const Node: Component<{
       onPointerDown={onPointerDown}
       class={styles.Node}
       classList={{
-        "drag-hat-selected": state.chart.selected[node.id],
-        [`${styles.NodeSelected}`]: state.chart.selected[node.id],
+        "drag-hat-selected": state.chart.selected[nodeId],
+        [`${styles.NodeSelected}`]: state.chart.selected[nodeId],
       }}
-      id={`${node.id}-drag-hat`}
-      data-node-id={`${node.id}`}
+      id={`${nodeId}-drag-hat`}
+      data-node-id={`${nodeId}`}
       ref={nodeRef}
       style={{
-        transform: `translate(${node.position.x}px, ${node.position.y}px)`,
+        transform: `translate(${state.chart.nodes[nodeId].position.x}px, ${state.chart.nodes[nodeId].position.y}px)`,
       }}
     >
       <NodeHead
-        selected={state.chart.selected[node.id]}
-        title={node.title}
+        selected={state.chart.selected[nodeId]}
+        title={state.chart.nodes[nodeId].title}
         onToggle={onToggleSelection}
       />
-      <div>{node.content}</div>
+
+      <div class={styles.NodeContent}>
+        <div class={styles.NodeContentView}>
+          <Show
+            when={CustomNodeContent}
+            fallback={
+              <NodeContent content={state.chart.nodes[nodeId].content} />
+            }
+          >
+            {CustomNodeContent && (
+              <CustomNodeContent node={state.chart.nodes[nodeId]} />
+            )}
+          </Show>
+        </div>
+      </div>
+      <Ports nodeId={nodeId} canvasId={canvasId} />
     </div>
   );
 };
 
-export default Node;
+const Nodes: Component<{
+  canvasId: string;
+  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
+}> = ({ canvasId, CustomNodeContent }) => {
+  const [state, actions] = useChartStore();
+  const observer: ResizeObserver = new ResizeObserver(
+    (evt: ResizeObserverEntry[]) => {
+      actions.nodesSizeChanged(evt);
+    }
+  );
+
+  onMount(() => {
+    console.log("mounting nodes");
+  });
+  console.log("RENDERING NODES");
+  onCleanup(() => observer.disconnect());
+
+  return (
+    <For each={Object.keys(state.chart.nodes)}>
+      {(key, i) => {
+        return (
+          <Node
+            nodeId={key}
+            sizeObserver={observer}
+            canvasId={canvasId}
+            CustomNodeContent={CustomNodeContent}
+          />
+        );
+      }}
+    </For>
+  );
+};
+
+export default Nodes;

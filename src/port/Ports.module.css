@@ -1,0 +1,65 @@
+.PortsContainer {
+  padding: 0px 3px;
+  width: 100%;
+}
+
+/* .PortContainer {
+  display: flex;
+  align-items: center;
+} */
+
+.PortOuter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 4px 0 0 4px;
+  flex-direction: row;
+  background-color: var(--ports-bg-color);
+  align-items: center;
+}
+
+.PortContent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.PortOutContainer {
+  height: 30px;
+  width: 30px;
+  left: 20px;
+  position: relative;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* &:hover {
+    transform: scale(1.2);
+    transition: 0.2s ease-out;
+  }
+  &:hover > div {
+    transform: scale(1.2);
+    transition: 0.2s ease-out;
+    background: ${(props) => props.theme.global.colors.connection};
+  } */
+}
+
+.PortOutContainer:hover {
+  transform: scale(1.2);
+  transition: 0.2s ease-out;
+}
+.PortOutContainer:hover > div {
+  transform: scale(1.2);
+  transition: 0.2s ease-out;
+  background: var(--connection-color);
+}
+
+.PortOutInner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--connection-color);
+}

@@ -1,6 +1,6 @@
 .sb-checkbox {
   cursor: pointer;
-  margin-bottom: 0;
+  margin: 0;
 }
 .sb-checkbox input[type="checkbox"] {
   display: inline-block;

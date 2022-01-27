@@ -1,0 +1,26 @@
+.LinkStyle {
+  overflow: visible;
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  z-index: 0;
+}
+
+.LineMarker {
+  fill: var(--connection-color);
+}
+
+.Line {
+  stroke: var(--connection-color);
+  stroke-width: 5;
+  fill: none;
+}
+
+.LinkStyle:hover {
+  z-index: 500;
+}

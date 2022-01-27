@@ -6,6 +6,7 @@
   min-height: 100px;
   position: absolute;
   opacity: 0.9;
+  color: var(--node-font-color);
   cursor: move;
   background-color: var(--node-bg-color);
   will-change: transform;
@@ -33,7 +34,7 @@
   flex-direction: row;
   width: 100%;
   justify-content: center;
-  padding: 5px;
+  padding: 2px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   overflow: hidden;
@@ -51,4 +52,12 @@
   max-width: 145px;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.NodeContent {
+  padding: 10px;
+  width: 100%;
+}
+.NodeContent * {
+  margin: 0;
 }

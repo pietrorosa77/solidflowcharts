@@ -1,7 +1,12 @@
+import { nanoid } from "nanoid";
 import { createContext, useContext, batch } from "solid-js";
 import { createStore, DeepReadonly } from "solid-js/store";
-import { IChart, IPosition, ISize } from "../../definitions";
-import { getPositionWithParentBoundsSize } from "./utils";
+import { IChart, ILink, IPosition, ISize } from "../../definitions";
+import {
+  getPositionWithParentBoundsSize,
+  isValidLink,
+  pointInNode,
+} from "./utils";
 
 const ChartContext = createContext();
 
@@ -17,16 +22,22 @@ interface IChartActions {
   }): void;
   onScale(scale: number): void;
   onToggleNodeSelection(id: string, selected: boolean): void;
+  onCreatingLink(link: ILink): void;
+  onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]): void;
 }
 
-export function ChartProvider(props: {
-  chart: IChart;
-  children: any;
-}) {
+export function ChartProvider(props: { chart: IChart; children: any }) {
   const [state, setChart] = createStore({
       chart: props.chart,
       scale: 1,
-    }),
+      portHeight: 30,
+      portOffset: 35,
+      newLink: undefined,
+    } as DeepReadonly<{
+      chart: IChart;
+      scale: number;
+      newLink: undefined | ILink;
+    }>),
     store = [
       state,
       {
@@ -50,6 +61,12 @@ export function ChartProvider(props: {
         },
         onToggleNodeSelection(id: string, selected: boolean) {
           onToggleNodeSelection(id, selected);
+        },
+        onCreatingLink(link: ILink) {
+          onCreatingLink(link);
+        },
+        onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]) {
+          onEndConnection(link, portLinks);
         },
       } as IChartActions,
     ];
@@ -81,6 +98,40 @@ export function ChartProvider(props: {
 
   const onToggleNodeSelection = (id: string, selected: boolean): void => {
     setChart("chart", "selected", id, () => selected);
+  };
+
+  const onCreatingLink = (link: ILink): void => {
+    setChart("newLink", () => link as any);
+  };
+
+  const onEndConnection = (
+    link: ILink,
+    portLinks: DeepReadonly<ILink>[]
+  ): void => {
+    batch(() => {
+      const nodeTo = Object.keys(state.chart.nodes)
+        .map((key) => state.chart.nodes[key])
+        .find((n) => link.posTo && pointInNode(n, link.posTo));
+
+      if (!nodeTo || !isValidLink(nodeTo.id, portLinks, link.from.nodeId)) {
+        return;
+      }
+
+      const newLink = {
+        ...link,
+        id: nanoid(),
+        to: nodeTo.id,
+      };
+
+      setChart("chart", "links", newLink.id, () => newLink);
+      setChart(
+        "chart",
+        "paths",
+        `${newLink.from.nodeId}-${newLink.from.portId}`,
+        () => newLink.to
+      );
+      setChart("newLink", () => undefined);
+    });
   };
 
   const onMultiDrag = (evt: {
@@ -124,6 +175,9 @@ export function useChartStore(): [
   DeepReadonly<{
     chart: IChart;
     scale: number;
+    portHeight: number;
+    portOffset: number;
+    newLink: undefined | ILink;
   }>,
   IChartActions
 ] {
