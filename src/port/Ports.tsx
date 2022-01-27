@@ -84,7 +84,12 @@ const Port = (props: {
         },
       };
 
-      actions.onEndConnection(link, portLinks);
+      // ensure mouse up comes last and no other mousedown will be queued after it
+      // causing a double line
+      const upTimeout = setTimeout(() => {
+        actions.onEndConnection(link, portLinks);
+        clearTimeout(upTimeout);
+      }, 100);
     };
 
     const throttledMove = (e: any) =>
@@ -107,10 +112,14 @@ const Port = (props: {
         style={{
           height: `${state.portHeight}px`,
           width: "100%",
-          "background-color": getPortBgColor(state.chart.nodes[props.nodeId].ports[props.portId]),
+          "background-color": getPortBgColor(
+            state.chart.nodes[props.nodeId].ports[props.portId]
+          ),
         }}
       >
-        <div class={styles.PortContent}>{state.chart.nodes[props.nodeId].ports[props.portId].text}</div>
+        <div class={styles.PortContent}>
+          {state.chart.nodes[props.nodeId].ports[props.portId].text}
+        </div>
         <div class={styles.PortOutContainer} onPointerDown={handleMouseDown}>
           <div class={styles.PortOutInner}></div>
         </div>
@@ -119,10 +128,10 @@ const Port = (props: {
   );
 };
 
-
-const getPortsSorted = (node: INode) => Object.keys(node.ports || {}).sort(
-  (p1, p2) => node.ports[p2].index - node.ports[p1].index
-);
+const getPortsSorted = (node: INode) =>
+  Object.keys(node.ports || {}).sort(
+    (p1, p2) => node.ports[p2].index - node.ports[p1].index
+  );
 const Ports: Component<{
   nodeId: string;
   canvasId: string;
