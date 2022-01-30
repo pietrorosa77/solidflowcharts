@@ -14,6 +14,7 @@ import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiTrash } from "solid-icons/bi";
 import { NodeContentReadonly } from "./NodeContent";
+import { PropAliases } from "solid-js/web";
 
 const NodeHead = (props: {
   title: string;
@@ -52,9 +53,9 @@ const NodeHead = (props: {
 const Node: Component<{
   nodeId: string;
   canvasId: string;
-  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
+  onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
-}> = ({ nodeId, canvasId, sizeObserver, CustomNodeContent }) => {
+}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
 
@@ -181,13 +182,14 @@ const Node: Component<{
     actions.onDeleteNodes([nodeId]);
   };
 
-  const onNodeSettings = () => {
-    alert("Node settings to edit");
-    //actions.onNodeSettings(nodeId)
+  const onNodeSettingsClick = () => {
+    onNodeSettings(nodeId);
   };
 
-  const nodeContentChanged = (content: any) => {
-    actions.onNodeContentChanged(content, nodeId);
+  const getContent = () => {
+    const node = state.chart.nodes[nodeId];
+    console.log("NODE IS", node);
+    return node.content;
   };
 
   return (
@@ -210,23 +212,12 @@ const Node: Component<{
         title={state.chart.nodes[nodeId].title}
         onToggle={onToggleSelection}
         onDeleteNode={onDeleteNode}
-        onNodeSettings={onNodeSettings}
+        onNodeSettings={onNodeSettingsClick}
       />
 
       <div class={styles.NodeContent}>
         <div class={styles.NodeContentView}>
-          <Show
-            when={CustomNodeContent}
-            fallback={
-              <NodeContentReadonly
-                content={state.chart.nodes[nodeId].content}
-              />
-            }
-          >
-            {CustomNodeContent && (
-              <CustomNodeContent node={state.chart.nodes[nodeId]} />
-            )}
-          </Show>
+          <NodeContentReadonly content={getContent()} />
         </div>
       </div>
       <Ports nodeId={nodeId} canvasId={canvasId} />
@@ -236,8 +227,8 @@ const Node: Component<{
 
 const Nodes: Component<{
   canvasId: string;
-  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
-}> = ({ canvasId, CustomNodeContent }) => {
+  onNodeSettings: (nodeId: string) => void;
+}> = ({ canvasId, onNodeSettings }) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
     (evt: ResizeObserverEntry[]) => {
@@ -259,7 +250,7 @@ const Nodes: Component<{
             nodeId={key}
             sizeObserver={observer}
             canvasId={canvasId}
-            CustomNodeContent={CustomNodeContent}
+            onNodeSettings={onNodeSettings}
           />
         );
       }}

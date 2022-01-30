@@ -1,7 +1,9 @@
+import { nanoid } from "nanoid";
 import type { Component } from "solid-js";
-import { IChart } from "../definitions";
+import { ExtendedNode, IChart } from "../definitions";
 import { defaultFontFace } from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
+import { IChartActions } from "./store/chartStore";
 export const getInitialSchema = (): IChart => {
   return {
     nodes: {
@@ -107,12 +109,40 @@ export const getInitialSchema = (): IChart => {
 };
 
 const App: Component = () => {
+  let actions: IChartActions;
+  let node: ExtendedNode;
+  const onLoad = (actionsIn: IChartActions) => {
+    actions = actionsIn;
+  };
+  const updateNodeContent = () => {
+    const changed = {
+      ...node,
+      title: nanoid(),
+      content: nanoid(),
+      ports: {
+        port1: {
+          id: "port1",
+          bgColor: "red",
+          text: "output updated",
+          index: 1,
+          properties: {},
+        },
+      },
+    };
+    actions.onNodeChanged(node.id, changed);
+  };
   return (
     <>
+      {/* <button onClick={updateNodeContent}>test content</button> */}
       <Diagram
         chart={getInitialSchema()}
         fontFace={defaultFontFace}
-        // CustomNodeContent={(props) => <div>{props.node.title}</div>}
+        onNodeSettingsClick={(nodeDt: ExtendedNode) =>
+          (node = {
+            ...nodeDt,
+          })
+        }
+        onLoad={onLoad}
       />
     </>
   );

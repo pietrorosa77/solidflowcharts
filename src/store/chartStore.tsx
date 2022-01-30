@@ -1,7 +1,13 @@
 import { nanoid } from "nanoid";
 import { createContext, useContext, batch } from "solid-js";
 import { createStore, DeepReadonly } from "solid-js/store";
-import { IChart, ILink, IPosition, ISize } from "../../definitions";
+import {
+  ExtendedNode,
+  IChart,
+  ILink,
+  IPosition,
+  ISize,
+} from "../../definitions";
 import {
   getLinksForPort,
   getPositionWithParentBoundsSize,
@@ -11,7 +17,7 @@ import {
 
 const ChartContext = createContext();
 
-interface IChartActions {
+export interface IChartActions {
   nodesSizeChanged: (evt: ResizeObserverEntry[]) => void;
   onNodeDrag: (evt: { nodeId: string; position: IPosition }) => void;
   onMultiDrag: (evt: {
@@ -27,7 +33,7 @@ interface IChartActions {
   onEndConnection: (link: ILink, portLinks: DeepReadonly<ILink>[]) => void;
   onRemoveLinks: (nodeId: string, portId: string) => void;
   onDeleteNodes: (nodeIds: string[]) => void;
-  onNodeContentChanged: (content: any, nodeId: string) => void;
+  onNodeChanged: (nodeId: string, node: ExtendedNode) => void;
 }
 
 export function ChartProvider(props: { chart: IChart; children: any }) {
@@ -78,8 +84,8 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         onDeleteNodes(nodeIds: string[]) {
           onDeleteNodes(nodeIds);
         },
-        onNodeContentChanged(content: any, nodeId: string) {
-          onNodeContentChanged(content, nodeId);
+        onNodeChanged(nodeId: string, node: ExtendedNode) {
+          onNodeChanged(nodeId, node);
         },
       } as IChartActions,
     ];
@@ -217,8 +223,8 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
     });
   };
 
-  const onNodeContentChanged = (content: any, nodeId: string) => {
-    setChart("chart", "nodes", nodeId, "content", () => content);
+  const onNodeChanged = (nodeId: string, node: ExtendedNode) => {
+    setChart("chart", "nodes", nodeId, () => node);
   };
 
   return (

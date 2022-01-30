@@ -1,28 +1,32 @@
-import { Component, JSX, Show } from "solid-js";
-import { onMount } from "solid-js";
+import { Component, JSX, onMount, Show } from "solid-js";
 import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
 import { nanoid } from "nanoid";
 
 import styles from "./Diagram.module.css";
-import { ChartProvider, useChartStore } from "../store/chartStore";
+import {
+  ChartProvider,
+  IChartActions,
+  useChartStore,
+} from "../store/chartStore";
 import { PanZoom } from "panzoom";
 import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
-import { Bar } from "../components/Bar";
 
 const Diagram: Component<{
-  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
-}> = ({ CustomNodeContent }) => {
+  onNodeSettingsClick?: (node: ExtendedNode) => void;
+  onLoad?: (ctions: IChartActions) => void;
+}> = ({ onNodeSettingsClick, onLoad }) => {
   const canvasId = nanoid(10);
   const [state, actions] = useChartStore();
 
-  // onMount(() => {
-  //   console.log("mounting diagram");
-  // });
-  // console.log("RENDERING DIAGRAM");
+  onMount(() => {
+    if (onLoad) {
+      onLoad(actions);
+    }
+  });
 
   const onScale = (evt: PanZoom) => {
     actions.onScale(evt.getTransform().scale);
@@ -32,18 +36,21 @@ const Diagram: Component<{
     ...getCssVariables(),
   };
 
+  const onNodeSettings = (nodeId: string) => {
+    if (onNodeSettingsClick) {
+      onNodeSettingsClick(state.chart.nodes[nodeId]);
+    }
+  };
+
   return (
     <div style={cssVariables} className={styles.Diagram}>
       <Canvas id={canvasId} onScale={onScale}>
-        <Nodes canvasId={canvasId} CustomNodeContent={CustomNodeContent} />
+        <Nodes canvasId={canvasId} onNodeSettings={onNodeSettings} />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
         </Show>
       </Canvas>
-      {/* <Bar placement="left" style={{ opacity: 0.8 }}>
-        <div style={{ width: "300px", height: "900px" }}> styladd node</div>
-      </Bar> */}
     </div>
   );
 };
@@ -51,12 +58,13 @@ const Diagram: Component<{
 const DiagramWrapper: Component<{
   chart: IChart;
   fontFace?: string;
-  CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
-}> = ({ chart, fontFace, CustomNodeContent }) => {
+  onNodeSettingsClick?: (node: ExtendedNode) => void;
+  onLoad?: (ctions: IChartActions) => void;
+}> = ({ chart, fontFace, onNodeSettingsClick, onLoad }) => {
   createFontStyle(fontFace || defaultFontFace);
   return (
     <ChartProvider chart={chart}>
-      <Diagram CustomNodeContent={CustomNodeContent} />
+      <Diagram onNodeSettingsClick={onNodeSettingsClick} onLoad={onLoad} />
     </ChartProvider>
   );
 };

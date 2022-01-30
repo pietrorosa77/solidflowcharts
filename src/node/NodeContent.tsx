@@ -371,7 +371,7 @@ export const NodeContent = (props: {
 
 export const NodeContentReadonly = (props: { content: any }) => {
   let ref!: HTMLDivElement;
-  createTiptapEditor({
+  let editor = createTiptapEditor({
     autofocus: false,
     editable: false,
     get element() {
@@ -388,6 +388,13 @@ export const NodeContentReadonly = (props: { content: any }) => {
       ];
     },
     content: props.content,
+  });
+
+  createEffect(() => {
+    if (!editor || !editor()) {
+      return;
+    }
+    (editor() as Editor).commands.setContent(props.content);
   });
 
   return (
