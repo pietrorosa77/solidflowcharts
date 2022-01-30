@@ -21,6 +21,9 @@
   fill: none;
 }
 
+.LinkCreating {
+  z-index: 500;
+}
 .LinkStyle:hover {
   z-index: 500;
 }

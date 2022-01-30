@@ -17,7 +17,7 @@ const Canvas: Component<{
     zoomInstance = panzoom(cnv, {
       minZoom: 0.3,
       maxZoom: 3,
-      zoomDoubleClickSpeed: 0.5,
+      zoomDoubleClickSpeed: 1,
       beforeWheel: function (e) {
         // allow wheel-zoom only if altKey is down. Otherwise - ignore
         const shouldIgnore = !e.altKey;

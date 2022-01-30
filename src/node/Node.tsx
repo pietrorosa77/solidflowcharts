@@ -10,25 +10,10 @@ import {
 } from "../store/utils";
 
 import styles from "./Node.module.css";
-import { nanoid } from "nanoid";
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
 import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiTrash } from "solid-icons/bi";
-
-const NodeContent = (props: { content: string }) => {
-  let mdContent: any;
-  let tuiEditorInstance: any;
-  const contentId = nanoid();
-  onMount(() => {
-    console.log("MOUNTING NODE CONTENT");
-    tuiEditorInstance = new Viewer({
-      el: mdContent,
-      initialValue: props.content,
-    });
-  });
-  return <div ref={mdContent} id={contentId} />;
-};
+import { NodeContentReadonly } from "./NodeContent";
 
 const NodeHead = (props: {
   title: string;
@@ -98,6 +83,9 @@ const Node: Component<{
   };
 
   const onPointerDown = (e: PointerEvent) => {
+    if ((e as any)["diagramDetails"]) {
+      return;
+    }
     const scale = state.scale;
     const canvas: HTMLDivElement = document.getElementById(canvasId) as any;
     let raFrameHandle = 0;
@@ -198,6 +186,10 @@ const Node: Component<{
     //actions.onNodeSettings(nodeId)
   };
 
+  const nodeContentChanged = (content: any) => {
+    actions.onNodeContentChanged(content, nodeId);
+  };
+
   return (
     <div
       onPointerDown={onPointerDown}
@@ -226,7 +218,9 @@ const Node: Component<{
           <Show
             when={CustomNodeContent}
             fallback={
-              <NodeContent content={state.chart.nodes[nodeId].content} />
+              <NodeContentReadonly
+                content={state.chart.nodes[nodeId].content}
+              />
             }
           >
             {CustomNodeContent && (

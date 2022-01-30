@@ -11,6 +11,7 @@ import { PanZoom } from "panzoom";
 import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
+import { Bar } from "../components/Bar";
 
 const Diagram: Component<{
   CustomNodeContent?: (props: { node: ExtendedNode }) => JSX.Element;
@@ -40,6 +41,9 @@ const Diagram: Component<{
           <NewLink linkId="newLink" creating />
         </Show>
       </Canvas>
+      {/* <Bar placement="left" style={{ opacity: 0.8 }}>
+        <div style={{ width: "300px", height: "900px" }}> styladd node</div>
+      </Bar> */}
     </div>
   );
 };

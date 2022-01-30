@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { createContext, useContext, batch } from "solid-js";
-import { createStore, DeepReadonly, reconcile } from "solid-js/store";
+import { createStore, DeepReadonly } from "solid-js/store";
 import { IChart, ILink, IPosition, ISize } from "../../definitions";
 import {
   getLinksForPort,
@@ -27,6 +27,7 @@ interface IChartActions {
   onEndConnection: (link: ILink, portLinks: DeepReadonly<ILink>[]) => void;
   onRemoveLinks: (nodeId: string, portId: string) => void;
   onDeleteNodes: (nodeIds: string[]) => void;
+  onNodeContentChanged: (content: any, nodeId: string) => void;
 }
 
 export function ChartProvider(props: { chart: IChart; children: any }) {
@@ -76,6 +77,9 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         },
         onDeleteNodes(nodeIds: string[]) {
           onDeleteNodes(nodeIds);
+        },
+        onNodeContentChanged(content: any, nodeId: string) {
+          onNodeContentChanged(content, nodeId);
         },
       } as IChartActions,
     ];
@@ -211,6 +215,10 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         setChart("chart", "paths", p, () => undefined);
       });
     });
+  };
+
+  const onNodeContentChanged = (content: any, nodeId: string) => {
+    setChart("chart", "nodes", nodeId, "content", () => content);
   };
 
   return (

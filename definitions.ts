@@ -23,7 +23,7 @@ export interface INode {
   title: string;
   position: IPosition;
   size?: { w: number; h: number };
-  content: string;
+  content: any;
   properties?: { [key: string]: any };
   ports: {
     [id: string]: IPort;

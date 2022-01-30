@@ -93,7 +93,10 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
           state.chart.links[props.linkId].to
       }
     >
-      <svg class={styles.LinkStyle}>
+      <svg
+        class={styles.LinkStyle}
+        classList={{ [`${styles.LinkCreating}`]: props.creating }}
+      >
         <defs>
           <marker
             id={`lmark-${props.linkId}`}

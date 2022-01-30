@@ -2,7 +2,6 @@ import type { Component } from "solid-js";
 import { IChart } from "../definitions";
 import { defaultFontFace } from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
-
 export const getInitialSchema = (): IChart => {
   return {
     nodes: {
@@ -10,9 +9,28 @@ export const getInitialSchema = (): IChart => {
         id: "node1",
         title:
           "Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu!",
-        content: `Welcome *your* user with a nice **message**!😂 Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu!
-        Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu! Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu! Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu! Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu!
-        Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu! Start! jijij jijijj jijijiij iijijj ijijjijj   ijijiij                  iuhuhuhuhh   uhhuuhhuhu!`,
+        content: {
+          type: "doc",
+          content: [
+            {
+              type: "image",
+              attrs: {
+                src: "https://source.unsplash.com/K9QHL52rE2k/800x400",
+                alt: null,
+                title: null,
+              },
+            },
+            {
+              type: "image",
+              attrs: {
+                src: "https://source.unsplash.com/K9QHL52rE2k/800x400",
+                alt: null,
+                title: null,
+              },
+            },
+            { type: "paragraph", content: [{ type: "text", text: "ooo" }] },
+          ],
+        },
         position: {
           x: 300,
           y: 100,
@@ -52,7 +70,20 @@ export const getInitialSchema = (): IChart => {
       node2: {
         id: "node2",
         title: "Start!",
-        content: `:smile: Welcome *your* user with a nice **message**!😂`,
+        content: {
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: ":smile: Welcome *your* user with a nice **message**!😂",
+                },
+              ],
+            },
+          ],
+        } as any,
         position: {
           x: 600,
           y: 300,
@@ -77,11 +108,13 @@ export const getInitialSchema = (): IChart => {
 
 const App: Component = () => {
   return (
-    <Diagram
-      chart={getInitialSchema()}
-      fontFace={defaultFontFace}
-      // CustomNodeContent={(props) => <div>{props.node.title}</div>}
-    />
+    <>
+      <Diagram
+        chart={getInitialSchema()}
+        fontFace={defaultFontFace}
+        // CustomNodeContent={(props) => <div>{props.node.title}</div>}
+      />
+    </>
   );
 };
 
