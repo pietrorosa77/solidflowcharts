@@ -1,6 +1,5 @@
 import { Component, For, Show } from "solid-js";
-import { onMount } from "solid-js";
-import { IChart, INode, IPort } from "../../definitions";
+import { INode, IPort } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Ports.module.css";
 import { TiArrowLoop } from "solid-icons/ti";
@@ -22,9 +21,6 @@ const Port = (props: {
   allowMultiple?: boolean;
 }) => {
   const [state, actions] = useChartStore();
-  onMount(() => {
-    console.log("mounting port", props.portId);
-  });
 
   const handleMouseDown = (startEvent: PointerEvent) => {
     startEvent.preventDefault();

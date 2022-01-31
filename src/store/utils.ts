@@ -106,9 +106,8 @@ export const pointInNode = (node: INode, point: IPosition) => {
 export const isValidLink = (
   nodeToId: string,
   links: ILink[],
-  fromNodeId: string
+  _fromNodeId: string
 ) => {
-  console.log("from node id", fromNodeId);
   return (
     //nodeToId !== fromNodeId &&
     links.filter((l) => l.to === nodeToId).length === 0

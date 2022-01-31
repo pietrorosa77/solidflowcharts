@@ -14,7 +14,6 @@ import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiTrash } from "solid-icons/bi";
 import { NodeContentReadonly } from "./NodeContent";
-import { PropAliases } from "solid-js/web";
 
 const NodeHead = (props: {
   title: string;
@@ -79,7 +78,6 @@ const Node: Component<{
 
   const onToggleSelection = () => {
     const selected = state.chart.selected[nodeId];
-    console.log("SELECTED", !!selected);
     actions.onToggleNodeSelection(nodeId, !selected);
   };
 
@@ -188,7 +186,6 @@ const Node: Component<{
 
   const getContent = () => {
     const node = state.chart.nodes[nodeId];
-    console.log("NODE IS", node);
     return node.content;
   };
 

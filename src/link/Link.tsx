@@ -1,5 +1,4 @@
 import { Component, For, Show } from "solid-js";
-import { onMount } from "solid-js";
 import { IChart, ILink, IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Link.module.css";
@@ -81,10 +80,6 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
   let markerEl: any;
   const [state, actions] = useChartStore();
 
-  // onMount(() => {
-  //   console.log("rendering link", props.linkId)
-  // })
-
   return (
     <Show
       when={
@@ -132,16 +127,10 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
 
 const Links: Component = () => {
   const [state, actions] = useChartStore();
-  console.log("rendering links");
-
-  onMount(() => {
-    console.log("mounting links");
-  });
 
   return (
     <For each={Object.keys(state.chart.links)}>
       {(key, i) => {
-        console.log(`"creating link ${key}"`);
         return <Link linkId={key} />;
       }}
     </For>

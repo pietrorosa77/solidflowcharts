@@ -102,7 +102,6 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         });
       });
     });
-    console.log("node size changed", evt);
   };
 
   const onScale = (scale: number): void => {
@@ -207,9 +206,6 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
       return pathsFrom || pathTo;
     });
 
-    console.log("LINKS TO REMOVE", links);
-    console.log("PATHS TO REMOVE", paths);
-
     batch(() => {
       ids.forEach((id) => {
         setChart("chart", "nodes", id, () => undefined);
@@ -224,8 +220,31 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
   };
 
   const onNodeChanged = (nodeId: string, node: ExtendedNode) => {
-    setChart("chart", "nodes", nodeId, () => node);
-  };
+    const oldNode = state.chart.nodes[nodeId];
+    const oldPortsKeys = Object.keys(oldNode.ports);
+    const newPortKeys = Object.keys(node.ports);
+
+    const removedPorts = oldPortsKeys.filter((k) => !newPortKeys.includes(k));
+    const removedLinks = Object.keys(state.chart.links).filter((k) => {
+      const l = state.chart.links[k];
+      return removedPorts.includes(l.from.portId) && l.from.nodeId === oldNode.id;
+    });
+
+    const pathsToDelete = Object.keys(state.chart.paths).filter((k) => {
+      const toDelete = newPortKeys.filter((id) => k.endsWith(id)).length === 0;
+      return toDelete;
+    });
+
+    batch(() => {
+      removedLinks.forEach((l) => {
+        setChart("chart", "links", l, () => undefined);
+      });
+      pathsToDelete.forEach((p) => {
+        setChart("chart", "paths", p, () => undefined);
+      });
+      setChart("chart", "nodes", nodeId, () => node);
+    });
+  }
 
   return (
     <ChartContext.Provider value={store}>
