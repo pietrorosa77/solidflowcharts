@@ -13,10 +13,17 @@ const Canvas: Component<{
   maxZoom: number;
   onScale: (evt: PanZoom) => void;
   onDiagramDashboardToggle?: () => void;
-}> = ({ id, children, onScale, minZoom, maxZoom, onDiagramDashboardToggle }) => {
+}> = ({
+  id,
+  children,
+  onScale,
+  minZoom,
+  maxZoom,
+  onDiagramDashboardToggle,
+}) => {
   let cnv: any;
   let zoomInstance: PanZoom;
-  const [_state, actions] = useChartStore();
+  const [state, actions] = useChartStore();
   const zoomHandler = (e: PanZoom) => {
     onScale(e);
   };
@@ -71,7 +78,14 @@ const Canvas: Component<{
   return (
     <>
       <div class={styles.CanvasWrapper}>
-        <div class={styles.Canvas} id={id} ref={cnv}>
+        <div
+          class={styles.Canvas}
+          id={id}
+          ref={cnv}
+          style={{
+            cursor: state.selection ? "crosshair" : "grab",
+          }}
+        >
           <AreaSelect>{children}</AreaSelect>
         </div>
       </div>

@@ -10,7 +10,7 @@
   border: solid 1px rgba(123, 123, 123, 0.61);
   z-index: 200;
   opacity: 0.3;
-  cursor: crosshair;
+
 }
 
 .Canvas {
@@ -56,17 +56,3 @@
   border-color: var(--accent-color) !important;
   box-shadow: unset !important;
 }
-
-/* .CanvasCommands button{
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  flex-direction: row;
-  width: 400px;
-  height: 50px;
-  opacity: 0.8;
-  background-color: var(--bars-color);
-  border-top-left-radius: 8px;
-  align-items: center;
-} */

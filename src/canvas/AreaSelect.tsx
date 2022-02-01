@@ -7,6 +7,7 @@ export function AreaSelect(props: { children: any }) {
   const [state, actions] = useChartStore();
   const [coord, setCoord] = createSignal();
   let canvas: any;
+  console.log("rendering areaa");
 
   const onMouseDown = (startEvent: PointerEvent) => {
     if (!canvas || !state.selection || (startEvent as any)["diagramDetails"]) {
@@ -40,7 +41,7 @@ export function AreaSelect(props: { children: any }) {
 
     const mouseUpHandler = () => {
       const selection = getSelectedNodes({ from, to: pointTo });
-      //props.onAreaSelectionChange(selection);
+      actions.onAreaSelection(selection);
       window.removeEventListener("pointerup", mouseUpHandler, false);
       window.removeEventListener("pointermove", mouseMoveHandler, false);
       setCoord(undefined);

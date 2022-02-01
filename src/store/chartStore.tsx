@@ -36,6 +36,7 @@ export interface IChartActions {
   onNodeChanged: (nodeId: string, node: ExtendedNode) => void;
   onAddNode: (node: ExtendedNode) => void;
   onToggleAreaSelection: (enableSelection: boolean) => void;
+  onAreaSelection: (selection: { [key: string]: boolean }) => void;
 }
 
 export function ChartProvider(props: { chart: IChart; children: any }) {
@@ -72,6 +73,9 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         },
         onScale(scale: number) {
           onScale(scale);
+        },
+        onAreaSelection(selection: { [key: string]: boolean }) {
+          setChart("chart", "selected", () => selection);
         },
         onToggleNodeSelection(id: string, selected: boolean) {
           onToggleNodeSelection(id, selected);
