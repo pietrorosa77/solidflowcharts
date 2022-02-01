@@ -6,6 +6,7 @@ import { FaSolidExpandArrowsAlt } from "solid-icons/fa";
 import { AiOutlineSelect } from "solid-icons/ai";
 import { IoAppsSharp } from "solid-icons/io";
 import { ImRedo, ImUndo } from "solid-icons/im";
+import { FaSolidTrash } from "solid-icons/fa";
 
 import styles from "./Canvas.module.css";
 import {
@@ -28,11 +29,24 @@ const CanvasCommands: Component<{
   onEnablePanZoom,
   onDiagramDashboardToggle,
 }) => {
-  const [state] = useChartStore();
+  const [state, actions] = useChartStore();
 
   onMount(() => {});
   const cssVariables: JSX.CSSProperties = {
     ...getCssVariables(),
+  };
+
+  const deleteEnabled = () => {
+    return (
+      Object.keys(state.chart.selected).filter((k) => state.chart.selected[k])
+        .length > 0
+    );
+  };
+  const onTrashNodes = () => {
+    const ids = Object.keys(state.chart.selected)
+      .filter((k) => state.chart.selected[k])
+      .map((k) => k);
+    actions.onDeleteNodes(ids);
   };
   return (
     <>
@@ -89,6 +103,16 @@ const CanvasCommands: Component<{
         >
           <ImRedo size={30} />
         </Button>
+        <Button
+          variant="icon"
+          class={styles.CanvasCommand}
+          classList={{
+            [`${styles.CanvasCommandsDisabled}`]: !deleteEnabled(),
+          }}
+          onClick={onTrashNodes}
+        >
+          <FaSolidTrash size={30} />
+        </Button>
         <Modal closeOnClickOutside closeOnEsc style={cssVariables}>
           {({ open, toggle }) => (
             <>
@@ -140,6 +164,11 @@ const CanvasCommands: Component<{
                       />
                       <strong> Selection mode:</strong>
                       {` Left click and mouse move for multi node selection`}
+                    </li>
+                    <li>
+                      <FaSolidTrash size={30} style={{ display: "inline" }} />
+                      <strong> Delete nodes:</strong>
+                      {` Delete selected nodes`}
                     </li>
                   </ul>
                 </ModalBody>

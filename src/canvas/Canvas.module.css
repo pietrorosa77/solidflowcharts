@@ -10,7 +10,6 @@
   border: solid 1px rgba(123, 123, 123, 0.61);
   z-index: 200;
   opacity: 0.3;
-
 }
 
 .Canvas {
@@ -37,7 +36,7 @@
   right: 0;
   display: flex;
   flex-direction: row;
-  width: 335px;
+  width: 400px;
   height: 50px;
   opacity: 0.8;
   background-color: var(--bars-color);
@@ -48,6 +47,7 @@
 
 .CanvasCommandsDisabled {
   color: var(--bg-inactive) !important;
+  cursor: default !important;
 }
 
 .CanvasCommandsEnabled,
@@ -55,4 +55,5 @@
   color: var(--accent-color) !important;
   border-color: var(--accent-color) !important;
   box-shadow: unset !important;
+  cursor: pointer;
 }
