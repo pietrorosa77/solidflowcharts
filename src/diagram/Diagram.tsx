@@ -17,8 +17,11 @@ import Links, { Link as NewLink } from "../link/Link";
 
 const Diagram: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
+  onDiagramDashboardToggle?: () => void;
   onLoad?: (ctions: IChartActions) => void;
-}> = ({ onNodeSettingsClick, onLoad }) => {
+}> = ({ onNodeSettingsClick, onLoad, onDiagramDashboardToggle }) => {
+  const minZoom = 0.2;
+  const maxZoom = 2;
   const canvasId = nanoid(10);
   const [state, actions] = useChartStore();
 
@@ -44,7 +47,13 @@ const Diagram: Component<{
 
   return (
     <div style={cssVariables} className={styles.Diagram}>
-      <Canvas id={canvasId} onScale={onScale}>
+      <Canvas
+        id={canvasId}
+        onScale={onScale}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        onDiagramDashboardToggle={onDiagramDashboardToggle}
+      >
         <Nodes canvasId={canvasId} onNodeSettings={onNodeSettings} />
         <Links />
         <Show when={!!state.newLink}>
@@ -59,12 +68,13 @@ const DiagramWrapper: Component<{
   chart: IChart;
   fontFace?: string;
   onNodeSettingsClick?: (node: ExtendedNode) => void;
+  onDiagramDashboardToggle?: () => void;
   onLoad?: (ctions: IChartActions) => void;
-}> = ({ chart, fontFace, onNodeSettingsClick, onLoad }) => {
+}> = ({ chart, fontFace, onNodeSettingsClick, onLoad, onDiagramDashboardToggle }) => {
   createFontStyle(fontFace || defaultFontFace);
   return (
     <ChartProvider chart={chart}>
-      <Diagram onNodeSettingsClick={onNodeSettingsClick} onLoad={onLoad} />
+      <Diagram onNodeSettingsClick={onNodeSettingsClick} onLoad={onLoad} onDiagramDashboardToggle={onDiagramDashboardToggle}/>
     </ChartProvider>
   );
 };

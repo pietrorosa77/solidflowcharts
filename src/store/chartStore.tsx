@@ -34,12 +34,15 @@ export interface IChartActions {
   onRemoveLinks: (nodeId: string, portId: string) => void;
   onDeleteNodes: (nodeIds: string[]) => void;
   onNodeChanged: (nodeId: string, node: ExtendedNode) => void;
+  onAddNode: (node: ExtendedNode) => void;
+  onToggleAreaSelection: (enableSelection: boolean) => void;
 }
 
 export function ChartProvider(props: { chart: IChart; children: any }) {
   const [state, setChart] = createStore({
       chart: props.chart,
       scale: 1,
+      selection: false,
       portHeight: 30,
       portOffset: 35,
       newLink: undefined,
@@ -47,6 +50,7 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
       chart: IChart;
       scale: number;
       newLink: undefined | ILink;
+      selection: boolean;
     }>),
     store = [
       state,
@@ -72,6 +76,9 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         onToggleNodeSelection(id: string, selected: boolean) {
           onToggleNodeSelection(id, selected);
         },
+        onToggleAreaSelection(enableSelection: boolean) {
+          setChart("selection", () => enableSelection);
+        },
         onCreatingLink(link: ILink) {
           onCreatingLink(link);
         },
@@ -86,6 +93,9 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         },
         onNodeChanged(nodeId: string, node: ExtendedNode) {
           onNodeChanged(nodeId, node);
+        },
+        onAddNode(node: ExtendedNode) {
+          onAddNode(node);
         },
       } as IChartActions,
     ];
@@ -227,7 +237,9 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
     const removedPorts = oldPortsKeys.filter((k) => !newPortKeys.includes(k));
     const removedLinks = Object.keys(state.chart.links).filter((k) => {
       const l = state.chart.links[k];
-      return removedPorts.includes(l.from.portId) && l.from.nodeId === oldNode.id;
+      return (
+        removedPorts.includes(l.from.portId) && l.from.nodeId === oldNode.id
+      );
     });
 
     const pathsToDelete = Object.keys(state.chart.paths).filter((k) => {
@@ -244,7 +256,16 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
       });
       setChart("chart", "nodes", nodeId, () => node);
     });
-  }
+  };
+
+  const onAddNode = (node: ExtendedNode) => {
+    const newNode = {
+      ...node,
+      id: nanoid(),
+    };
+
+    setChart("chart", "nodes", newNode.id, () => newNode);
+  };
 
   return (
     <ChartContext.Provider value={store}>
@@ -257,6 +278,7 @@ export function useChartStore(): [
   DeepReadonly<{
     chart: IChart;
     scale: number;
+    selection: boolean;
     portHeight: number;
     portOffset: number;
     newLink: undefined | ILink;

@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import type { Component } from "solid-js";
 import { ExtendedNode, IChart } from "../definitions";
+import { Button } from "./components/Button";
 import { defaultFontFace } from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
 import { IChartActions } from "./store/chartStore";
@@ -134,9 +135,13 @@ const App: Component = () => {
   return (
     <>
       {/* <button onClick={updateNodeContent}>test content</button> */}
+
       <Diagram
         chart={getInitialSchema()}
         fontFace={defaultFontFace}
+        onDiagramDashboardToggle={() => {
+          console.log("dashboard click");
+        }}
         onNodeSettingsClick={(nodeDt: ExtendedNode) =>
           (node = {
             ...nodeDt,

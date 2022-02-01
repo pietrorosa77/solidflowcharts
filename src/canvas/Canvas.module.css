@@ -4,6 +4,15 @@
   background-color: var(--canvas-bg-color);
 }
 
+.SelectedArea {
+  background-color: var(--accent-color);
+  position: absolute;
+  border: solid 1px rgba(123, 123, 123, 0.61);
+  z-index: 200;
+  opacity: 0.3;
+  cursor: crosshair;
+}
+
 .Canvas {
   background-image: linear-gradient(
       var(--grid-lines-color) 2px,
@@ -21,3 +30,43 @@
   width: 3000px;
   height: 3000px;
 }
+
+.CanvasCommands {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  width: 335px;
+  height: 50px;
+  opacity: 0.8;
+  background-color: var(--bars-color);
+  border-top-left-radius: 8px;
+  align-items: center;
+  padding: 10px;
+}
+
+.CanvasCommandsDisabled {
+  color: var(--bg-inactive) !important;
+}
+
+.CanvasCommandsEnabled,
+.CanvasCommand:hover {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: unset !important;
+}
+
+/* .CanvasCommands button{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  height: 50px;
+  opacity: 0.8;
+  background-color: var(--bars-color);
+  border-top-left-radius: 8px;
+  align-items: center;
+} */

@@ -1,0 +1,65 @@
+button.sb-button,
+[role="button"].sb-button {
+  appearance: none;
+  border: 0.125em solid;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0.25em 0.75em;
+  margin: 0.05em 0;
+}
+button.primary.sb-button,
+[role="button"].primary.sb-button {
+  border-color: var(--brand-color);
+  background: var(--brand-color);
+  color: var(--node-font-color);
+}
+button.sb-button:hover:not(:active, [aria-disabled="true"]),
+button.sb-button:focus:not(:active, [aria-disabled="true"]),
+[role="button"].sb-button:hover:not(:active, [aria-disabled="true"]),
+[role="button"].sb-button:focus:not(:active, [aria-disabled="true"]) {
+  box-shadow: 0 0 0 0.125em var(--node-font-color),
+    0 0 0 0.25em var(--brand-color);
+  text-decoration: none;
+}
+button.sb-button[aria-disabled="true"],
+[role="button"].sb-button[aria-disabled="true"] {
+  background: var(--bg-inactive);
+  border-color: var(--bg-inactive);
+  cursor: not-allowed;
+}
+button.secondary.sb-button,
+[role="button"].secondary.sb-button {
+  background: transparent;
+  border-color: var(--brand-color);
+  color: var(--node-font-color);
+}
+button.link.sb-button,
+[role="button"].link.sb-button {
+  background: transparent;
+  border-color: transparent;
+  color: var(--node-font-color);
+  text-decoration: underline;
+}
+button.link.sb-button:hover:not(:active, [aria-disabled="true"]),
+button.link.sb-button:focus:not(:active, [aria-disabled="true"]),
+[role="button"].link.sb-button:hover:not(:active, [aria-disabled="true"]),
+[role="button"].link.sb-button:hover:not(:active, [aria-disabled="true"]) {
+  border-color: var(--brand-color);
+}
+button.sb-button:not(:first-child),
+[role="button"].sb-button:not(:first-child) {
+  margin-left: 0.25em;
+}
+button.sb-button:not(:last-child),
+[role="button"].sb-button:not(:last-child) {
+  margin-right: 0.25em;
+}
+button.icon.sb-button,
+[role="button"].icon.sb-button {
+  padding: 0.125em;
+  border-color: transparent;
+  min-width: 1.75em;
+  background: transparent;
+  color: var(--node-font-color);
+}

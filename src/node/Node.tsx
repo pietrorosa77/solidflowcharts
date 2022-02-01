@@ -22,18 +22,18 @@ const NodeHead = (props: {
   onDeleteNode: () => void;
   onNodeSettings: () => void;
 }) => {
+  const preventNodeDrag = (e: PointerEvent) => {
+    (e as any)["diagramDetails"] = "prevent node drag";
+  };
   return (
     <div class={styles.NodeHead}>
-      <div onPointerDown={blockEventHandler}>
+      <div onPointerDown={preventNodeDrag}>
         <Checkbox onChange={props.onToggle} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
         <span>{props.title}</span>
       </div>
-      <div
-        class={styles.NodeCommandsContainer}
-        onPointerDown={blockEventHandler}
-      >
+      <div class={styles.NodeCommandsContainer} onPointerDown={preventNodeDrag}>
         <AiFillSetting
           size={24}
           class={styles.NodeCommands}
