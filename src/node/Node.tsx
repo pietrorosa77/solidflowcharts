@@ -166,6 +166,7 @@ const Node: Component<{
       window.removeEventListener("pointerup", mouseUpHandler, false);
       window.removeEventListener("pointercancel", mouseUpHandler, false);
       window.removeEventListener("pointermove", throttledMove, true);
+      actions.onNodeDraggingEnd();
     };
 
     window.addEventListener("pointerup", mouseUpHandler, false);

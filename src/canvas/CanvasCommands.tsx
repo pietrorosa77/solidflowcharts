@@ -13,6 +13,7 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
 } from "../components/Modal";
 import { getCssVariables } from "../defaultTheme";
@@ -47,6 +48,18 @@ const CanvasCommands: Component<{
       .filter((k) => state.chart.selected[k])
       .map((k) => k);
     actions.onDeleteNodes(ids);
+  };
+
+  const onUndo = () => {
+    if (actions.canUndo()) {
+      actions.onUndo();
+    }
+  };
+
+  const onRedo = () => {
+    if (actions.canRedo()) {
+      actions.onRedo();
+    }
   };
   return (
     <>
@@ -92,14 +105,20 @@ const CanvasCommands: Component<{
         <Button
           variant="icon"
           class={styles.CanvasCommand}
-          onClick={() => null}
+          classList={{
+            [`${styles.CanvasCommandsDisabled}`]: !actions.canUndo(),
+          }}
+          onClick={onUndo}
         >
           <ImUndo size={30} />
         </Button>
         <Button
           variant="icon"
           class={styles.CanvasCommand}
-          onClick={() => null}
+          classList={{
+            [`${styles.CanvasCommandsDisabled}`]: !actions.canRedo(),
+          }}
+          onClick={onRedo}
         >
           <ImRedo size={30} />
         </Button>
@@ -172,9 +191,9 @@ const CanvasCommands: Component<{
                     </li>
                   </ul>
                 </ModalBody>
-                {/* <ModalFooter>
+                <ModalFooter>
                   <Button onclick={toggle}>OK</Button>
-                </ModalFooter> */}
+                </ModalFooter>
               </ModalContent>
             </>
           )}

@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { nanoid } from "nanoid";
 import { createContext, useContext, batch } from "solid-js";
 import { createStore, DeepReadonly } from "solid-js/store";
@@ -8,6 +9,7 @@ import {
   IPosition,
   ISize,
 } from "../../definitions";
+import { UndoRedoManager } from "./undo-redo";
 import {
   getLinksForPort,
   getPositionWithParentBoundsSize,
@@ -27,6 +29,7 @@ export interface IChartActions {
     multiSelectOffsets: any;
     delta: { x: number; y: number };
   }) => void;
+  onNodeDraggingEnd: () => void;
   onScale: (scale: number) => void;
   onToggleNodeSelection: (id: string, selected: boolean) => void;
   onCreatingLink: (link: ILink) => void;
@@ -37,9 +40,18 @@ export interface IChartActions {
   onAddNode: (node: ExtendedNode) => void;
   onToggleAreaSelection: (enableSelection: boolean) => void;
   onAreaSelection: (selection: { [key: string]: boolean }) => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
+let history: UndoRedoManager;
 export function ChartProvider(props: { chart: IChart; children: any }) {
+  if (!history) {
+    history = new UndoRedoManager(cloneDeep(props.chart));
+  }
+
   const [state, setChart] = createStore({
       chart: props.chart,
       scale: 1,
@@ -58,6 +70,7 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
       {
         nodesSizeChanged(evt: ResizeObserverEntry[]) {
           onNodesSizeChanged(evt);
+          history.save(state.chart, "onNodeSizeChanged");
         },
         onNodeDrag(evt: { nodeId: string; position: IPosition }) {
           onNodeDrag(evt);
@@ -79,27 +92,53 @@ export function ChartProvider(props: { chart: IChart; children: any }) {
         },
         onToggleNodeSelection(id: string, selected: boolean) {
           onToggleNodeSelection(id, selected);
+          history.save(state.chart, "crtAction");
         },
         onToggleAreaSelection(enableSelection: boolean) {
           setChart("selection", () => enableSelection);
+          history.save(state.chart, "crtAction");
         },
         onCreatingLink(link: ILink) {
           onCreatingLink(link);
         },
         onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]) {
           onEndConnection(link, portLinks);
+          history.save(state.chart, "crtAction");
         },
         onRemoveLinks(nodeId: string, portId: string) {
           onRemoveLinks(nodeId, portId);
+          history.save(state.chart, "crtAction");
         },
         onDeleteNodes(nodeIds: string[]) {
           onDeleteNodes(nodeIds);
+          history.save(state.chart, "crtAction");
         },
         onNodeChanged(nodeId: string, node: ExtendedNode) {
           onNodeChanged(nodeId, node);
+          history.save(state.chart, "crtAction");
         },
         onAddNode(node: ExtendedNode) {
           onAddNode(node);
+          history.save(state.chart, "crtAction");
+        },
+        canUndo() {
+          return history.canUndo();
+        },
+        canRedo() {
+          return history.canRedo();
+        },
+        onUndo() {
+          const chart = history.undo();
+          setChart("chart", () => chart);
+          history.save(chart, "undo");
+        },
+        onRedo() {
+          const chart = history.redo();
+          setChart("chart", () => chart);
+          //history.save(chart, "redo");
+        },
+        onNodeDraggingEnd() {
+          history.save(state.chart, "crtAction");
         },
       } as IChartActions,
     ];
