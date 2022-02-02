@@ -1,4 +1,12 @@
-import { Component, JSX, onMount, Show } from "solid-js";
+import {
+  Component,
+  JSX,
+  onMount,
+  Show,
+  ErrorBoundary,
+  createSignal,
+  Accessor,
+} from "solid-js";
 import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
@@ -26,6 +34,7 @@ const Diagram: Component<{
   const [state, actions] = useChartStore();
 
   onMount(() => {
+    console.log("wwwww");
     if (onLoad) {
       onLoad(actions);
     }
@@ -70,11 +79,26 @@ const DiagramWrapper: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
   onDiagramDashboardToggle?: () => void;
   onLoad?: (ctions: IChartActions) => void;
-}> = ({ chart, fontFace, onNodeSettingsClick, onLoad, onDiagramDashboardToggle }) => {
+  onHistoryChange: (chart: IChart) => void;
+}> = ({
+  chart,
+  fontFace,
+  onNodeSettingsClick,
+  onLoad,
+  onDiagramDashboardToggle,
+  onHistoryChange,
+}) => {
   createFontStyle(fontFace || defaultFontFace);
+
   return (
-    <ChartProvider chart={chart}>
-      <Diagram onNodeSettingsClick={onNodeSettingsClick} onLoad={onLoad} onDiagramDashboardToggle={onDiagramDashboardToggle}/>
+    <ChartProvider chart={chart} onHistoryChange={onHistoryChange}>
+      <ErrorBoundary fallback={(err) => err}>
+        <Diagram
+          onNodeSettingsClick={onNodeSettingsClick}
+          onLoad={onLoad}
+          onDiagramDashboardToggle={onDiagramDashboardToggle}
+        />
+      </ErrorBoundary>
     </ChartProvider>
   );
 };

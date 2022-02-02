@@ -1,4 +1,4 @@
-import { Component, JSX, onMount } from "solid-js";
+import { Accessor, Component, JSX, onMount } from "solid-js";
 import { Button } from "../components/Button";
 import { AiFillEye } from "solid-icons/ai";
 import { BiSolidHelpCircle } from "solid-icons/bi";
@@ -51,13 +51,13 @@ const CanvasCommands: Component<{
   };
 
   const onUndo = () => {
-    if (actions.canUndo()) {
+    if (state.canUndo) {
       actions.onUndo();
     }
   };
 
   const onRedo = () => {
-    if (actions.canRedo()) {
+    if (state.canRedo) {
       actions.onRedo();
     }
   };
@@ -106,7 +106,7 @@ const CanvasCommands: Component<{
           variant="icon"
           class={styles.CanvasCommand}
           classList={{
-            [`${styles.CanvasCommandsDisabled}`]: !actions.canUndo(),
+            [`${styles.CanvasCommandsDisabled}`]: !state.canUndo,
           }}
           onClick={onUndo}
         >
@@ -116,7 +116,7 @@ const CanvasCommands: Component<{
           variant="icon"
           class={styles.CanvasCommand}
           classList={{
-            [`${styles.CanvasCommandsDisabled}`]: !actions.canRedo(),
+            [`${styles.CanvasCommandsDisabled}`]: !state.canRedo,
           }}
           onClick={onRedo}
         >

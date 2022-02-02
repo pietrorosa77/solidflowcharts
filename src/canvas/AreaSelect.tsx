@@ -7,7 +7,6 @@ export function AreaSelect(props: { children: any }) {
   const [state, actions] = useChartStore();
   const [coord, setCoord] = createSignal();
   let canvas: any;
-  console.log("rendering areaa");
 
   const onMouseDown = (startEvent: PointerEvent) => {
     if (!canvas || !state.selection || (startEvent as any)["diagramDetails"]) {

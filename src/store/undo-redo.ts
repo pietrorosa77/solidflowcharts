@@ -1,5 +1,7 @@
-import { IChart } from "../../definitions";
+import { IChart, ILink } from "../../definitions";
 import { cloneDeep, isEqual, merge } from "lodash";
+import { SetStoreFunction } from "solid-js/store";
+import { batch } from "solid-js";
 
 type UndoRedoState = {
   past: IChart[];
@@ -8,12 +10,34 @@ type UndoRedoState = {
 };
 export class UndoRedoManager {
   current: UndoRedoState;
-  constructor(initialState: IChart) {
+  notify: (chart: IChart) => void;
+  storeFunction: SetStoreFunction<{
+    chart: IChart;
+    scale: number;
+    newLink: undefined | ILink;
+    selection: boolean;
+    canUndo: boolean;
+    canRedo: boolean;
+  }>;
+  constructor(
+    initialState: IChart,
+    onHistoryChange: (chart: IChart) => void,
+    storeFunction: SetStoreFunction<{
+      chart: IChart;
+      scale: number;
+      newLink: undefined | ILink;
+      selection: boolean;
+      canUndo: boolean;
+      canRedo: boolean;
+    }>
+  ) {
     this.current = {
       past: [],
       present: initialState,
       future: [],
     };
+    this.notify = onHistoryChange;
+    this.storeFunction = storeFunction;
   }
 
   reducer = (
@@ -89,6 +113,11 @@ export class UndoRedoManager {
       payload: normalState as any,
       merge: action === "onNodeSizeChanged",
     }) as UndoRedoState;
+    this.notify(this.current.present);
+    // batch(() => {
+    //   this.storeFunction("canRedo", () => this.canRedo())
+    //   this.storeFunction("canUndo", () => this.canUndo())
+    // })
   }
 
   canUndo(): boolean {

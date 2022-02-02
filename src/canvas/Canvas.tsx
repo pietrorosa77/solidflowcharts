@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Accessor, Component } from "solid-js";
 import { onMount, onCleanup } from "solid-js";
 import panzoom, { PanZoom } from "panzoom";
 
@@ -56,6 +56,9 @@ const Canvas: Component<{
   });
 
   onCleanup(() => {
+    if (!zoomInstance) {
+      return;
+    }
     zoomInstance.off("transform", zoomHandler);
     zoomInstance.dispose();
   });

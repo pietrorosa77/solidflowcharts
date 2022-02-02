@@ -147,6 +147,9 @@ const App: Component = () => {
             ...nodeDt,
           })
         }
+        onHistoryChange={(chart) => {
+          console.log("updated chart is", chart)
+        }}
         onLoad={onLoad}
       />
     </>
