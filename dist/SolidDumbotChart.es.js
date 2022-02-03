@@ -21033,16 +21033,13 @@ const getLinksForPort = (chart, nodeId, portId) => {
 };
 
 const ChartContext = createContext();
-let history$1;
 function ChartProvider(props) {
-  if (!history$1) {
-    history$1 = new UndoRedoManager(lodash.exports.cloneDeep(props.chart));
-  }
+  const history = new UndoRedoManager(lodash.exports.cloneDeep(props.chart));
 
   const recordHistory = (chart, action, skipSaving = false) => {
-    const current = skipSaving ? chart : history$1.save(chart, action);
-    setChart("canRedo", () => history$1.canRedo());
-    setChart("canUndo", () => history$1.canUndo());
+    const current = skipSaving ? chart : history.save(chart, action);
+    setChart("canRedo", () => history.canRedo());
+    setChart("canUndo", () => history.canUndo());
 
     if (props.onHistoryChange) {
       props.onHistoryChange(current);
@@ -21221,7 +21218,7 @@ function ChartProvider(props) {
 
     onUndo() {
       batch(() => {
-        const chart = history$1.undo();
+        const chart = history.undo();
         setChart("chart", () => chart);
         recordHistory(state.chart, "undo");
       });
@@ -21229,9 +21226,9 @@ function ChartProvider(props) {
 
     onRedo() {
       batch(() => {
-        const chart = history$1.redo();
+        const chart = history.redo();
         setChart("chart", () => chart);
-        recordHistory(chart, "crtAction", true);
+        recordHistory(chart, "crtAction");
       });
     },
 
