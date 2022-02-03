@@ -1,54 +1,69 @@
 import { customElement } from "solid-element";
+import { createSignal } from "solid-js";
 import { ExtendedNode, IChart } from "../definitions";
 import DiagramWrapper from "./diagram/Diagram";
 import { IChartActions } from "./store/chartStore";
 
+// let historyUpdateCallback: any;
+// let crtActions: IChartActions;
+
+let notifier: (action: string, data: any) => void;
+
+const [chartstr, setChartStr] = createSignal("");
+
 const DumbotDiagramWC = customElement(
   "dumbot-flowchart",
   {
-    chart: {},
     fontFace: "",
     availableNodes: [],
     css: "",
     width: "",
     height: "",
+    addNotifier: (cbIn: (action: string, data: any) => void) => {
+      notifier = cbIn;
+    },
+    setInitialChart: (chart: string) => {
+      console.log("setting init charty");
+      setChartStr(chart);
+    },
   },
   (props, options) => {
-    let actions: IChartActions;
-    let state: IChart;
-
     const onload = (actions: IChartActions) => {
-      actions = actions;
+      notifier("load", actions);
     };
 
-    const historyChange = (statec: IChart) => {
-      state = statec;
-      console.log(state);
+    const historyChange = (state: IChart) => {
+      notifier("statechange", state);
     };
 
     const onNodeSettings = (node: ExtendedNode) => {
-      console.log(node);
+      notifier("onnodesettings", node);
     };
 
     const onDiagramDashboardToggle = () => {
-      console.log("dashboard");
+      notifier("dashboardtoggle", null);
     };
 
     return (
       <>
-        <style>{props.css}</style>
-        <DiagramWrapper
-          onLoad={onload}
-          chart={props.chart as IChart}
-          fontFace={props.fontFace}
-          availableNodes={props.availableNodes}
-          onHistoryChange={historyChange}
-          onNodeSettingsClick={onNodeSettings}
-          width={props.width}
-          height={props.height}
-          root={options.element.renderRoot}
-          onDiagramDashboardToggle={onDiagramDashboardToggle}
-        />
+        {!chartstr() && <div>loading diagram...</div>}
+        {chartstr() && (
+          <>
+            <style>{props.css}</style>
+            <DiagramWrapper
+              onLoad={onload}
+              chart={JSON.parse(chartstr())}
+              fontFace={props.fontFace}
+              availableNodes={props.availableNodes}
+              onHistoryChange={historyChange}
+              onNodeSettingsClick={onNodeSettings}
+              width={props.width}
+              height={props.height}
+              root={options.element.renderRoot}
+              onDiagramDashboardToggle={onDiagramDashboardToggle}
+            />
+          </>
+        )}
       </>
     );
   }

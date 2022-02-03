@@ -37,7 +37,9 @@ export function getPositionWithParentBoundsSize(
 }
 
 export const getMultiselectionSquareRectOffsets = (scale: number) => {
-  const elements = document.querySelectorAll(".drag-hat-selected");
+  const elements: Element[] = (window as any).DMBRoot.querySelectorAll(
+    ".drag-hat-selected"
+  );
 
   if (!elements.length) {
     return {};

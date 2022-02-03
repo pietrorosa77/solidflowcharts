@@ -44,15 +44,12 @@ export interface IChartActions {
   onRedo: () => void;
 }
 
-let history: UndoRedoManager;
 export function ChartProvider(props: {
   chart: IChart;
   children: any;
   onHistoryChange?: (chart: IChart) => void;
 }) {
-  if (!history) {
-    history = new UndoRedoManager(cloneDeep(props.chart));
-  }
+  const history = new UndoRedoManager(cloneDeep(props.chart));
 
   const recordHistory = (chart: IChart, action: string, skipSaving = false) => {
     const current = skipSaving ? chart : history.save(chart, action);
@@ -277,7 +274,7 @@ export function ChartProvider(props: {
           batch(() => {
             const chart = history.redo();
             setChart("chart", () => chart);
-            recordHistory(chart, "crtAction", true);
+            recordHistory(chart, "crtAction");
           });
         },
         onNodeDraggingEnd() {

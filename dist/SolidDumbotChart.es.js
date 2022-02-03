@@ -3101,7 +3101,7 @@ const Button = props => {
 };
 
 const _tmpl$$b = template(`<svg fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"></svg>`),
-      _tmpl$2$5 = template(`<title></title>`);
+      _tmpl$2$6 = template(`<title></title>`);
 function IconTemplate(props) {
   const [content, innerProps] = splitProps(props, ["src"]);
   return (() => {
@@ -3115,7 +3115,7 @@ function IconTemplate(props) {
       const _c$ = memo(() => !!innerProps.title, true);
 
       return () => _c$() && (() => {
-        const _el$2 = _tmpl$2$5.cloneNode(true);
+        const _el$2 = _tmpl$2$6.cloneNode(true);
 
         insert(_el$2, () => innerProps.title);
 
@@ -3269,7 +3269,7 @@ const getElements = (children, filter, props = [], result = []) => {
 };
 
 const _tmpl$$a = template(`<div></div>`),
-      _tmpl$2$4 = template(`<header></header>`),
+      _tmpl$2$5 = template(`<header></header>`),
       _tmpl$3$1 = template(`<main></main>`),
       _tmpl$4 = template(`<footer></footer>`);
 let modalCount = 0;
@@ -3364,7 +3364,7 @@ const Modal = props => {
         get children() {
           return [memo(otherChildren), createComponent(Portal, {
             get mount() {
-              return document.body;
+              return window.DMBRoot.body || window.DMBRoot;
             },
 
             get children() {
@@ -3396,7 +3396,7 @@ const ModalContent = props => (() => {
   return _el$3;
 })();
 const ModalHeader = props => (() => {
-  const _el$4 = _tmpl$2$4.cloneNode(true);
+  const _el$4 = _tmpl$2$5.cloneNode(true);
 
   spread(_el$4, props, false, false);
 
@@ -20970,7 +20970,7 @@ function getPositionWithParentBoundsSize(canvasSize, nodeSize, multiSelectOffset
   return { x, y };
 }
 const getMultiselectionSquareRectOffsets = (scale) => {
-  const elements = document.querySelectorAll(".drag-hat-selected");
+  const elements = window.DMBRoot.querySelectorAll(".drag-hat-selected");
   if (!elements.length) {
     return {};
   }
@@ -21256,7 +21256,7 @@ function useChartStore() {
 }
 
 const _tmpl$$9 = template(`<div></div>`),
-      _tmpl$2$3 = template(`<ul><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`),
+      _tmpl$2$4 = template(`<ul><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`),
       _tmpl$3 = template(`<li><strong> Node Library:</strong> Collapse/expande node library sidebar</li>`);
 
 const CanvasCommands = ({
@@ -21487,7 +21487,7 @@ const CanvasCommands = ({
 
           }), createComponent(ModalBody, {
             get children() {
-              const _el$2 = _tmpl$2$3.cloneNode(true),
+              const _el$2 = _tmpl$2$4.cloneNode(true),
                     _el$3 = _el$2.firstChild,
                     _el$4 = _el$3.firstChild,
                     _el$5 = _el$3.nextSibling,
@@ -21563,7 +21563,7 @@ const CanvasCommands = ({
 };
 
 const _tmpl$$8 = template(`<div></div>`),
-      _tmpl$2$2 = template(`<div role="presentation"></div>`);
+      _tmpl$2$3 = template(`<div role="presentation"></div>`);
 function AreaSelect(props) {
   const [state, actions] = useChartStore();
   const [coord, setCoord] = createSignal();
@@ -21671,7 +21671,7 @@ function AreaSelect(props) {
   };
 
   return (() => {
-    const _el$2 = _tmpl$2$2.cloneNode(true);
+    const _el$2 = _tmpl$2$3.cloneNode(true);
 
     _el$2.$$pointerdown = onMouseDown;
     const _ref$ = canvas;
@@ -21919,7 +21919,7 @@ function TiArrowLoop(props) {
 }
 
 const _tmpl$$5 = template(`<div><div><div><span></span></div><div></div></div></div>`),
-      _tmpl$2$1 = template(`<div></div>`);
+      _tmpl$2$2 = template(`<div></div>`);
 
 const getPortBgColor = port => {
   if (!port.bgColor) {
@@ -22059,7 +22059,7 @@ const Port = props => {
 
       get fallback() {
         return (() => {
-          const _el$6 = _tmpl$2$1.cloneNode(true);
+          const _el$6 = _tmpl$2$2.cloneNode(true);
 
           createRenderEffect(() => _el$6.className = styles$2.PortOutInner);
 
@@ -22124,7 +22124,7 @@ const Ports = ({
 }) => {
   const [state, actions] = useChartStore();
   return (() => {
-    const _el$7 = _tmpl$2$1.cloneNode(true);
+    const _el$7 = _tmpl$2$2.cloneNode(true);
 
     setAttribute(_el$7, "id", `${nodeId}-port-container`);
 
@@ -40757,7 +40757,7 @@ const NodeContentReadonly = props => {
 };
 
 const _tmpl$$3 = template(`<div><div></div><div><span></span></div><div></div></div>`),
-      _tmpl$2 = template(`<div><div><div></div></div></div>`);
+      _tmpl$2$1 = template(`<div><div><div></div></div></div>`);
 
 const NodeHead = props => {
   const preventNodeDrag = e => {
@@ -40953,7 +40953,7 @@ const Node$1 = ({
   };
 
   return (() => {
-    const _el$6 = _tmpl$2.cloneNode(true),
+    const _el$6 = _tmpl$2$1.cloneNode(true),
           _el$7 = _el$6.firstChild,
           _el$8 = _el$7.firstChild;
 
@@ -41288,71 +41288,88 @@ const DiagramWrapper = ({
   });
 };
 
-const _tmpl$ = template(`<style></style>`);
+const _tmpl$ = template(`<div>loading diagram...</div>`),
+      _tmpl$2 = template(`<style></style>`);
+// let historyUpdateCallback: any;
+// let crtActions: IChartActions;
+let notifier;
+const [chartstr, setChartStr] = createSignal("");
 const DumbotDiagramWC = customElement("dumbot-flowchart", {
-  chart: {},
   fontFace: "",
   availableNodes: [],
   css: "",
   width: "",
-  height: ""
+  height: "",
+  addNotifier: cbIn => {
+    notifier = cbIn;
+  },
+  setInitialChart: chart => {
+    console.log("setting init charty");
+    setChartStr(chart);
+  }
 }, (props, options) => {
-  let state;
-
   const onload = actions => {
+    notifier("load", actions);
   };
 
-  const historyChange = statec => {
-    state = statec;
-    console.log(state);
+  const historyChange = state => {
+    notifier("statechange", state);
   };
 
   const onNodeSettings = node => {
-    console.log(node);
+    notifier("onnodesettings", node);
   };
 
   const onDiagramDashboardToggle = () => {
-    console.log("dashboard");
+    notifier("dashboardtoggle", null);
   };
 
-  return [(() => {
-    const _el$ = _tmpl$.cloneNode(true);
+  return [memo((() => {
+    const _c$ = memo(() => !!!chartstr(), true);
 
-    insert(_el$, () => props.css);
+    return () => _c$() && _tmpl$.cloneNode(true);
+  })()), memo((() => {
+    const _c$2 = memo(() => !!chartstr(), true);
 
-    return _el$;
-  })(), createComponent(DiagramWrapper, {
-    onLoad: onload,
+    return () => _c$2() && [(() => {
+      const _el$2 = _tmpl$2.cloneNode(true);
 
-    get chart() {
-      return props.chart;
-    },
+      insert(_el$2, () => props.css);
 
-    get fontFace() {
-      return props.fontFace;
-    },
+      return _el$2;
+    })(), createComponent(DiagramWrapper, {
+      onLoad: onload,
 
-    get availableNodes() {
-      return props.availableNodes;
-    },
+      get chart() {
+        return JSON.parse(chartstr());
+      },
 
-    onHistoryChange: historyChange,
-    onNodeSettingsClick: onNodeSettings,
+      get fontFace() {
+        return props.fontFace;
+      },
 
-    get width() {
-      return props.width;
-    },
+      get availableNodes() {
+        return props.availableNodes;
+      },
 
-    get height() {
-      return props.height;
-    },
+      onHistoryChange: historyChange,
+      onNodeSettingsClick: onNodeSettings,
 
-    get root() {
-      return options.element.renderRoot;
-    },
+      get width() {
+        return props.width;
+      },
 
-    onDiagramDashboardToggle: onDiagramDashboardToggle
-  })];
+      get height() {
+        return props.height;
+      },
+
+      get root() {
+        return options.element.renderRoot;
+      },
+
+      onDiagramDashboardToggle: onDiagramDashboardToggle
+    })];
+  })())];
 });
 
 export { DumbotDiagramWC as default };

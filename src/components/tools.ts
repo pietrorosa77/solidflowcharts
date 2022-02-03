@@ -104,7 +104,7 @@ export const useDarkMode = (localStorageKey = "COLOR_SCHEME") => {
   const darkMode = createMemo(() => storedPrefersDark() ?? mediaQueryPrefersDark());
 
   createEffect(() => {
-    document.body.classList.toggle('dark-mode', darkMode())
+    (window as any).DMBRoot.body.classList.toggle('dark-mode', darkMode())
   });
 
   return [darkMode, setStoredPrefersDark];

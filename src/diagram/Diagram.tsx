@@ -15,7 +15,6 @@ import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
 import { ISidebarNode } from "../sidebar/Sidebar";
-import { customElement } from "solid-element";
 
 const Diagram: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
