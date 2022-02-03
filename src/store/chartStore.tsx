@@ -48,13 +48,21 @@ let history: UndoRedoManager;
 export function ChartProvider(props: {
   chart: IChart;
   children: any;
-  onHistoryChange: (chart: IChart) => void;
+  onHistoryChange?: (chart: IChart) => void;
 }) {
-  const recordHistory = (action: string) => {
-    history.save(state.chart, action);
+  if (!history) {
+    history = new UndoRedoManager(cloneDeep(props.chart));
+  }
+
+  const recordHistory = (chart: IChart, action: string, skipSaving = false) => {
+    const current = skipSaving ? chart : history.save(chart, action);
     setChart("canRedo", () => history.canRedo());
     setChart("canUndo", () => history.canUndo());
+    if (props.onHistoryChange) {
+      props.onHistoryChange(current);
+    }
   };
+
   const [state, setChart] = createStore({
       chart: props.chart,
       scale: 1,
@@ -86,7 +94,7 @@ export function ChartProvider(props: {
                 };
               });
             });
-            recordHistory("onNodeSizeChanged");
+            recordHistory(state.chart, "onNodeSizeChanged");
           });
         },
         onNodeDrag(evt: { nodeId: string; position: IPosition }) {
@@ -107,7 +115,7 @@ export function ChartProvider(props: {
             });
 
             Object.keys(state.chart.selected)
-              .filter((k) => k !== evt.leaderId)
+              .filter((k) => k !== evt.leaderId && state.chart.selected[k])
               .forEach((nodeId) => {
                 const currNode = state.chart.nodes[nodeId];
                 const newPosition = getPositionWithParentBoundsSize(
@@ -129,19 +137,19 @@ export function ChartProvider(props: {
         onAreaSelection(selection: { [key: string]: boolean }) {
           batch(() => {
             setChart("chart", "selected", () => selection);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onToggleNodeSelection(id: string, selected: boolean) {
           batch(() => {
             setChart("chart", "selected", id, () => selected);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onToggleAreaSelection(enableSelection: boolean) {
           batch(() => {
             setChart("selection", () => enableSelection);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onCreatingLink(link: ILink) {
@@ -176,7 +184,7 @@ export function ChartProvider(props: {
               () => newLink.to
             );
             setChart("newLink", () => undefined);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onRemoveLinks(nodeId: string, portId: string) {
@@ -186,7 +194,7 @@ export function ChartProvider(props: {
               setChart("chart", "links", l.id, () => undefined);
             });
             setChart("chart", "paths", `${nodeId}-${portId}`, () => undefined);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onDeleteNodes(ids: string[]) {
@@ -210,7 +218,7 @@ export function ChartProvider(props: {
             paths.forEach((p) => {
               setChart("chart", "paths", p, () => undefined);
             });
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onNodeChanged(nodeId: string, node: ExtendedNode) {
@@ -244,7 +252,7 @@ export function ChartProvider(props: {
             });
             setChart("chart", "nodes", nodeId, () => node);
 
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onAddNode(node: ExtendedNode) {
@@ -255,39 +263,30 @@ export function ChartProvider(props: {
             };
 
             setChart("chart", "nodes", newNode.id, () => newNode);
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
         onUndo() {
           batch(() => {
             const chart = history.undo();
             setChart("chart", () => chart);
-            recordHistory("undo");
+            recordHistory(state.chart, "undo");
           });
         },
         onRedo() {
           batch(() => {
             const chart = history.redo();
             setChart("chart", () => chart);
-            setChart("canRedo", () => history.canRedo());
-            setChart("canUndo", () => history.canUndo());
+            recordHistory(chart, "crtAction", true);
           });
         },
         onNodeDraggingEnd() {
           batch(() => {
-            recordHistory("crtAction");
+            recordHistory(state.chart, "crtAction");
           });
         },
       } as IChartActions,
     ];
-
-  if (!history) {
-    history = new UndoRedoManager(
-      cloneDeep(props.chart),
-      props.onHistoryChange,
-      setChart
-    );
-  }
 
   return (
     <ChartContext.Provider value={store}>

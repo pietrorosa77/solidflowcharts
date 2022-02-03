@@ -91,7 +91,7 @@ export function AreaSelect(props: { children: any }) {
     const selection = Object.keys(state.chart.nodes).reduce(
       (acc: any, key: string) => {
         const node = state.chart.nodes[key];
-        const nodeEl = document.getElementById(
+        const nodeEl = (window as any).DMBRoot.getElementById(
           `${node.id}-drag-hat`
         ) as HTMLElement;
         const nodeBox = {

@@ -32,7 +32,7 @@ const Port = (props: {
       return;
     }
 
-    const canvas: any = document.getElementById(props.canvasId);
+    const canvas: any = (window as any).DMBRoot.getElementById(props.canvasId);
     const canvasRect = canvas.getBoundingClientRect();
     const scale: number = state.scale;
     let raFrameHandle = 0;

@@ -1,12 +1,4 @@
-import {
-  Component,
-  JSX,
-  onMount,
-  Show,
-  ErrorBoundary,
-  createSignal,
-  Accessor,
-} from "solid-js";
+import { Component, JSX, onMount, Show, ErrorBoundary } from "solid-js";
 import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
@@ -22,12 +14,24 @@ import { PanZoom } from "panzoom";
 import { defaultFontFace, getCssVariables } from "../defaultTheme";
 import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
+import { ISidebarNode } from "../sidebar/Sidebar";
+import { customElement } from "solid-element";
 
 const Diagram: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
   onDiagramDashboardToggle?: () => void;
   onLoad?: (ctions: IChartActions) => void;
-}> = ({ onNodeSettingsClick, onLoad, onDiagramDashboardToggle }) => {
+  availableNodes: ISidebarNode[];
+  width?: string;
+  height?: string;
+}> = ({
+  onNodeSettingsClick,
+  onLoad,
+  onDiagramDashboardToggle,
+  availableNodes,
+  width,
+  height,
+}) => {
   const minZoom = 0.2;
   const maxZoom = 2;
   const canvasId = nanoid(10);
@@ -45,7 +49,7 @@ const Diagram: Component<{
   };
 
   const cssVariables: JSX.CSSProperties = {
-    ...getCssVariables(),
+    ...getCssVariables(width, height),
   };
 
   const onNodeSettings = (nodeId: string) => {
@@ -79,7 +83,11 @@ const DiagramWrapper: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
   onDiagramDashboardToggle?: () => void;
   onLoad?: (ctions: IChartActions) => void;
-  onHistoryChange: (chart: IChart) => void;
+  onHistoryChange?: (chart: IChart) => void;
+  availableNodes: ISidebarNode[];
+  root?: any;
+  width?: string;
+  height?: string;
 }> = ({
   chart,
   fontFace,
@@ -87,15 +95,23 @@ const DiagramWrapper: Component<{
   onLoad,
   onDiagramDashboardToggle,
   onHistoryChange,
+  availableNodes,
+  root,
+  width,
+  height,
 }) => {
   createFontStyle(fontFace || defaultFontFace);
+  (window as any).DMBRoot = root || document;
 
   return (
     <ChartProvider chart={chart} onHistoryChange={onHistoryChange}>
       <ErrorBoundary fallback={(err) => err}>
         <Diagram
+          width={width}
+          height={height}
           onNodeSettingsClick={onNodeSettingsClick}
           onLoad={onLoad}
+          availableNodes={availableNodes}
           onDiagramDashboardToggle={onDiagramDashboardToggle}
         />
       </ErrorBoundary>

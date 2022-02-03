@@ -17,7 +17,7 @@ export const defaultFontFace = `/* latin-ext */
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }`;
 
-export const getCssVariables = () => {
+export const getCssVariables = (width?: string, height?: string) => {
   return {
     // --text: #333;
     // --negative-text: #eee;
@@ -41,8 +41,8 @@ export const getCssVariables = () => {
     // --random-color6: #d99;
     // --random-color7: #c9a;
     // --random-color8: #b9a;
-    "--diagram-width": "100vw",
-    "--diagram-height": "100vh",
+    "--diagram-width": width || "100vw",
+    "--diagram-height": height || "100vh",
     "--canvas-bg-color": "#3a5584",
     "--grid-bg-color": "#3a5584",
     "--grid-lines-color": "rgba(81, 203, 238, 0.1)",

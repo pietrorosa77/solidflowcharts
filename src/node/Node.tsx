@@ -86,7 +86,7 @@ const Node: Component<{
       return;
     }
     const scale = state.scale;
-    const canvas: HTMLDivElement = document.getElementById(canvasId) as any;
+    const canvas: HTMLDivElement = (window as any).DMBRoot.getElementById(canvasId) as any;
     let raFrameHandle = 0;
     const canvasRect = canvas.getBoundingClientRect();
     const nodeRect = nodeRef.getBoundingClientRect() as DOMRect;

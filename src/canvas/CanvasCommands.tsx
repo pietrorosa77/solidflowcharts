@@ -1,4 +1,4 @@
-import { Accessor, Component, JSX, onMount } from "solid-js";
+import { Component, JSX, onMount } from "solid-js";
 import { Button } from "../components/Button";
 import { AiFillEye } from "solid-icons/ai";
 import { BiSolidHelpCircle } from "solid-icons/bi";
