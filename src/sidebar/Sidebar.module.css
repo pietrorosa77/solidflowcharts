@@ -6,31 +6,33 @@
   top: 0;
   left: 0;
   background-color: var(--bars-color);
-  overflow-x: hidden;
+  overflow: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  /* padding-top: 60px; */
   opacity: 0.9;
+  --sidebar-headheight: 50px;
+}
+.sidenavHead {
+  height: var(--sidebar-headheight);
+  width: 100%;
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 0px;
   text-decoration: none;
   font-size: 25px;
   color: var(--bg-inactive);
   display: block;
+  font-size: 36px;
   transition: 0.3s;
 }
 
 .sidenav a:hover {
   color: var(--accent-color);
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
 }
 
 .sidenavOpened {
@@ -46,7 +48,21 @@
   flex-direction: column;
   padding: 10px;
   gap: 20px;
+  height: calc(100% - var(--sidebar-headheight));
+  overflow-x: hidden;
 }
 .sidenavButton {
   height: 50px;
+}
+.btnContent {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnDragging {
+  border: none !important;
+  border-radius: 0 !important;
+  background: var(--accent-color) !important;
 }

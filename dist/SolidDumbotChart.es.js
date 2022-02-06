@@ -2831,7 +2831,7 @@ const CanvasCommands$1 = "_CanvasCommands_st1cu_33";
 const CanvasCommandsDisabled = "_CanvasCommandsDisabled_st1cu_48";
 const CanvasCommandsEnabled = "_CanvasCommandsEnabled_st1cu_53";
 const CanvasCommand = "_CanvasCommand_st1cu_33";
-var styles$5 = {
+var styles$6 = {
 	CanvasWrapper: CanvasWrapper,
 	SelectedArea: SelectedArea,
 	Canvas: Canvas$1,
@@ -2843,11 +2843,11 @@ var styles$5 = {
 
 var button = '';
 
-const _tmpl$$b = template(`<button></button>`);
+const _tmpl$$c = template(`<button></button>`);
 const Button = props => {
   const [local, buttonProps] = splitProps(props, ["variant", "classList"]);
   return (() => {
-    const _el$ = _tmpl$$b.cloneNode(true);
+    const _el$ = _tmpl$$c.cloneNode(true);
 
     spread(_el$, buttonProps, false, false);
 
@@ -2860,12 +2860,12 @@ const Button = props => {
   })();
 };
 
-const _tmpl$$a = template(`<svg fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"></svg>`),
-      _tmpl$2$5 = template(`<title></title>`);
+const _tmpl$$b = template(`<svg fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"></svg>`),
+      _tmpl$2$6 = template(`<title></title>`);
 function IconTemplate(props) {
   const [content, innerProps] = splitProps(props, ["src"]);
   return (() => {
-    const _el$ = _tmpl$$a.cloneNode(true);
+    const _el$ = _tmpl$$b.cloneNode(true);
 
     spread(_el$, () => content.src.a, true, true);
 
@@ -2875,7 +2875,7 @@ function IconTemplate(props) {
       const _c$ = memo(() => !!innerProps.title, true);
 
       return () => _c$() && (() => {
-        const _el$2 = _tmpl$2$5.cloneNode(true);
+        const _el$2 = _tmpl$2$6.cloneNode(true);
 
         insert(_el$2, () => innerProps.title);
 
@@ -3028,13 +3028,14 @@ const getElements = (children, filter, props = [], result = []) => {
   return result;
 };
 
-const _tmpl$$9 = template(`<div></div>`),
-      _tmpl$2$4 = template(`<header></header>`),
-      _tmpl$3$1 = template(`<main></main>`),
+const _tmpl$$a = template(`<div></div>`),
+      _tmpl$2$5 = template(`<header></header>`),
+      _tmpl$3 = template(`<main></main>`),
       _tmpl$4 = template(`<footer></footer>`);
 let modalCount = 0;
 const Modal = props => {
-  const [local, containerProps] = splitProps(props, ["open", "noPortal", "children"]);
+  const [local, containerProps] = splitProps(props, ["open", "noPortal", "children"]); // eslint-disable-next-line
+
   const [open, setOpen] = createSignal(local.open);
 
   const toggle = open => setOpen(typeof open === "boolean" ? open : o => !o);
@@ -3070,15 +3071,20 @@ const Modal = props => {
   const divProps = mergeProps(containerProps, {
     role: "dialog",
     tabIndex: -1,
+    // eslint-disable-next-line
     class: props.class ? `sb-modal ${props.class}` : "sb-modal",
+    // eslint-disable-next-line
     children: modalContent(),
-    onClick: createMemo(() => props.closeOnClickOutside ? ev => {
+    // eslint-disable-next-line
+    onClick: createMemo(() => props.closeOnClickOutside ? // eslint-disable-next-line
+    ev => {
       const target = ev.target;
 
       if (!modalContent().some(content => content?.contains(target))) {
         toggle(false);
       }
     } : undefined)(),
+    // eslint-disable-next-line
     onkeyup: createMemo(() => props.closeOnEsc !== false ? ev => {
       console.log(ev);
 
@@ -3105,7 +3111,7 @@ const Modal = props => {
 
         get children() {
           return [memo(otherChildren), (() => {
-            const _el$ = _tmpl$$9.cloneNode(true);
+            const _el$ = _tmpl$$a.cloneNode(true);
 
             const _ref$ = modalRef;
             typeof _ref$ === "function" ? _ref$(_el$) : modalRef = _el$;
@@ -3128,7 +3134,7 @@ const Modal = props => {
             },
 
             get children() {
-              const _el$2 = _tmpl$$9.cloneNode(true);
+              const _el$2 = _tmpl$$a.cloneNode(true);
 
               const _ref$2 = modalRef;
               typeof _ref$2 === "function" ? _ref$2(_el$2) : modalRef = _el$2;
@@ -3147,7 +3153,7 @@ const Modal = props => {
   });
 };
 const ModalContent = props => (() => {
-  const _el$3 = _tmpl$$9.cloneNode(true);
+  const _el$3 = _tmpl$$a.cloneNode(true);
 
   spread(_el$3, props, false, false);
 
@@ -3156,7 +3162,7 @@ const ModalContent = props => (() => {
   return _el$3;
 })();
 const ModalHeader = props => (() => {
-  const _el$4 = _tmpl$2$4.cloneNode(true);
+  const _el$4 = _tmpl$2$5.cloneNode(true);
 
   spread(_el$4, props, false, false);
 
@@ -3165,7 +3171,7 @@ const ModalHeader = props => (() => {
   return _el$4;
 })();
 const ModalBody = props => (() => {
-  const _el$5 = _tmpl$3$1.cloneNode(true);
+  const _el$5 = _tmpl$3.cloneNode(true);
 
   spread(_el$5, props, false, false);
 
@@ -20794,6 +20800,7 @@ const getLinksForPort = (chart, nodeId, portId) => {
 
 const ChartContext = createContext();
 function ChartProvider(props) {
+  // eslint-disable-next-line
   const history = new UndoRedoManager(lodash.exports.cloneDeep(props.chart));
 
   const recordHistory = (chart, action, skipSaving = false) => {
@@ -20807,6 +20814,7 @@ function ChartProvider(props) {
   };
 
   const [state, setChart] = createStore({
+    // eslint-disable-next-line
     chart: props.chart,
     scale: 1,
     selection: false,
@@ -20814,7 +20822,8 @@ function ChartProvider(props) {
     portOffset: 35,
     newLink: undefined,
     canUndo: false,
-    canRedo: false
+    canRedo: false,
+    sidebar: false
   }),
         store = [state, {
     nodesSizeChanged(evt) {
@@ -20836,6 +20845,10 @@ function ChartProvider(props) {
       setChart("chart", "nodes", evt.nodeId, "position", () => {
         return evt.position;
       });
+    },
+
+    onToggleSidebar() {
+      setChart("sidebar", () => !state.sidebar);
     },
 
     onMultiDrag(evt) {
@@ -20906,6 +20919,7 @@ function ChartProvider(props) {
       });
     },
 
+    // eslint-disable-next-line
     onRemoveLinks(nodeId, portId) {
       const portLinks = getLinksForPort(state.chart, nodeId, portId);
       batch(() => {
@@ -21012,15 +21026,13 @@ function useChartStore() {
   return useContext(ChartContext);
 }
 
-const _tmpl$$8 = template(`<div></div>`),
-      _tmpl$2$3 = template(`<ul><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`),
-      _tmpl$3 = template(`<li><strong> Node Library:</strong> Collapse/expande node library sidebar</li>`);
+const _tmpl$$9 = template(`<div></div>`),
+      _tmpl$2$4 = template(`<ul><li><strong> Node Library:</strong> Collapse/expande node library sidebar</li><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`);
 
 const CanvasCommands = ({
   onResetAll,
   onEnableSelection,
-  onEnablePanZoom,
-  onDiagramDashboardToggle
+  onEnablePanZoom
 }) => {
   const [state, actions] = useChartStore();
   onMount(() => {});
@@ -21049,16 +21061,25 @@ const CanvasCommands = ({
   };
 
   return (() => {
-    const _el$ = _tmpl$$8.cloneNode(true);
+    const _el$ = _tmpl$$9.cloneNode(true);
 
-    insert(_el$, onDiagramDashboardToggle && createComponent(Button, {
+    insert(_el$, createComponent(Button, {
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
-      onClick: onDiagramDashboardToggle,
+      get classList() {
+        return {
+          [`${styles$6.CanvasCommandsDisabled}`]: !state.sidebar,
+          [`${styles$6.CanvasCommandsEnabled}`]: state.sidebar
+        };
+      },
+
+      get onClick() {
+        return actions.onToggleSidebar;
+      },
 
       get children() {
         return createComponent(IoAppsSharp, {
@@ -21072,13 +21093,13 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       get classList() {
         return {
-          [`${styles$5.CanvasCommandsDisabled}`]: state.selection,
-          [`${styles$5.CanvasCommandsEnabled}`]: !state.selection
+          [`${styles$6.CanvasCommandsDisabled}`]: state.selection,
+          [`${styles$6.CanvasCommandsEnabled}`]: !state.selection
         };
       },
 
@@ -21096,13 +21117,13 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       get classList() {
         return {
-          [`${styles$5.CanvasCommandsDisabled}`]: !state.selection,
-          [`${styles$5.CanvasCommandsEnabled}`]: state.selection
+          [`${styles$6.CanvasCommandsDisabled}`]: !state.selection,
+          [`${styles$6.CanvasCommandsEnabled}`]: state.selection
         };
       },
 
@@ -21120,7 +21141,7 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       onClick: onResetAll,
@@ -21137,12 +21158,12 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       get classList() {
         return {
-          [`${styles$5.CanvasCommandsDisabled}`]: !state.canUndo
+          [`${styles$6.CanvasCommandsDisabled}`]: !state.canUndo
         };
       },
 
@@ -21160,12 +21181,12 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       get classList() {
         return {
-          [`${styles$5.CanvasCommandsDisabled}`]: !state.canRedo
+          [`${styles$6.CanvasCommandsDisabled}`]: !state.canRedo
         };
       },
 
@@ -21183,12 +21204,12 @@ const CanvasCommands = ({
       variant: "icon",
 
       get ["class"]() {
-        return styles$5.CanvasCommand;
+        return styles$6.CanvasCommand;
       },
 
       get classList() {
         return {
-          [`${styles$5.CanvasCommandsDisabled}`]: !deleteEnabled()
+          [`${styles$6.CanvasCommandsDisabled}`]: !deleteEnabled()
         };
       },
 
@@ -21217,7 +21238,7 @@ const CanvasCommands = ({
         variant: "icon",
 
         get ["class"]() {
-          return styles$5.CanvasCommand;
+          return styles$6.CanvasCommand;
         },
 
         onClick: toggle,
@@ -21244,7 +21265,7 @@ const CanvasCommands = ({
 
           }), createComponent(ModalBody, {
             get children() {
-              const _el$2 = _tmpl$2$3.cloneNode(true),
+              const _el$2 = _tmpl$2$4.cloneNode(true),
                     _el$3 = _el$2.firstChild,
                     _el$4 = _el$3.firstChild,
                     _el$5 = _el$3.nextSibling,
@@ -21252,49 +21273,44 @@ const CanvasCommands = ({
                     _el$7 = _el$5.nextSibling,
                     _el$8 = _el$7.firstChild,
                     _el$9 = _el$7.nextSibling,
-                    _el$10 = _el$9.firstChild;
+                    _el$10 = _el$9.firstChild,
+                    _el$11 = _el$9.nextSibling,
+                    _el$12 = _el$11.firstChild;
 
-              insert(_el$2, onDiagramDashboardToggle && (() => {
-                const _el$11 = _tmpl$3.cloneNode(true),
-                      _el$12 = _el$11.firstChild;
-
-                insert(_el$11, createComponent(IoAppsSharp, {
-                  size: 30,
-                  style: {
-                    display: "inline"
-                  }
-                }), _el$12);
-
-                return _el$11;
-              })(), _el$3);
-
-              insert(_el$3, createComponent(FaSolidExpandArrowsAlt, {
+              insert(_el$3, createComponent(IoAppsSharp, {
                 size: 30,
                 style: {
                   display: "inline"
                 }
               }), _el$4);
 
-              insert(_el$5, createComponent(AiFillEye, {
+              insert(_el$5, createComponent(FaSolidExpandArrowsAlt, {
                 size: 30,
                 style: {
                   display: "inline"
                 }
               }), _el$6);
 
-              insert(_el$7, createComponent(AiOutlineSelect, {
+              insert(_el$7, createComponent(AiFillEye, {
                 size: 30,
                 style: {
                   display: "inline"
                 }
               }), _el$8);
 
-              insert(_el$9, createComponent(FaSolidTrash, {
+              insert(_el$9, createComponent(AiOutlineSelect, {
                 size: 30,
                 style: {
                   display: "inline"
                 }
               }), _el$10);
+
+              insert(_el$11, createComponent(FaSolidTrash, {
+                size: 30,
+                style: {
+                  display: "inline"
+                }
+              }), _el$12);
 
               return _el$2;
             }
@@ -21313,14 +21329,14 @@ const CanvasCommands = ({
       })]
     }), null);
 
-    createRenderEffect(() => _el$.className = styles$5.CanvasCommands);
+    createRenderEffect(() => _el$.className = styles$6.CanvasCommands);
 
     return _el$;
   })();
 };
 
-const _tmpl$$7 = template(`<div></div>`),
-      _tmpl$2$2 = template(`<div role="presentation"></div>`);
+const _tmpl$$8 = template(`<div></div>`),
+      _tmpl$2$3 = template(`<div role="presentation"></div>`);
 function AreaSelect(props) {
   const [state, actions] = useChartStore();
   const [coord, setCoord] = createSignal();
@@ -21382,11 +21398,11 @@ function AreaSelect(props) {
       left: `${rect?.left}px`
     };
     return (() => {
-      const _el$ = _tmpl$$7.cloneNode(true);
+      const _el$ = _tmpl$$8.cloneNode(true);
 
       style$1(_el$, style);
 
-      createRenderEffect(() => _el$.className = styles$5.SelectedArea);
+      createRenderEffect(() => _el$.className = styles$6.SelectedArea);
 
       return _el$;
     })();
@@ -21428,7 +21444,7 @@ function AreaSelect(props) {
   };
 
   return (() => {
-    const _el$2 = _tmpl$2$2.cloneNode(true);
+    const _el$2 = _tmpl$2$3.cloneNode(true);
 
     _el$2.$$pointerdown = onMouseDown;
     const _ref$ = canvas;
@@ -21480,15 +21496,14 @@ const boxIntersects = (boxA, boxB) => {
 
 delegateEvents(["pointerdown"]);
 
-const _tmpl$$6 = template(`<div><div></div></div>`);
+const _tmpl$$7 = template(`<div><div></div></div>`);
 
 const Canvas = ({
   id,
   children,
   onScale,
   minZoom,
-  maxZoom,
-  onDiagramDashboardToggle
+  maxZoom
 }) => {
   let cnv;
   let zoomInstance;
@@ -21503,7 +21518,7 @@ const Canvas = ({
       minZoom,
       maxZoom,
       zoomDoubleClickSpeed: 1,
-      onDoubleClick: function (e) {
+      onDoubleClick: function () {
         // `e` - is current double click event.
         return false; // tells the library to not preventDefault, and not stop propagation
       }
@@ -21534,9 +21549,34 @@ const Canvas = ({
     zoomInstance.zoomAbs(0, 0, 1);
   };
 
+  const onBlockDrop = e => {
+    if (!e.dataTransfer) {
+      return;
+    }
+
+    const diagramData = e.dataTransfer.getData("DIAGRAM-BLOCK");
+    const newNode = JSON.parse(diagramData);
+    const canvasRect = cnv.getBoundingClientRect();
+    const x = (e.clientX + cnv.scrollLeft - canvasRect.left) / state.scale;
+    const y = (e.clientY + cnv.scrollTop - canvasRect.top) / state.scale;
+    newNode.position = {
+      x,
+      y
+    };
+    actions.onAddNode(newNode);
+  };
+
+  const onDragOver = e => {
+    e.preventDefault();
+  };
+
   return [(() => {
-    const _el$ = _tmpl$$6.cloneNode(true),
+    const _el$ = _tmpl$$7.cloneNode(true),
           _el$2 = _el$.firstChild;
+
+    _el$2.addEventListener("dragover", onDragOver);
+
+    _el$2.addEventListener("drop", onBlockDrop);
 
     const _ref$ = cnv;
     typeof _ref$ === "function" ? _ref$(_el$2) : cnv = _el$2;
@@ -21548,8 +21588,8 @@ const Canvas = ({
     }));
 
     createRenderEffect(_p$ => {
-      const _v$ = styles$5.CanvasWrapper,
-            _v$2 = styles$5.Canvas,
+      const _v$ = styles$6.CanvasWrapper,
+            _v$2 = styles$6.Canvas,
             _v$3 = state.selection ? "crosshair" : "grab";
 
       _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
@@ -21565,24 +21605,23 @@ const Canvas = ({
     return _el$;
   })(), createComponent(CanvasCommands, {
     onResetAll: onReset,
-    onDiagramDashboardToggle: onDiagramDashboardToggle,
     onEnableSelection: onEnableSelection,
     onEnablePanZoom: onEnablePanZoom
   })];
 };
 
-var styles$4 = {
+var styles$5 = {
 	"sb-checkbox": "_sb-checkbox_1ruvo_1"
 };
 
-const _tmpl$$5 = template(`<label><input type="checkbox"></label>`);
+const _tmpl$$6 = template(`<label><input type="checkbox"></label>`);
 const Checkbox = props => {
   const [inputProps, content, labelProps] = splitProps(props, ["accessKey", "aria-disabled", "autofocus", "checked", "class", "disabled", "id", "name", "onclick", "onkeydown", "onkeypress", "onkeyup", "oninvalid", "required", "value"], ["align", "children", "onchange", "switch"]);
 
   const changeHandler = ev => content.onchange?.(ev.target?.checked);
 
   return (() => {
-    const _el$ = _tmpl$$5.cloneNode(true),
+    const _el$ = _tmpl$$6.cloneNode(true),
           _el$2 = _el$.firstChild;
 
     spread(_el$, labelProps, false, true);
@@ -21614,7 +21653,7 @@ const Checkbox = props => {
     }), null);
 
     createRenderEffect(_p$ => {
-      const _v$ = styles$4["sb-checkbox"],
+      const _v$ = styles$5["sb-checkbox"],
             _v$2 = content.switch ? "switch" : undefined;
 
       _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
@@ -21635,7 +21674,7 @@ const NodeHead$1 = "_NodeHead_14abl_25";
 const NodeHeadTitle = "_NodeHeadTitle_14abl_44";
 const NodeContent = "_NodeContent_14abl_57";
 const NodeCommands = "_NodeCommands_14abl_69";
-var styles$3 = {
+var styles$4 = {
 	Node: Node$4,
 	NodeSelected: NodeSelected,
 	NodeHead: NodeHead$1,
@@ -21652,7 +21691,7 @@ const PortOutInner = "_PortOutInner_1kmd6_62";
 const DeleteLinkIcon = "_DeleteLinkIcon_1kmd6_69";
 const LoopPortIndicator = "_LoopPortIndicator_1kmd6_77";
 const PortText = "_PortText_1kmd6_82";
-var styles$2 = {
+var styles$3 = {
 	PortsContainer: PortsContainer,
 	PortOuter: PortOuter,
 	PortContent: PortContent,
@@ -21675,8 +21714,8 @@ function TiArrowLoop(props) {
 }, ...props})
 }
 
-const _tmpl$$4 = template(`<div><div><div><span></span></div><div></div></div></div>`),
-      _tmpl$2$1 = template(`<div></div>`);
+const _tmpl$$5 = template(`<div><div><div><span></span></div><div></div></div></div>`),
+      _tmpl$2$2 = template(`<div></div>`);
 
 const getPortBgColor = port => {
   if (!port.bgColor) {
@@ -21776,7 +21815,7 @@ const Port = props => {
     "aria-text": `delete link`
   };
   return (() => {
-    const _el$ = _tmpl$$4.cloneNode(true),
+    const _el$ = _tmpl$$5.cloneNode(true),
           _el$2 = _el$.firstChild,
           _el$3 = _el$2.firstChild,
           _el$4 = _el$3.firstChild,
@@ -21798,7 +21837,7 @@ const Port = props => {
           size: 24,
 
           get ["class"]() {
-            return styles$2.LoopPortIndicator;
+            return styles$3.LoopPortIndicator;
           },
 
           title: "this port has a loop link"
@@ -21816,9 +21855,9 @@ const Port = props => {
 
       get fallback() {
         return (() => {
-          const _el$6 = _tmpl$2$1.cloneNode(true);
+          const _el$6 = _tmpl$2$2.cloneNode(true);
 
-          createRenderEffect(() => _el$6.className = styles$2.PortOutInner);
+          createRenderEffect(() => _el$6.className = styles$3.PortOutInner);
 
           return _el$6;
         })();
@@ -21831,7 +21870,7 @@ const Port = props => {
           onPointerDown: onDeleteLink,
 
           get ["class"]() {
-            return styles$2.DeleteLinkIcon;
+            return styles$3.DeleteLinkIcon;
           }
 
         }, deleteLinkAccessibilityProps));
@@ -21840,14 +21879,14 @@ const Port = props => {
     }));
 
     createRenderEffect(_p$ => {
-      const _v$ = styles$2.PortContainer,
+      const _v$ = styles$3.PortContainer,
             _v$2 = `${state.portOffset}px`,
-            _v$3 = styles$2.PortOuter,
+            _v$3 = styles$3.PortOuter,
             _v$4 = `${state.portHeight}px`,
             _v$5 = getPortBgColor(state.chart.nodes[props.nodeId].ports[props.portId]),
-            _v$6 = styles$2.PortContent,
-            _v$7 = styles$2.PortText,
-            _v$8 = styles$2.PortOutContainer;
+            _v$6 = styles$3.PortContent,
+            _v$7 = styles$3.PortText,
+            _v$8 = styles$3.PortOutContainer;
 
       _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
       _v$2 !== _p$._v$2 && _el$.style.setProperty("height", _p$._v$2 = _v$2);
@@ -21879,9 +21918,9 @@ const Ports = ({
   nodeId,
   canvasId
 }) => {
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
   return (() => {
-    const _el$7 = _tmpl$2$1.cloneNode(true);
+    const _el$7 = _tmpl$2$2.cloneNode(true);
 
     setAttribute(_el$7, "id", `${nodeId}-port-container`);
 
@@ -21892,7 +21931,7 @@ const Ports = ({
         return getPortsSorted(state.chart.nodes[nodeId]);
       },
 
-      children: (key, i) => {
+      children: key => {
         return createComponent(Port, {
           portId: key,
           canvasId: canvasId,
@@ -21901,7 +21940,7 @@ const Ports = ({
       }
     }));
 
-    createRenderEffect(() => _el$7.className = styles$2.PortsContainer);
+    createRenderEffect(() => _el$7.className = styles$3.PortsContainer);
 
     return _el$7;
   })();
@@ -40471,10 +40510,12 @@ const Image = Node$2.create({
     },
 });
 
-const _tmpl$$3 = template(`<div><div></div></div>`);
+const _tmpl$$4 = template(`<div><div></div></div>`);
 const NodeContentReadonly = props => {
-  let ref;
-  let editor = u({
+  let ref; // eslint-disable-next-line
+
+  const content = props.content;
+  const editor = u({
     autofocus: false,
     editable: false,
 
@@ -40490,17 +40531,17 @@ const NodeContentReadonly = props => {
       })];
     },
 
-    content: props.content
+    content: content
   });
   createEffect(() => {
     if (!editor || !editor()) {
       return;
     }
 
-    editor().commands.setContent(props.content);
+    editor().commands.setContent(content);
   });
   return (() => {
-    const _el$ = _tmpl$$3.cloneNode(true),
+    const _el$ = _tmpl$$4.cloneNode(true),
           _el$2 = _el$.firstChild;
 
     _el$.style.setProperty("width", "100%");
@@ -40513,16 +40554,25 @@ const NodeContentReadonly = props => {
   })();
 };
 
-const _tmpl$$2 = template(`<div><div></div><div><span></span></div><div></div></div>`),
-      _tmpl$2 = template(`<div><div><div></div></div></div>`);
+const _tmpl$$3 = template(`<div><div></div><div><span></span></div><div></div></div>`),
+      _tmpl$2$1 = template(`<div><div><div></div></div></div>`);
 
 const NodeHead = props => {
+  // eslint-disable-next-line
+  const {
+    title,
+    onToggle,
+    selected,
+    onNodeSettings,
+    onDeleteNode
+  } = props;
+
   const preventNodeDrag = e => {
     e["diagramDetails"] = "prevent node drag";
   };
 
   return (() => {
-    const _el$ = _tmpl$$2.cloneNode(true),
+    const _el$ = _tmpl$$3.cloneNode(true),
           _el$2 = _el$.firstChild,
           _el$3 = _el$2.nextSibling,
           _el$4 = _el$3.firstChild,
@@ -40531,17 +40581,11 @@ const NodeHead = props => {
     _el$2.$$pointerdown = preventNodeDrag;
 
     insert(_el$2, createComponent(Checkbox, {
-      get onChange() {
-        return props.onToggle;
-      },
-
-      get checked() {
-        return !!props.selected;
-      }
-
+      onChange: onToggle,
+      checked: !!selected
     }));
 
-    insert(_el$4, () => props.title);
+    insert(_el$4, title);
 
     _el$5.$$pointerdown = preventNodeDrag;
 
@@ -40549,32 +40593,26 @@ const NodeHead = props => {
       size: 24,
 
       get ["class"]() {
-        return styles$3.NodeCommands;
+        return styles$4.NodeCommands;
       },
 
-      get onPointerDown() {
-        return props.onNodeSettings;
-      }
-
+      onPointerDown: onNodeSettings
     }), null);
 
     insert(_el$5, createComponent(BiTrash, {
       size: 24,
 
       get ["class"]() {
-        return styles$3.NodeCommands;
+        return styles$4.NodeCommands;
       },
 
-      get onPointerDown() {
-        return props.onDeleteNode;
-      }
-
+      onPointerDown: onDeleteNode
     }), null);
 
     createRenderEffect(_p$ => {
-      const _v$ = styles$3.NodeHead,
-            _v$2 = styles$3.NodeHeadTitle,
-            _v$3 = styles$3.NodeCommandsContainer;
+      const _v$ = styles$4.NodeHead,
+            _v$2 = styles$4.NodeHeadTitle,
+            _v$3 = styles$4.NodeCommandsContainer;
       _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
       _v$2 !== _p$._v$2 && (_el$3.className = _p$._v$2 = _v$2);
       _v$3 !== _p$._v$3 && (_el$5.className = _p$._v$3 = _v$3);
@@ -40710,7 +40748,7 @@ const Node$1 = ({
   };
 
   return (() => {
-    const _el$6 = _tmpl$2.cloneNode(true),
+    const _el$6 = _tmpl$2$1.cloneNode(true),
           _el$7 = _el$6.firstChild,
           _el$8 = _el$7.firstChild;
 
@@ -40749,14 +40787,14 @@ const Node$1 = ({
     }), null);
 
     createRenderEffect(_p$ => {
-      const _v$4 = styles$3.Node,
+      const _v$4 = styles$4.Node,
             _v$5 = {
         "drag-hat-selected": state.chart.selected[nodeId],
-        [`${styles$3.NodeSelected}`]: state.chart.selected[nodeId]
+        [`${styles$4.NodeSelected}`]: state.chart.selected[nodeId]
       },
             _v$6 = `translate(${state.chart.nodes[nodeId].position.x}px, ${state.chart.nodes[nodeId].position.y}px)`,
-            _v$7 = styles$3.NodeContent,
-            _v$8 = styles$3.NodeContentView;
+            _v$7 = styles$4.NodeContent,
+            _v$8 = styles$4.NodeContentView;
       _v$4 !== _p$._v$4 && (_el$6.className = _p$._v$4 = _v$4);
       _p$._v$5 = classList(_el$6, _v$5, _p$._v$5);
       _v$6 !== _p$._v$6 && _el$6.style.setProperty("transform", _p$._v$6 = _v$6);
@@ -40792,7 +40830,7 @@ const Nodes = ({
       return Object.keys(state.chart.nodes);
     },
 
-    children: (key, i) => {
+    children: key => {
       return createComponent(Node$1, {
         nodeId: key,
         sizeObserver: observer,
@@ -40806,7 +40844,7 @@ const Nodes = ({
 delegateEvents(["pointerdown"]);
 
 const Diagram$1 = "_Diagram_d5htz_3";
-var styles$1 = {
+var styles$2 = {
 	Diagram: Diagram$1
 };
 
@@ -40814,14 +40852,14 @@ const LinkStyle = "_LinkStyle_1e0ab_1";
 const LineMarker = "_LineMarker_1e0ab_14";
 const Line = "_Line_1e0ab_14";
 const LinkCreating = "_LinkCreating_1e0ab_24";
-var styles = {
+var styles$1 = {
 	LinkStyle: LinkStyle,
 	LineMarker: LineMarker,
 	Line: Line,
 	LinkCreating: LinkCreating
 };
 
-const _tmpl$$1 = template(`<svg><defs><marker viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path></path></svg>`);
+const _tmpl$$2 = template(`<svg><defs><marker viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path></path></svg>`);
 function calculatePosition(portOffset, from, to, portIndex, fromSize, creating) {
   //  10 + 100 +
   const offsetY = portOffset / 2;
@@ -40864,14 +40902,14 @@ const getLinePoints = (chart, linkId, portOffset, newLink) => {
 const Link = props => {
   let lineEl;
   let markerEl;
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
   return createComponent(Show, {
     get when() {
       return props.creating || state.chart.links[props.linkId].from.nodeId !== state.chart.links[props.linkId].to;
     },
 
     get children() {
-      const _el$ = _tmpl$$1.cloneNode(true),
+      const _el$ = _tmpl$$2.cloneNode(true),
             _el$2 = _el$.firstChild,
             _el$3 = _el$2.firstChild,
             _el$4 = _el$3.firstChild,
@@ -40883,15 +40921,15 @@ const Link = props => {
       typeof _ref$2 === "function" ? _ref$2(_el$5) : lineEl = _el$5;
 
       createRenderEffect(_p$ => {
-        const _v$ = styles.LinkStyle,
+        const _v$ = styles$1.LinkStyle,
               _v$2 = {
-          [`${styles.LinkCreating}`]: props.creating
+          [`${styles$1.LinkCreating}`]: props.creating
         },
               _v$3 = `lmark-${props.linkId}`,
-              _v$4 = styles.LineMarker,
+              _v$4 = styles$1.LineMarker,
               _v$5 = `url(#lmark-${props.linkId})`,
               _v$6 = getLinePoints(state.chart, props.linkId, state.portOffset, props.creating ? state.newLink : undefined),
-              _v$7 = styles.Line;
+              _v$7 = styles$1.Line;
 
         _v$ !== _p$._v$ && setAttribute(_el$, "class", _p$._v$ = _v$);
         _p$._v$2 = classList(_el$, _v$2, _p$._v$2);
@@ -40918,13 +40956,13 @@ const Link = props => {
 };
 
 const Links = () => {
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
   return createComponent(For, {
     get each() {
       return Object.keys(state.chart.links);
     },
 
-    children: (key, i) => {
+    children: key => {
       return createComponent(Link, {
         linkId: key
       });
@@ -40932,12 +40970,112 @@ const Links = () => {
   });
 };
 
+const sidenav = "_sidenav_1rvfi_1";
+const sidenavHead = "_sidenavHead_1rvfi_15";
+const sidenavOpened = "_sidenavOpened_1rvfi_37";
+const sidenavClosed = "_sidenavClosed_1rvfi_41";
+const nodesContainer = "_nodesContainer_1rvfi_45";
+const sidenavButton = "_sidenavButton_1rvfi_53";
+const btnContent = "_btnContent_1rvfi_56";
+const btnDragging = "_btnDragging_1rvfi_63";
+var styles = {
+	sidenav: sidenav,
+	sidenavHead: sidenavHead,
+	sidenavOpened: sidenavOpened,
+	sidenavClosed: sidenavClosed,
+	nodesContainer: nodesContainer,
+	sidenavButton: sidenavButton,
+	btnContent: btnContent,
+	btnDragging: btnDragging
+};
+
+const _tmpl$$1 = template(`<div><div><a href="javascript:void(0)">&times;</a></div><div></div></div>`),
+      _tmpl$2 = template(`<div></div>`);
+
+const onDragStart = (e, node) => {
+  const nd = node.getNode();
+  e.currentTarget.classList.add(styles.btnDragging);
+  e.dataTransfer?.setData("DIAGRAM-BLOCK", JSON.stringify(nd));
+};
+
+const onDragEnd = e => {
+  e.currentTarget.classList.remove(styles.btnDragging);
+};
+
+const Sidebar = ({
+  nodes
+}) => {
+  const [state, actions] = useChartStore();
+  return (() => {
+    const _el$ = _tmpl$$1.cloneNode(true),
+          _el$2 = _el$.firstChild,
+          _el$3 = _el$2.firstChild,
+          _el$4 = _el$2.nextSibling;
+
+    addEventListener(_el$3, "click", actions.onToggleSidebar, true);
+
+    insert(_el$4, createComponent(For, {
+      each: nodes,
+      children: node => {
+        return createComponent(Button, {
+          get ["class"]() {
+            return styles.sidenavButton;
+          },
+
+          draggable: true,
+          onDragStart: e => onDragStart(e, node),
+          onDragEnd: onDragEnd,
+
+          get children() {
+            const _el$5 = _tmpl$2.cloneNode(true);
+
+            insert(_el$5, () => node.icon, null);
+
+            insert(_el$5, () => node.title, null);
+
+            createRenderEffect(() => _el$5.className = styles.btnContent);
+
+            return _el$5;
+          }
+
+        });
+      }
+    }));
+
+    createRenderEffect(_p$ => {
+      const _v$ = styles.sidenav,
+            _v$2 = {
+        [`${styles.sidenavOpened}`]: state.sidebar,
+        [`${styles.sidenavClosed}`]: !state.sidebar
+      },
+            _v$3 = styles.sidenavHead,
+            _v$4 = styles.closebtn,
+            _v$5 = styles.nodesContainer;
+      _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
+      _p$._v$2 = classList(_el$, _v$2, _p$._v$2);
+      _v$3 !== _p$._v$3 && (_el$2.className = _p$._v$3 = _v$3);
+      _v$4 !== _p$._v$4 && (_el$3.className = _p$._v$4 = _v$4);
+      _v$5 !== _p$._v$5 && (_el$4.className = _p$._v$5 = _v$5);
+      return _p$;
+    }, {
+      _v$: undefined,
+      _v$2: undefined,
+      _v$3: undefined,
+      _v$4: undefined,
+      _v$5: undefined
+    });
+
+    return _el$;
+  })();
+};
+
+delegateEvents(["click"]);
+
 const _tmpl$ = template(`<div></div>`);
 
 const Diagram = ({
   onNodeSettingsClick,
   onLoad,
-  onDiagramDashboardToggle,
   availableNodes,
   width,
   height
@@ -40947,7 +41085,7 @@ const Diagram = ({
   const canvasId = nanoid(10);
   const [state, actions] = useChartStore();
   onMount(() => {
-    console.log("wwwww");
+    console.log("mounting diagram");
 
     if (onLoad) {
       onLoad(actions);
@@ -40972,12 +41110,15 @@ const Diagram = ({
 
     style$1(_el$, cssVariables);
 
+    insert(_el$, createComponent(Sidebar, {
+      nodes: availableNodes
+    }), null);
+
     insert(_el$, createComponent(Canvas, {
       id: canvasId,
       onScale: onScale,
       minZoom: minZoom,
       maxZoom: maxZoom,
-      onDiagramDashboardToggle: onDiagramDashboardToggle,
 
       get children() {
         return [createComponent(Nodes, {
@@ -40998,9 +41139,9 @@ const Diagram = ({
         })];
       }
 
-    }));
+    }), null);
 
-    createRenderEffect(() => _el$.className = styles$1.Diagram);
+    createRenderEffect(() => _el$.className = styles$2.Diagram);
 
     return _el$;
   })();
@@ -41011,7 +41152,6 @@ const DiagramWrapper = ({
   fontFace,
   onNodeSettingsClick,
   onLoad,
-  onDiagramDashboardToggle,
   onHistoryChange,
   availableNodes,
   root,
@@ -41035,8 +41175,7 @@ const DiagramWrapper = ({
             height: height,
             onNodeSettingsClick: onNodeSettingsClick,
             onLoad: onLoad,
-            availableNodes: availableNodes,
-            onDiagramDashboardToggle: onDiagramDashboardToggle
+            availableNodes: availableNodes
           });
         }
 
@@ -41070,10 +41209,6 @@ function FChart(props, elementId) {
 
     get availableNodes() {
       return props.availableNodes;
-    },
-
-    get onDiagramDashboardToggle() {
-      return props.onDiagramDashboardToggle;
     },
 
     get onNodeSettingsClick() {

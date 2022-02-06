@@ -6,6 +6,7 @@ import styles from "./Canvas.module.css";
 import CanvasCommands from "./CanvasCommands";
 import { AreaSelect } from "./AreaSelect";
 import { useChartStore } from "../store/chartStore";
+import { ExtendedNode } from "../../definitions";
 
 const Canvas: Component<{
   id: string;
@@ -13,13 +14,7 @@ const Canvas: Component<{
   maxZoom: number;
   onScale: (evt: PanZoom) => void;
   // eslint-disable-next-line
-}> = ({
-  id,
-  children,
-  onScale,
-  minZoom,
-  maxZoom,
-}) => {
+}> = ({ id, children, onScale, minZoom, maxZoom }) => {
   let cnv: any;
   let zoomInstance: PanZoom;
   const [state, actions] = useChartStore();
@@ -62,6 +57,28 @@ const Canvas: Component<{
     zoomInstance.zoomAbs(0, 0, 1);
   };
 
+  const onBlockDrop = (e: DragEvent) => {
+    if (!e.dataTransfer) {
+      return;
+    }
+    const diagramData = e.dataTransfer.getData("DIAGRAM-BLOCK");
+    const newNode = JSON.parse(diagramData) as ExtendedNode;
+    const canvasRect = cnv.getBoundingClientRect();
+
+    const x = (e.clientX + cnv.scrollLeft - canvasRect.left) / state.scale;
+    const y = (e.clientY + cnv.scrollTop - canvasRect.top) / state.scale;
+
+    newNode.position = {
+      x,
+      y,
+    };
+    actions.onAddNode(newNode);
+  };
+
+  const onDragOver = (e: DragEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <div class={styles.CanvasWrapper}>
@@ -69,6 +86,8 @@ const Canvas: Component<{
           class={styles.Canvas}
           id={id}
           ref={cnv}
+          onDrop={onBlockDrop}
+          onDragOver={onDragOver}
           style={{
             cursor: state.selection ? "crosshair" : "grab",
           }}
