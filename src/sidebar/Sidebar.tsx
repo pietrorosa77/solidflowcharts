@@ -1,8 +1,8 @@
-import { Component } from "solid-js";
-import { onMount, onCleanup } from "solid-js";
+import { Component, For } from "solid-js";
 import { ExtendedNode } from "../../definitions";
-import styles from "./Sidebar.module.css";
+import { Button } from "../components/Button";
 import { useChartStore } from "../store/chartStore";
+import styles from "./Sidebar.module.css";
 
 export interface ISidebarNode {
   id: string;
@@ -12,12 +12,39 @@ export interface ISidebarNode {
 }
 
 const Sidebar: Component<{
-  id: string;
   nodes: ISidebarNode[];
-  onClose?: () => void;
-}> = ({ id, nodes, onClose }) => {
+  // eslint-disable-next-line
+}> = ({ nodes }) => {
   const [state, actions] = useChartStore();
-  return <></>;
+  return (
+    <div
+      class={styles.sidenav}
+      classList={{
+        [`${styles.sidenavOpened}`]: state.sidebar,
+        [`${styles.sidenavClosed}`]: !state.sidebar,
+      }}
+    >
+      <a
+        href="javascript:void(0)"
+        class={styles.closebtn}
+        onclick={actions.onToggleSidebar}
+      >
+        &times;
+      </a>
+      <div class={styles.nodesContainer}>
+        <For each={nodes}>
+          {(node) => {
+            return (
+              <Button class={styles.sidenavButton}>
+                {node.icon}
+                {node.title}
+              </Button>
+            );
+          }}
+        </For>
+      </div>
+    </div>
+  );
 };
 
 export default Sidebar;

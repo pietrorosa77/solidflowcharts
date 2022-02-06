@@ -23,12 +23,11 @@ const CanvasCommands: Component<{
   onResetAll: () => void;
   onEnableSelection: () => void;
   onEnablePanZoom: () => void;
-  onDiagramDashboardToggle?: () => void;
+  // eslint-disable-next-line
 }> = ({
   onResetAll,
   onEnableSelection,
   onEnablePanZoom,
-  onDiagramDashboardToggle,
 }) => {
   const [state, actions] = useChartStore();
 
@@ -64,15 +63,17 @@ const CanvasCommands: Component<{
   return (
     <>
       <div class={styles.CanvasCommands}>
-        {onDiagramDashboardToggle && (
-          <Button
-            variant="icon"
-            class={styles.CanvasCommand}
-            onClick={onDiagramDashboardToggle}
-          >
-            <IoAppsSharp size={30} />
-          </Button>
-        )}
+        <Button
+          variant="icon"
+          class={styles.CanvasCommand}
+          classList={{
+            [`${styles.CanvasCommandsDisabled}`]: !state.sidebar,
+            [`${styles.CanvasCommandsEnabled}`]: state.sidebar,
+          }}
+          onClick={actions.onToggleSidebar}
+        >
+          <IoAppsSharp size={30} />
+        </Button>
         <Button
           variant="icon"
           class={styles.CanvasCommand}
@@ -156,13 +157,11 @@ const CanvasCommands: Component<{
                 </ModalHeader>
                 <ModalBody>
                   <ul>
-                    {onDiagramDashboardToggle && (
-                      <li>
-                        <IoAppsSharp size={30} style={{ display: "inline" }} />
-                        <strong> Node Library:</strong>
-                        {` Collapse/expande node library sidebar`}
-                      </li>
-                    )}
+                    <li>
+                      <IoAppsSharp size={30} style={{ display: "inline" }} />
+                      <strong> Node Library:</strong>
+                      {` Collapse/expande node library sidebar`}
+                    </li>
                     <li>
                       <FaSolidExpandArrowsAlt
                         size={30}

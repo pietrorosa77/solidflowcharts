@@ -6,7 +6,9 @@ import Image from "@tiptap/extension-image";
 
 export const NodeContentReadonly = (props: { content: any }) => {
   let ref!: HTMLDivElement;
-  let editor = createTiptapEditor({
+  // eslint-disable-next-line
+  const content = props.content;
+  const editor = createTiptapEditor({
     autofocus: false,
     editable: false,
     get element() {
@@ -22,14 +24,14 @@ export const NodeContentReadonly = (props: { content: any }) => {
         }),
       ];
     },
-    content: props.content,
+    content: content,
   });
 
   createEffect(() => {
     if (!editor || !editor()) {
       return;
     }
-    (editor() as Editor).commands.setContent(props.content);
+    (editor() as Editor).commands.setContent(content);
   });
 
   return (

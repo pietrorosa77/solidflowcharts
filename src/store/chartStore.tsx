@@ -42,6 +42,7 @@ export interface IChartActions {
   onAreaSelection: (selection: { [key: string]: boolean }) => void;
   onUndo: () => void;
   onRedo: () => void;
+  onToggleSidebar: () => void;
 }
 
 export function ChartProvider(props: {
@@ -49,6 +50,7 @@ export function ChartProvider(props: {
   children: any;
   onHistoryChange?: (chart: IChart) => void;
 }) {
+  // eslint-disable-next-line
   const history = new UndoRedoManager(cloneDeep(props.chart));
 
   const recordHistory = (chart: IChart, action: string, skipSaving = false) => {
@@ -61,6 +63,7 @@ export function ChartProvider(props: {
   };
 
   const [state, setChart] = createStore({
+      // eslint-disable-next-line
       chart: props.chart,
       scale: 1,
       selection: false,
@@ -69,6 +72,7 @@ export function ChartProvider(props: {
       newLink: undefined,
       canUndo: false,
       canRedo: false,
+      sidebar: false,
     } as DeepReadonly<{
       chart: IChart;
       scale: number;
@@ -76,6 +80,7 @@ export function ChartProvider(props: {
       selection: boolean;
       canUndo: boolean;
       canRedo: boolean;
+      sidebar: boolean;
     }>),
     store = [
       state,
@@ -98,6 +103,9 @@ export function ChartProvider(props: {
           setChart("chart", "nodes", evt.nodeId, "position", () => {
             return evt.position;
           });
+        },
+        onToggleSidebar() {
+          setChart("sidebar", () => !state.sidebar);
         },
         onMultiDrag(evt: {
           leaderId: string;
@@ -184,6 +192,7 @@ export function ChartProvider(props: {
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onRemoveLinks(nodeId: string, portId: string) {
           const portLinks = getLinksForPort(state.chart, nodeId, portId);
           batch(() => {
@@ -302,6 +311,7 @@ export function useChartStore(): [
     newLink: undefined | ILink;
     canUndo: boolean;
     canRedo: boolean;
+    sidebar: boolean;
   }>,
   IChartActions
 ] {

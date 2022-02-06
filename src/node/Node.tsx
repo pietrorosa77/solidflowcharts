@@ -1,6 +1,4 @@
-import { Component, For, JSX, Show } from "solid-js";
-import { onMount, onCleanup } from "solid-js";
-import { ExtendedNode } from "../../definitions";
+import { Component, For, onMount, onCleanup } from "solid-js";
 import { Checkbox } from "../components/Checkbox";
 import { useChartStore } from "../store/chartStore";
 import {
@@ -22,27 +20,29 @@ const NodeHead = (props: {
   onDeleteNode: () => void;
   onNodeSettings: () => void;
 }) => {
+  // eslint-disable-next-line
+  const { title, onToggle, selected, onNodeSettings, onDeleteNode } = props;
   const preventNodeDrag = (e: PointerEvent) => {
     (e as any)["diagramDetails"] = "prevent node drag";
   };
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={preventNodeDrag}>
-        <Checkbox onChange={props.onToggle} checked={!!props.selected} />
+        <Checkbox onChange={onToggle} checked={!!selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
-        <span>{props.title}</span>
+        <span>{title}</span>
       </div>
       <div class={styles.NodeCommandsContainer} onPointerDown={preventNodeDrag}>
         <AiFillSetting
           size={24}
           class={styles.NodeCommands}
-          onPointerDown={props.onNodeSettings}
+          onPointerDown={onNodeSettings}
         />
         <BiTrash
           size={24}
           class={styles.NodeCommands}
-          onPointerDown={props.onDeleteNode}
+          onPointerDown={onDeleteNode}
         />
       </div>
     </div>
@@ -54,6 +54,7 @@ const Node: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
+  // eslint-disable-next-line
 }> = ({ nodeId, canvasId, sizeObserver, onNodeSettings }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
@@ -228,6 +229,7 @@ const Node: Component<{
 const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
+  // eslint-disable-next-line
 }> = ({ canvasId, onNodeSettings }) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -244,7 +246,7 @@ const Nodes: Component<{
 
   return (
     <For each={Object.keys(state.chart.nodes)}>
-      {(key, i) => {
+      {(key) => {
         return (
           <Node
             nodeId={key}

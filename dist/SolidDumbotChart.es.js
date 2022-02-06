@@ -749,6 +749,17 @@ function reconcileArrays(parentNode, a, b) {
 }
 
 const $$EVENTS = "_$DX_DELEGATE";
+function render(code, element, init) {
+  let disposer;
+  createRoot(dispose => {
+    disposer = dispose;
+    element === document ? code() : insert(element, code(), element.firstChild ? null : undefined, init);
+  });
+  return () => {
+    disposer();
+    element.textContent = "";
+  };
+}
 function template(html, check, isSVG) {
   const t = document.createElement("template");
   t.innerHTML = html;
@@ -1045,257 +1056,6 @@ function Portal(props) {
     onCleanup(() => mount.removeChild(container));
   }
   return marker;
-}
-
-function cloneProps(props) {
-  const propKeys = Object.keys(props);
-  return propKeys.reduce((memo, k) => {
-    const prop = props[k];
-    memo[k] = Object.assign({}, prop);
-    if (isObject$1(prop.value) && !isFunction$1(prop.value) && !Array.isArray(prop.value)) memo[k].value = Object.assign({}, prop.value);
-    if (Array.isArray(prop.value)) memo[k].value = prop.value.slice(0);
-    return memo;
-  }, {});
-}
-
-function normalizePropDefs(props) {
-  if (!props) return {};
-  const propKeys = Object.keys(props);
-  return propKeys.reduce((memo, k) => {
-    const v = props[k];
-    memo[k] = !(isObject$1(v) && "value" in v) ? {
-      value: v
-    } : v;
-    memo[k].attribute || (memo[k].attribute = toAttribute(k));
-    memo[k].parse = "parse" in memo[k] ? memo[k].parse : typeof memo[k].value !== "string";
-    return memo;
-  }, {});
-}
-function propValues(props) {
-  const propKeys = Object.keys(props);
-  return propKeys.reduce((memo, k) => {
-    memo[k] = props[k].value;
-    return memo;
-  }, {});
-}
-function initializeProps(element, propDefinition) {
-  const props = cloneProps(propDefinition),
-        propKeys = Object.keys(propDefinition);
-  propKeys.forEach(key => {
-    const prop = props[key],
-          attr = element.getAttribute(prop.attribute),
-          value = element[key];
-    if (attr) prop.value = prop.parse ? parseAttributeValue(attr) : attr;
-    if (value != null) prop.value = Array.isArray(value) ? value.slice(0) : value;
-    prop.reflect && reflect(element, prop.attribute, prop.value);
-    Object.defineProperty(element, key, {
-      get() {
-        return prop.value;
-      },
-
-      set(val) {
-        const oldValue = prop.value;
-        prop.value = val;
-        prop.reflect && reflect(this, prop.attribute, prop.value);
-
-        for (let i = 0, l = this.__propertyChangedCallbacks.length; i < l; i++) {
-          this.__propertyChangedCallbacks[i](key, val, oldValue);
-        }
-      },
-
-      enumerable: true,
-      configurable: true
-    });
-  });
-  return props;
-}
-function parseAttributeValue(value) {
-  if (!value) return;
-
-  try {
-    return JSON.parse(value);
-  } catch (err) {
-    return value;
-  }
-}
-function reflect(node, attribute, value) {
-  if (value == null || value === false) return node.removeAttribute(attribute);
-  let reflect = JSON.stringify(value);
-  node.__updating[attribute] = true;
-  if (reflect === "true") reflect = "";
-  node.setAttribute(attribute, reflect);
-  Promise.resolve().then(() => delete node.__updating[attribute]);
-}
-function toAttribute(propName) {
-  return propName.replace(/\.?([A-Z]+)/g, (x, y) => "-" + y.toLowerCase()).replace("_", "-").replace(/^-/, "");
-}
-function isObject$1(obj) {
-  return obj != null && (typeof obj === "object" || typeof obj === "function");
-}
-function isFunction$1(val) {
-  return Object.prototype.toString.call(val) === "[object Function]";
-}
-function isConstructor(f) {
-  return typeof f === "function" && f.toString().indexOf("class") === 0;
-}
-
-let currentElement;
-function createElementType(BaseElement, propDefinition) {
-  const propKeys = Object.keys(propDefinition);
-  return class CustomElement extends BaseElement {
-    static get observedAttributes() {
-      return propKeys.map(k => propDefinition[k].attribute);
-    }
-
-    constructor() {
-      super();
-      this.__initialized = false;
-      this.__released = false;
-      this.__releaseCallbacks = [];
-      this.__propertyChangedCallbacks = [];
-      this.__updating = {};
-      this.props = {};
-    }
-
-    connectedCallback() {
-      if (this.__initialized) return;
-      this.__releaseCallbacks = [];
-      this.__propertyChangedCallbacks = [];
-      this.__updating = {};
-      this.props = initializeProps(this, propDefinition);
-      const props = propValues(this.props),
-            ComponentType = this.Component,
-            outerElement = currentElement;
-
-      try {
-        currentElement = this;
-        this.__initialized = true;
-        if (isConstructor(ComponentType)) new ComponentType(props, {
-          element: this
-        });else ComponentType(props, {
-          element: this
-        });
-      } finally {
-        currentElement = outerElement;
-      }
-    }
-
-    async disconnectedCallback() {
-      // prevent premature releasing when element is only temporarely removed from DOM
-      await Promise.resolve();
-      if (this.isConnected) return;
-      this.__propertyChangedCallbacks.length = 0;
-      let callback = null;
-
-      while (callback = this.__releaseCallbacks.pop()) callback(this);
-
-      delete this.__initialized;
-      this.__released = true;
-    }
-
-    attributeChangedCallback(name, oldVal, newVal) {
-      if (!this.__initialized) return;
-      if (this.__updating[name]) return;
-      name = this.lookupProp(name);
-
-      if (name in propDefinition) {
-        if (newVal == null && !this[name]) return;
-        this[name] = propDefinition[name].parse ? parseAttributeValue(newVal) : newVal;
-      }
-    }
-
-    lookupProp(attrName) {
-      if (!propDefinition) return;
-      return propKeys.find(k => attrName === k || attrName === propDefinition[k].attribute);
-    }
-
-    get renderRoot() {
-      return this.shadowRoot || this.attachShadow({
-        mode: "open"
-      });
-    }
-
-    addReleaseCallback(fn) {
-      this.__releaseCallbacks.push(fn);
-    }
-
-    addPropertyChangedCallback(fn) {
-      this.__propertyChangedCallbacks.push(fn);
-    }
-
-  };
-}
-
-function register(tag, props = {}, options = {}) {
-  const {
-    BaseElement = HTMLElement,
-    extension
-  } = options;
-  return ComponentType => {
-    if (!tag) throw new Error("tag is required to register a Component");
-    let ElementType = customElements.get(tag);
-
-    if (ElementType) {
-      // Consider disabling this in a production mode
-      ElementType.prototype.Component = ComponentType;
-      return ElementType;
-    }
-
-    ElementType = createElementType(BaseElement, normalizePropDefs(props));
-    ElementType.prototype.Component = ComponentType;
-    ElementType.prototype.registeredTag = tag;
-    customElements.define(tag, ElementType, extension);
-    return ElementType;
-  };
-}
-
-function createProps(raw) {
-    const keys = Object.keys(raw);
-    const props = {};
-    for (let i = 0; i < keys.length; i++) {
-        const [get, set] = createSignal(raw[keys[i]]);
-        Object.defineProperty(props, keys[i], {
-            get,
-            set(v) {
-                set(() => v);
-            }
-        });
-    }
-    return props;
-}
-function lookupContext(el) {
-    if (el.assignedSlot && el.assignedSlot._$owner)
-        return el.assignedSlot._$owner;
-    let next = el.parentNode;
-    while (next &&
-        !next._$owner &&
-        !(next.assignedSlot && next.assignedSlot._$owner))
-        next = next.parentNode;
-    return next && next.assignedSlot
-        ? next.assignedSlot._$owner
-        : el._$owner;
-}
-function withSolid(ComponentType) {
-    return (rawProps, options) => {
-        const { element } = options;
-        return createRoot((dispose) => {
-            const props = createProps(rawProps);
-            element.addPropertyChangedCallback((key, val) => (props[key] = val));
-            element.addReleaseCallback(() => {
-                element.renderRoot.textContent = "";
-                dispose();
-            });
-            const comp = ComponentType(props, options);
-            return insert(element.renderRoot, comp);
-        }, lookupContext(element));
-    };
-}
-function customElement(tag, props, ComponentType) {
-    if (arguments.length === 2) {
-        ComponentType = props;
-        props = {};
-    }
-    return register(tag, props)(withSolid(ComponentType));
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -3083,11 +2843,11 @@ var styles$5 = {
 
 var button = '';
 
-const _tmpl$$c = template(`<button></button>`);
+const _tmpl$$b = template(`<button></button>`);
 const Button = props => {
   const [local, buttonProps] = splitProps(props, ["variant", "classList"]);
   return (() => {
-    const _el$ = _tmpl$$c.cloneNode(true);
+    const _el$ = _tmpl$$b.cloneNode(true);
 
     spread(_el$, buttonProps, false, false);
 
@@ -3100,12 +2860,12 @@ const Button = props => {
   })();
 };
 
-const _tmpl$$b = template(`<svg fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"></svg>`),
-      _tmpl$2$6 = template(`<title></title>`);
+const _tmpl$$a = template(`<svg fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"></svg>`),
+      _tmpl$2$5 = template(`<title></title>`);
 function IconTemplate(props) {
   const [content, innerProps] = splitProps(props, ["src"]);
   return (() => {
-    const _el$ = _tmpl$$b.cloneNode(true);
+    const _el$ = _tmpl$$a.cloneNode(true);
 
     spread(_el$, () => content.src.a, true, true);
 
@@ -3115,7 +2875,7 @@ function IconTemplate(props) {
       const _c$ = memo(() => !!innerProps.title, true);
 
       return () => _c$() && (() => {
-        const _el$2 = _tmpl$2$6.cloneNode(true);
+        const _el$2 = _tmpl$2$5.cloneNode(true);
 
         insert(_el$2, () => innerProps.title);
 
@@ -3268,8 +3028,8 @@ const getElements = (children, filter, props = [], result = []) => {
   return result;
 };
 
-const _tmpl$$a = template(`<div></div>`),
-      _tmpl$2$5 = template(`<header></header>`),
+const _tmpl$$9 = template(`<div></div>`),
+      _tmpl$2$4 = template(`<header></header>`),
       _tmpl$3$1 = template(`<main></main>`),
       _tmpl$4 = template(`<footer></footer>`);
 let modalCount = 0;
@@ -3345,7 +3105,7 @@ const Modal = props => {
 
         get children() {
           return [memo(otherChildren), (() => {
-            const _el$ = _tmpl$$a.cloneNode(true);
+            const _el$ = _tmpl$$9.cloneNode(true);
 
             const _ref$ = modalRef;
             typeof _ref$ === "function" ? _ref$(_el$) : modalRef = _el$;
@@ -3368,7 +3128,7 @@ const Modal = props => {
             },
 
             get children() {
-              const _el$2 = _tmpl$$a.cloneNode(true);
+              const _el$2 = _tmpl$$9.cloneNode(true);
 
               const _ref$2 = modalRef;
               typeof _ref$2 === "function" ? _ref$2(_el$2) : modalRef = _el$2;
@@ -3387,7 +3147,7 @@ const Modal = props => {
   });
 };
 const ModalContent = props => (() => {
-  const _el$3 = _tmpl$$a.cloneNode(true);
+  const _el$3 = _tmpl$$9.cloneNode(true);
 
   spread(_el$3, props, false, false);
 
@@ -3396,7 +3156,7 @@ const ModalContent = props => (() => {
   return _el$3;
 })();
 const ModalHeader = props => (() => {
-  const _el$4 = _tmpl$2$5.cloneNode(true);
+  const _el$4 = _tmpl$2$4.cloneNode(true);
 
   spread(_el$4, props, false, false);
 
@@ -21252,8 +21012,8 @@ function useChartStore() {
   return useContext(ChartContext);
 }
 
-const _tmpl$$9 = template(`<div></div>`),
-      _tmpl$2$4 = template(`<ul><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`),
+const _tmpl$$8 = template(`<div></div>`),
+      _tmpl$2$3 = template(`<ul><li><strong> Pan and zoom mode:</strong> Drag canvas with mouse or arrow keys. Zoom using mouse wheel or + - keys</li><li><strong> Reset canvas:</strong> Restore zoom and canvas position</li><li><strong> Selection mode:</strong> Left click and mouse move for multi node selection</li><li><strong> Delete nodes:</strong> Delete selected nodes</li></ul>`),
       _tmpl$3 = template(`<li><strong> Node Library:</strong> Collapse/expande node library sidebar</li>`);
 
 const CanvasCommands = ({
@@ -21289,7 +21049,7 @@ const CanvasCommands = ({
   };
 
   return (() => {
-    const _el$ = _tmpl$$9.cloneNode(true);
+    const _el$ = _tmpl$$8.cloneNode(true);
 
     insert(_el$, onDiagramDashboardToggle && createComponent(Button, {
       variant: "icon",
@@ -21484,7 +21244,7 @@ const CanvasCommands = ({
 
           }), createComponent(ModalBody, {
             get children() {
-              const _el$2 = _tmpl$2$4.cloneNode(true),
+              const _el$2 = _tmpl$2$3.cloneNode(true),
                     _el$3 = _el$2.firstChild,
                     _el$4 = _el$3.firstChild,
                     _el$5 = _el$3.nextSibling,
@@ -21559,8 +21319,8 @@ const CanvasCommands = ({
   })();
 };
 
-const _tmpl$$8 = template(`<div></div>`),
-      _tmpl$2$3 = template(`<div role="presentation"></div>`);
+const _tmpl$$7 = template(`<div></div>`),
+      _tmpl$2$2 = template(`<div role="presentation"></div>`);
 function AreaSelect(props) {
   const [state, actions] = useChartStore();
   const [coord, setCoord] = createSignal();
@@ -21622,7 +21382,7 @@ function AreaSelect(props) {
       left: `${rect?.left}px`
     };
     return (() => {
-      const _el$ = _tmpl$$8.cloneNode(true);
+      const _el$ = _tmpl$$7.cloneNode(true);
 
       style$1(_el$, style);
 
@@ -21668,7 +21428,7 @@ function AreaSelect(props) {
   };
 
   return (() => {
-    const _el$2 = _tmpl$2$3.cloneNode(true);
+    const _el$2 = _tmpl$2$2.cloneNode(true);
 
     _el$2.$$pointerdown = onMouseDown;
     const _ref$ = canvas;
@@ -21720,7 +21480,7 @@ const boxIntersects = (boxA, boxB) => {
 
 delegateEvents(["pointerdown"]);
 
-const _tmpl$$7 = template(`<div><div></div></div>`);
+const _tmpl$$6 = template(`<div><div></div></div>`);
 
 const Canvas = ({
   id,
@@ -21775,7 +21535,7 @@ const Canvas = ({
   };
 
   return [(() => {
-    const _el$ = _tmpl$$7.cloneNode(true),
+    const _el$ = _tmpl$$6.cloneNode(true),
           _el$2 = _el$.firstChild;
 
     const _ref$ = cnv;
@@ -21815,14 +21575,14 @@ var styles$4 = {
 	"sb-checkbox": "_sb-checkbox_1ruvo_1"
 };
 
-const _tmpl$$6 = template(`<label><input type="checkbox"></label>`);
+const _tmpl$$5 = template(`<label><input type="checkbox"></label>`);
 const Checkbox = props => {
   const [inputProps, content, labelProps] = splitProps(props, ["accessKey", "aria-disabled", "autofocus", "checked", "class", "disabled", "id", "name", "onclick", "onkeydown", "onkeypress", "onkeyup", "oninvalid", "required", "value"], ["align", "children", "onchange", "switch"]);
 
   const changeHandler = ev => content.onchange?.(ev.target?.checked);
 
   return (() => {
-    const _el$ = _tmpl$$6.cloneNode(true),
+    const _el$ = _tmpl$$5.cloneNode(true),
           _el$2 = _el$.firstChild;
 
     spread(_el$, labelProps, false, true);
@@ -21915,8 +21675,8 @@ function TiArrowLoop(props) {
 }, ...props})
 }
 
-const _tmpl$$5 = template(`<div><div><div><span></span></div><div></div></div></div>`),
-      _tmpl$2$2 = template(`<div></div>`);
+const _tmpl$$4 = template(`<div><div><div><span></span></div><div></div></div></div>`),
+      _tmpl$2$1 = template(`<div></div>`);
 
 const getPortBgColor = port => {
   if (!port.bgColor) {
@@ -22016,7 +21776,7 @@ const Port = props => {
     "aria-text": `delete link`
   };
   return (() => {
-    const _el$ = _tmpl$$5.cloneNode(true),
+    const _el$ = _tmpl$$4.cloneNode(true),
           _el$2 = _el$.firstChild,
           _el$3 = _el$2.firstChild,
           _el$4 = _el$3.firstChild,
@@ -22056,7 +21816,7 @@ const Port = props => {
 
       get fallback() {
         return (() => {
-          const _el$6 = _tmpl$2$2.cloneNode(true);
+          const _el$6 = _tmpl$2$1.cloneNode(true);
 
           createRenderEffect(() => _el$6.className = styles$2.PortOutInner);
 
@@ -22121,7 +21881,7 @@ const Ports = ({
 }) => {
   const [state, actions] = useChartStore();
   return (() => {
-    const _el$7 = _tmpl$2$2.cloneNode(true);
+    const _el$7 = _tmpl$2$1.cloneNode(true);
 
     setAttribute(_el$7, "id", `${nodeId}-port-container`);
 
@@ -40711,7 +40471,7 @@ const Image = Node$2.create({
     },
 });
 
-const _tmpl$$4 = template(`<div><div></div></div>`);
+const _tmpl$$3 = template(`<div><div></div></div>`);
 const NodeContentReadonly = props => {
   let ref;
   let editor = u({
@@ -40740,7 +40500,7 @@ const NodeContentReadonly = props => {
     editor().commands.setContent(props.content);
   });
   return (() => {
-    const _el$ = _tmpl$$4.cloneNode(true),
+    const _el$ = _tmpl$$3.cloneNode(true),
           _el$2 = _el$.firstChild;
 
     _el$.style.setProperty("width", "100%");
@@ -40753,8 +40513,8 @@ const NodeContentReadonly = props => {
   })();
 };
 
-const _tmpl$$3 = template(`<div><div></div><div><span></span></div><div></div></div>`),
-      _tmpl$2$1 = template(`<div><div><div></div></div></div>`);
+const _tmpl$$2 = template(`<div><div></div><div><span></span></div><div></div></div>`),
+      _tmpl$2 = template(`<div><div><div></div></div></div>`);
 
 const NodeHead = props => {
   const preventNodeDrag = e => {
@@ -40762,7 +40522,7 @@ const NodeHead = props => {
   };
 
   return (() => {
-    const _el$ = _tmpl$$3.cloneNode(true),
+    const _el$ = _tmpl$$2.cloneNode(true),
           _el$2 = _el$.firstChild,
           _el$3 = _el$2.nextSibling,
           _el$4 = _el$3.firstChild,
@@ -40950,7 +40710,7 @@ const Node$1 = ({
   };
 
   return (() => {
-    const _el$6 = _tmpl$2$1.cloneNode(true),
+    const _el$6 = _tmpl$2.cloneNode(true),
           _el$7 = _el$6.firstChild,
           _el$8 = _el$7.firstChild;
 
@@ -41061,7 +40821,7 @@ var styles = {
 	LinkCreating: LinkCreating
 };
 
-const _tmpl$$2 = template(`<svg><defs><marker viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path></path></svg>`);
+const _tmpl$$1 = template(`<svg><defs><marker viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path></path></svg>`);
 function calculatePosition(portOffset, from, to, portIndex, fromSize, creating) {
   //  10 + 100 +
   const offsetY = portOffset / 2;
@@ -41111,7 +40871,7 @@ const Link = props => {
     },
 
     get children() {
-      const _el$ = _tmpl$$2.cloneNode(true),
+      const _el$ = _tmpl$$1.cloneNode(true),
             _el$2 = _el$.firstChild,
             _el$3 = _el$2.firstChild,
             _el$4 = _el$3.firstChild,
@@ -41172,7 +40932,7 @@ const Links = () => {
   });
 };
 
-const _tmpl$$1 = template(`<div></div>`);
+const _tmpl$ = template(`<div></div>`);
 
 const Diagram = ({
   onNodeSettingsClick,
@@ -41208,7 +40968,7 @@ const Diagram = ({
   };
 
   return (() => {
-    const _el$ = _tmpl$$1.cloneNode(true);
+    const _el$ = _tmpl$.cloneNode(true);
 
     style$1(_el$, cssVariables);
 
@@ -41260,6 +41020,7 @@ const DiagramWrapper = ({
 }) => {
   createFontStyle(fontFace || defaultFontFace);
   window.DMBRoot = root || document;
+  console.log("MAIN ENTRY POINT DIAGRAM");
   return createComponent(ChartProvider, {
     chart: chart,
     onHistoryChange: onHistoryChange,
@@ -41285,88 +41046,49 @@ const DiagramWrapper = ({
   });
 };
 
-const _tmpl$ = template(`<div>loading diagram...</div>`),
-      _tmpl$2 = template(`<style></style>`);
-// let historyUpdateCallback: any;
-// let crtActions: IChartActions;
-let notifier;
-const [chartstr, setChartStr] = createSignal("");
-const DumbotDiagramWC = customElement("dumbot-flowchart", {
-  fontFace: "",
-  availableNodes: [],
-  css: "",
-  width: "",
-  height: "",
-  addNotifier: cbIn => {
-    notifier = cbIn;
-  },
-  setInitialChart: chart => {
-    console.log("setting init charty");
-    setChartStr(chart);
-  }
-}, (props, options) => {
-  const onload = actions => {
-    notifier("load", actions);
-  };
+function FChart(props, elementId) {
+  render(() => createComponent(DiagramWrapper, {
+    get chart() {
+      return props.chart;
+    },
 
-  const historyChange = state => {
-    notifier("statechange", state);
-  };
+    get width() {
+      return props.width;
+    },
 
-  const onNodeSettings = node => {
-    notifier("onnodesettings", node);
-  };
+    get height() {
+      return props.height;
+    },
 
-  const onDiagramDashboardToggle = () => {
-    notifier("dashboardtoggle", null);
-  };
+    get root() {
+      return props.root || document;
+    },
 
-  return [memo((() => {
-    const _c$ = memo(() => !!!chartstr(), true);
+    get fontFace() {
+      return props.fontFace;
+    },
 
-    return () => _c$() && _tmpl$.cloneNode(true);
-  })()), memo((() => {
-    const _c$2 = memo(() => !!chartstr(), true);
+    get availableNodes() {
+      return props.availableNodes;
+    },
 
-    return () => _c$2() && [(() => {
-      const _el$2 = _tmpl$2.cloneNode(true);
+    get onDiagramDashboardToggle() {
+      return props.onDiagramDashboardToggle;
+    },
 
-      insert(_el$2, () => props.css);
+    get onNodeSettingsClick() {
+      return props.onNodeSettingsClick;
+    },
 
-      return _el$2;
-    })(), createComponent(DiagramWrapper, {
-      onLoad: onload,
+    get onHistoryChange() {
+      return props.onHistoryChange;
+    },
 
-      get chart() {
-        return JSON.parse(chartstr());
-      },
+    get onLoad() {
+      return props.onLoad;
+    }
 
-      get fontFace() {
-        return props.fontFace;
-      },
+  }), document.getElementById(elementId));
+}
 
-      get availableNodes() {
-        return props.availableNodes;
-      },
-
-      onHistoryChange: historyChange,
-      onNodeSettingsClick: onNodeSettings,
-
-      get width() {
-        return props.width;
-      },
-
-      get height() {
-        return props.height;
-      },
-
-      get root() {
-        return options.element.renderRoot;
-      },
-
-      onDiagramDashboardToggle: onDiagramDashboardToggle
-    })];
-  })())];
-});
-
-export { DumbotDiagramWC as default };
+export { FChart as default };

@@ -45,6 +45,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
     "noPortal",
     "children",
   ]);
+  // eslint-disable-next-line
   const [open, setOpen] = createSignal(local.open);
   const toggle = (open?: boolean) =>
     setOpen(typeof open === "boolean" ? open : (o) => !o);
@@ -92,11 +93,15 @@ export const Modal = (props: ModalProps): JSX.Element => {
   const divProps = mergeProps(containerProps, {
     role: "dialog",
     tabIndex: -1,
+    // eslint-disable-next-line
     class: props.class ? `sb-modal ${props.class}` : "sb-modal",
+    // eslint-disable-next-line
     children: modalContent(),
+    // eslint-disable-next-line
     onClick: createMemo(() =>
       props.closeOnClickOutside
-        ? (ev: MouseEvent) => {
+        ? // eslint-disable-next-line
+          (ev: MouseEvent) => {
             const target = ev.target as HTMLElement;
             if (!modalContent().some((content) => content?.contains(target))) {
               toggle(false);
@@ -104,6 +109,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
           }
         : undefined
     )(),
+    // eslint-disable-next-line
     onkeyup: createMemo(() =>
       props.closeOnEsc !== false
         ? (ev: KeyboardEvent) => {

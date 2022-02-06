@@ -12,14 +12,13 @@ const Canvas: Component<{
   minZoom: number;
   maxZoom: number;
   onScale: (evt: PanZoom) => void;
-  onDiagramDashboardToggle?: () => void;
+  // eslint-disable-next-line
 }> = ({
   id,
   children,
   onScale,
   minZoom,
   maxZoom,
-  onDiagramDashboardToggle,
 }) => {
   let cnv: any;
   let zoomInstance: PanZoom;
@@ -32,7 +31,7 @@ const Canvas: Component<{
       minZoom,
       maxZoom,
       zoomDoubleClickSpeed: 1,
-      onDoubleClick: function (e) {
+      onDoubleClick: function () {
         // `e` - is current double click event.
         return false; // tells the library to not preventDefault, and not stop propagation
       },
@@ -79,7 +78,6 @@ const Canvas: Component<{
       </div>
       <CanvasCommands
         onResetAll={onReset}
-        onDiagramDashboardToggle={onDiagramDashboardToggle}
         onEnableSelection={onEnableSelection}
         onEnablePanZoom={onEnablePanZoom}
       />

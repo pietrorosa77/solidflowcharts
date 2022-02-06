@@ -12,6 +12,7 @@ export const Button: Component<ButtonProps> = (props) => {
   return (
     <button
       {...buttonProps}
+      // eslint-disable-next-line
       classList={mergeProps(local.classList ?? {}, {
         "sb-button": true,
         [local.variant ?? "primary"]: true,

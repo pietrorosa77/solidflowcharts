@@ -78,7 +78,7 @@ const getLinePoints = (
 export const Link = (props: { linkId: string; creating?: boolean }) => {
   let lineEl: any;
   let markerEl: any;
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
 
   return (
     <Show
@@ -126,11 +126,11 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
 };
 
 const Links: Component = () => {
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
 
   return (
     <For each={Object.keys(state.chart.links)}>
-      {(key, i) => {
+      {(key) => {
         return <Link linkId={key} />;
       }}
     </For>

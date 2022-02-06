@@ -108,6 +108,7 @@ export const pointInNode = (node: INode, point: IPosition) => {
 export const isValidLink = (
   nodeToId: string,
   links: ILink[],
+  // eslint-disable-next-line
   _fromNodeId: string
 ) => {
   return (

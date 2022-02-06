@@ -1,10 +1,10 @@
-import { nanoid } from "nanoid";
 import type { Component } from "solid-js";
-import { ExtendedNode, IChart } from "../definitions";
-import { Button } from "./components/Button";
+import { ExtendedNode } from "../definitions";
+//import { Button } from "./components/Button";
 import { defaultFontFace } from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
 import { IChartActions } from "./store/chartStore";
+import { availableNodes } from "../testNodes";
 // export const getInitialSchema = (): IChart => {
 //   return {
 //     nodes: {
@@ -118,24 +118,25 @@ const App: Component = () => {
   let node: ExtendedNode;
   const onLoad = (actionsIn: IChartActions) => {
     actions = actionsIn;
+    console.log("actions", actions);
   };
-  const updateNodeContent = () => {
-    const changed = {
-      ...node,
-      title: nanoid(),
-      content: nanoid(),
-      ports: {
-        port1: {
-          id: "port1",
-          bgColor: "red",
-          text: "output updated",
-          index: 1,
-          properties: {},
-        },
-      },
-    };
-    actions.onNodeChanged(node.id, changed);
-  };
+  // const updateNodeContent = () => {
+  //   const changed = {
+  //     ...node,
+  //     title: nanoid(),
+  //     content: nanoid(),
+  //     ports: {
+  //       port1: {
+  //         id: "port1",
+  //         bgColor: "red",
+  //         text: "output updated",
+  //         index: 1,
+  //         properties: {},
+  //       },
+  //     },
+  //   };
+  //   actions.onNodeChanged(node.id, changed);
+  // };
   return (
     <>
       {/* <button onClick={updateNodeContent}>test content</button> */}
@@ -143,15 +144,13 @@ const App: Component = () => {
       <Diagram
         chart={getInitialSchema()}
         fontFace={defaultFontFace}
-        availableNodes={[]}
-        onDiagramDashboardToggle={() => {
-          console.log("dashboard click");
-        }}
-        onNodeSettingsClick={(nodeDt: ExtendedNode) =>
-          (node = {
+        availableNodes={availableNodes}
+        onNodeSettingsClick={(nodeDt: ExtendedNode) => {
+          node = {
             ...nodeDt,
-          })
-        }
+          };
+          console.log("settings for", node);
+        }}
         onHistoryChange={(chart) => {
           console.log("updated chart is", chart);
         }}

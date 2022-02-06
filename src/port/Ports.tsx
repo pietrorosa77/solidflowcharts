@@ -168,8 +168,9 @@ const getPortsSorted = (node: INode) =>
 const Ports: Component<{
   nodeId: string;
   canvasId: string;
+  // eslint-disable-next-line
 }> = ({ nodeId, canvasId }) => {
-  const [state, actions] = useChartStore();
+  const [state] = useChartStore();
 
   return (
     <div
@@ -178,7 +179,7 @@ const Ports: Component<{
       data-node-id={`${nodeId}`}
     >
       <For each={getPortsSorted(state.chart.nodes[nodeId])}>
-        {(key, i) => {
+        {(key) => {
           return <Port portId={key} canvasId={canvasId} nodeId={nodeId} />;
         }}
       </For>

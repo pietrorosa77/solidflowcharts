@@ -1,4 +1,12 @@
-import { JSX, createEffect, createSignal, onCleanup, createMemo, Accessor, Setter } from "solid-js";
+import {
+  JSX,
+  createEffect,
+  createSignal,
+  onCleanup,
+  createMemo,
+  Accessor,
+  Setter,
+} from "solid-js";
 
 export type WrappedElement<P> = (props: P) => JSX.Element;
 
@@ -24,7 +32,7 @@ export const getNearestNode = (
   if (!target) {
     return;
   }
-  let nearest: Node & ParentNode | null = target as Node & ParentNode;
+  let nearest: (Node & ParentNode) | null = target as Node & ParentNode;
   while (nearest && nearest.nodeName !== name) {
     nearest = nearest.parentNode;
   }
@@ -40,71 +48,88 @@ export const getRandom = () => {
   return lastItem;
 };
 
-type MediaQueryItem = 
-  |'all'
-  | 'print'
-  | 'screen' 
-  | `(${'min-' | 'max-' | ''}${
-    | 'aspect-ratio'
-    | 'color'
-    | 'color-gamut'
-    | 'color-index'
-    | 'display-mode'
-    | 'grid'
-    | 'inverted-colors'
-    | 'height'
-    | 'orientation'
-    | 'pointer'
-    | `prefers-${'color-scheme' | 'contrast' | 'reduced-motion' | 'reduced-transparency'}`
-    | 'resolution'
-    | 'scan'
-    | 'width'
-  }: ${string})`;
-type MediaQueryOperator = ' and ' | ' not ' | ' only ' | ', ';
-type MediaQueryString = 
+type MediaQueryItem =
+  | "all"
+  | "print"
+  | "screen"
+  | `(${"min-" | "max-" | ""}${
+      | "aspect-ratio"
+      | "color"
+      | "color-gamut"
+      | "color-index"
+      | "display-mode"
+      | "grid"
+      | "inverted-colors"
+      | "height"
+      | "orientation"
+      | "pointer"
+      | `prefers-${
+          | "color-scheme"
+          | "contrast"
+          | "reduced-motion"
+          | "reduced-transparency"}`
+      | "resolution"
+      | "scan"
+      | "width"}: ${string})`;
+type MediaQueryOperator = " and " | " not " | " only " | ", ";
+type MediaQueryString =
   | MediaQueryItem
-  | `${MediaQueryItem}${MediaQueryOperator}${MediaQueryItem}`
+  | `${MediaQueryItem}${MediaQueryOperator}${MediaQueryItem}`;
 
 export const useMediaQuery = (query: MediaQueryString): Accessor<boolean> => {
   const matcher = window.matchMedia(query);
   const [matches, setMatches] = createSignal(matcher.matches);
 
   const changeHandler = (ev: MediaQueryListEvent) => setMatches(ev.matches);
-  matcher.addEventListener('change', changeHandler);
-  onCleanup(() => matcher.removeEventListener('change', changeHandler));
+  matcher.addEventListener("change", changeHandler);
+  onCleanup(() => matcher.removeEventListener("change", changeHandler));
 
-  return matches
-}
+  return matches;
+};
 
-const parseStorage = <T extends any | string>(data: string | null | undefined, useJson: boolean): T | undefined =>
+const parseStorage = <T extends any | string>(
+  data: string | null | undefined,
+  useJson: boolean
+): T | undefined =>
   useJson ? (data ? JSON.parse(data) : undefined) : data ?? undefined;
 
 const putStorage = <T extends any | string>(key: string, data: T): void =>
-  localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data))
+  localStorage.setItem(
+    key,
+    typeof data === "string" ? data : JSON.stringify(data)
+  );
 
-export function createLocalStorageSignal<T extends any | string>(key: string, initialValue?: T, useJson = false):
-  [Accessor<T | undefined>, Setter<T | undefined>] {
+export function createLocalStorageSignal<T extends any | string>(
+  key: string,
+  initialValue?: T,
+  useJson = false
+): [Accessor<T | undefined>, Setter<T | undefined>] {
   if (localStorage.getItem(key) === null && initialValue !== undefined) {
     putStorage(key, initialValue);
   }
-  const [value, setValue] = createSignal(parseStorage<T>(localStorage.getItem(key), useJson));
-  
+  const [value, setValue] = createSignal(
+    parseStorage<T>(localStorage.getItem(key), useJson)
+  );
+
   createEffect(() =>
     useJson && value() === undefined
-    ? localStorage.removeItem(key)
-    : putStorage(key, value())
+      ? localStorage.removeItem(key)
+      : putStorage(key, value())
   );
-  
+
   return [value, setValue];
 }
 
 export const useDarkMode = (localStorageKey = "COLOR_SCHEME") => {
   const mediaQueryPrefersDark = useMediaQuery("(prefers-color-scheme: dark)");
-  const [storedPrefersDark, setStoredPrefersDark] = createLocalStorageSignal<boolean>(localStorageKey, undefined, true);
-  const darkMode = createMemo(() => storedPrefersDark() ?? mediaQueryPrefersDark());
+  const [storedPrefersDark, setStoredPrefersDark] =
+    createLocalStorageSignal<boolean>(localStorageKey, undefined, true);
+  const darkMode = createMemo(
+    () => storedPrefersDark() ?? mediaQueryPrefersDark()
+  );
 
   createEffect(() => {
-    (window as any).DMBRoot.body.classList.toggle('dark-mode', darkMode())
+    (window as any).DMBRoot.body.classList.toggle("dark-mode", darkMode());
   });
 
   return [darkMode, setStoredPrefersDark];
@@ -126,11 +151,13 @@ export const getElements = (
   if (Array.isArray(children)) {
     children.forEach((child) => getElements(child, filter, props, result));
   } else if (typeof children === "function") {
+    // eslint-disable-next-line
     getElements(children.apply(null, props), filter, props, result);
   } else {
     const node = children as HTMLElement;
     if (
-      !filter || (typeof filter === "function" ? filter(node) : node.nodeName === filter)
+      !filter ||
+      (typeof filter === "function" ? filter(node) : node.nodeName === filter)
     ) {
       (result as HTMLElement[]).push(node);
     }
