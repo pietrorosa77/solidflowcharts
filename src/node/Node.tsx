@@ -84,6 +84,10 @@ const Node: Component<{
 
   const onPointerDown = (e: PointerEvent) => {
     if ((e as any)["diagramDetails"]) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.cancelBubble = true;
       return;
     }
     const scale = state.scale;

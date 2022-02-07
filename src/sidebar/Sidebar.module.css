@@ -9,8 +9,11 @@
   overflow: hidden;
   transition: 0.5s;
   /* padding-top: 60px; */
-  opacity: 0.9;
+  opacity: 0.8;
   --sidebar-headheight: 50px;
+}
+.sidenav:hover {
+  opacity: 1;
 }
 .sidenavHead {
   height: var(--sidebar-headheight);

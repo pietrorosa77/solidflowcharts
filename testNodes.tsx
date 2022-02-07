@@ -6,10 +6,6 @@ import {
   BsQuestionCircleFill,
   BsMenuButtonWide,
 } from "solid-icons/bs";
-import { AiFillCode } from "solid-icons/ai";
-import { IoLogoReact } from "solid-icons/io";
-import { ImAccessibility } from "solid-icons/im";
-import { HiSolidLibrary } from "solid-icons/hi";
 
 export const QUESTIONNODETYPE = "question";
 export const BUTTONSNODETYPE = "buttons";
@@ -291,43 +287,43 @@ export const availableNodes: ISidebarNode[] = [
   {
     id: "MessageNode",
     title: "Message",
-    icon: () => <BsChatFill />,
+    icon: "BsChatFill",
     getNode: () => createNode(MessageNode),
   },
   {
     id: "QuestionNode",
     title: "Question",
-    icon: () => <BsQuestionCircleFill />,
+    icon: "BsQuestionCircleFill",
     getNode: () => createNode(QuestionNode),
   },
   {
     id: "ButtonsNode",
     title: "Buttons",
-    icon: () => <BsMenuButtonWide />,
+    icon: "BsMenuButtonWide",
     getNode: () => createNode(ButtonsNode),
   },
   {
     id: "RemoteNode",
     title: "Federated Module",
-    icon: () => <HiSolidLibrary />,
+    icon: "VscLibrary",
     getNode: () => createNode(RemoteNode),
   },
   {
     id: "UserSnippet",
     title: "Script",
-    icon: () => <AiFillCode />,
+    icon: "FaSolidCode",
     getNode: () => createNode(UserSnippet),
   },
   {
     id: "RreactSnippet",
     title: "React Node",
-    icon: () => <IoLogoReact />,
+    icon: "FaBrandsReact",
     getNode: () => createNode(ReactSnippet),
   },
   {
     id: "HumanTakeOverNode",
     title: "Human Take Over",
-    icon: () => <ImAccessibility />,
+    icon: "FaSolidUniversalAccess",
     getNode: () => createNode(HumanTakeOverNode),
   },
 ];
