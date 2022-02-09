@@ -21,17 +21,18 @@ const NodeHead = (props: {
   onNodeSettings: () => void;
 }) => {
   // eslint-disable-next-line
-  const { title, onToggle, selected, onNodeSettings, onDeleteNode } = props;
+  const { onToggle, onNodeSettings, onDeleteNode } = props;
   const preventNodeDrag = (e: PointerEvent) => {
     (e as any)["diagramDetails"] = "prevent node drag";
   };
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={preventNodeDrag}>
-        <Checkbox onChange={onToggle} checked={!!selected} />
+        // eslint-disable-next-line
+        <Checkbox onChange={onToggle} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
-        <span>{title}</span>
+        <span>{props.title}</span>
       </div>
       <div class={styles.NodeCommandsContainer} onPointerDown={preventNodeDrag}>
         <AiFillSetting
@@ -241,10 +242,6 @@ const Nodes: Component<{
       actions.nodesSizeChanged(evt);
     }
   );
-
-  // onMount(() => {
-  //   console.log("mounting nodes");
-  // });
 
   onCleanup(() => observer.disconnect());
 
