@@ -22,15 +22,22 @@
     "vite-plugin-solid": "^2.2.1"
   },
   "dependencies": {
-    "@tiptap/core": "2.0.0-beta.171",
-    "@tiptap/extension-image": "^2.0.0-beta.25",
-    "@tiptap/starter-kit": "^2.0.0-beta.180",
     "lodash": "4.17.21",
     "nanoid": "^3.2.0",
     "panzoom": "^9.4.2",
     "solid-element": "^1.3.5",
     "solid-icons": "^0.3.3",
     "solid-js": "^1.3.2",
-    "solid-tiptap": "^0.3.3"
+    "rehype-katex": "^6.0.2",
+    "rehype-video": "^1.1.1",
+    "remark-emoji": "^3.0.2",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "rehype-sanitize": "^5.0.1",
+    "rehype-stringify": "9.0.3",
+    "rehype-highlight": "5.0.2",
+    "unified": "^10.1.1"
   }
 }

@@ -1,1 +1,444 @@
-{"nodes":{"node1":{"id":"node1","title":"Start!","user":false,"preventRemoval":true,"content":"# A demo of React\n ${multiOut}   \n\nLift($L$) can be determined by Lift Coefficient ($C_L$) like the following\nequation.\n\n$$\nL = \\frac{1}{2} \\rho v^2 S C_L\n$$\n\nhttp://techslides.com/demos/sample-videos/small.webm\n\nWelcome *your* user with a nice **message**!😂\n      \n![image.png](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==)<dumbot-boubble/>\nThese features **do not work by default**.\n        \n        \n👆 Use the toggle above to add the plugin.\n\n`react-markdown` is a markdown component for R ${multiOut} eact.\n\n👉 Changes are re-rendered as you type.\n\n👈 Try writing some markdown on the left.\n\n## Overview\n\n* Follows [CommonMark](https://commonmark.org)\n* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)\n* Renders actual React elements instead of using `dangerouslySetInnerHTML`\n* Lets you define your own components (to render `MyHeading` instead of `h1`)\n* Has a lot of plugins\n\n## Table of contents\n\nHere is an example of a plugin in action\n([`remark-toc`](https://github.com/remarkjs/remark-toc)).\nThis section is replaced by an actual table of contents.\n\n## Syntax highlighting\n\nHere is an example of a plugin to highlight code:\n[`rehype-highlight`](https://github.com/rehypejs/rehype-highlight).\n\n```js\nimport React from 'react'\nimport ReactDOM from 'react-dom'\nimport ReactMarkdown from 'react-markdown'\nimport rehypeHighlight from 'rehype-highlight'\n\nReactDOM.render(\n  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{'# Your markdown here'}</ReactMarkdown>,\n  document.querySelector('#content')\n)\n```\n\nPretty neat, eh?\n\n## GitHub flavored markdown (GFM)\n\nFor GFM, you can *also* use a plugin:\n[`remark-gfm`](https://github.com/remarkjs/react-markdown#use).\nIt adds support for GitHub-specific extensions to the language:\ntables, strikethrough, tasklists, and literal URLs.\n\nThese features **do not work by default**.\n👆 Use the toggle above to add the plugin.\n\n| Feature    | Support              |\n| ---------: | :------------------- |\n| CommonMark | 100%                 |\n| GFM        | 100% w/ `remark-gfm` |\n\n~~strikethrough~~\n\n* [ ] task list\n* [x] checked item\n\nhttps://example.com\n\n## HTML in markdown\n\n⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can\nuse [`rehype-raw`](https://github.com/rehypejs/rehype-raw).\nYou should probably combine it with\n[`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize).\n\n<blockquote>\n  👆 Use the toggle above to add the plugin.\n</blockquote>\n\n## Components\n\nYou can pass components to change things:\n\n```js\nimport React from 'react'\nimport ReactDOM from 'react-dom'\nimport ReactMarkdown from 'react-markdown'\nimport MyFancyRule from './components/my-fancy-rule.js'\n\nReactDOM.render(\n  <ReactMarkdown\n    components={{\n      // Use h2s instead of h1s\n      h1: 'h2',\n      // Use a component instead of hrs\n      hr: ({node, ...props}) => <MyFancyRule {...props} />\n    }}\n  >\n    # Your markdown here\n  </ReactMarkdown>,\n  document.querySelector('#content')\n)\n```\n\n## More info?\n\nMuch more info is available in the\n[readme on GitHub](https://github.com/remarkjs/react-markdown)!\n\n***\n\nA component by [Espen Hovlandsdal](https://espen.codes/)","position":{"x":0,"y":0},"type":"start","output":{"type":"null","id":"start"},"ports":{"default":{"id":"default","bgColor":"brand","text":"default","index":1,"properties":{}}},"size":{"h":2893,"w":246}},"N2XbELZtyn":{"id":"N2XbELZtyn","type":"message","user":false,"content":"Type your message here","position":{"x":1318.25,"y":395.25},"title":"Message","output":{"type":"null","id":"message_0_GqAK378P"},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":0,"properties":{}}},"size":{"h":109,"w":246}},"KfB4u17Hzo":{"id":"KfB4u17Hzo","type":"buttons","user":true,"content":"pick the option!","position":{"x":294,"y":116},"title":"Buttons","output":{"id":"multiOut","type":"text"},"properties":{"multiple":false,"min":2,"max":4,"direction":"row","label":"buttons","displayAs":"message"},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":1,"properties":{}},"option1":{"bgColor":"options","id":"option1","text":"test port 1","index":2,"properties":{"value":"test port 1","icon":"Accessibility","text":"test port 1"}},"option2":{"bgColor":"options","id":"option2","text":"testport2 😂","index":3,"properties":{"value":"testport2 😂","icon":"Achievement","text":"testport2 😂"}},"option3":{"bgColor":"options","id":"option3","text":"Chat with operator","index":4,"properties":{"value":"Chat with operator","icon":"Accessibility","text":"Chat with operator"}},"option4":{"bgColor":"options","id":"option4","text":"edit me 2","index":5,"properties":{"value":"edit me 2","icon":"","text":"edit me 2"}},"option5":{"bgColor":"options","id":"option5","text":"LibraryComponent","index":6,"properties":{"value":"LibraryComponent","icon":"","text":"LibraryComponent"}}},"size":{"h":284,"w":246}},"0Z3bTAzvaE":{"id":"0Z3bTAzvaE","type":"dumbotSnippet","user":true,"content":"Javascript Snippet","position":{"x":1314.5,"y":82},"title":"User snippet","properties":{"label":"snippet","code":"async function _dumbot_user_snippet(SnippetContext)/* -- readonly -- */ \n  {\n  const callApi = async (label) => {\n    //onCallHost will call a function passed as a property into the bot instance if defined. You can cal an api\n    // from the host and provide data out\n    const data = await SnippetContext.onCallHost(label, SnippetContext.variables);\n    return data;\n  }\n\n  // you can use await \n  const res = await callApi(\"testlabel\");\n  console.log(\"RESPONSEEEEE\", res)\n  // set variables on the Bot\n  SnippetContext.onSetVariable(\"aaa\", res);\n  // read variables from the bot\n  console.log(\"Available variables\",SnippetContext.variables);\n  console.log(\"Available ports\",SnippetContext.ports);\n  // proceed with the flow on port default\n return SnippetContext.ports.exit2;\n}/* -- readonly -- */ "},"output":{"type":"object","id":"dumbotSnippet_wGmwpsb2Ml"},"silent":true,"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":1,"properties":{}},"exit1":{"bgColor":"options","id":"exit1","text":"exit 1","index":2,"properties":{"value":"exit 1"}},"exit2":{"bgColor":"options","id":"exit2","text":"exit 2","index":3,"properties":{"value":"exit 2"}},"exit3":{"bgColor":"options","id":"exit3","text":"exit 3","index":4,"properties":{"value":"exit 3"}}},"size":{"h":214,"w":246}},"Xe2ZftbxOG":{"id":"Xe2ZftbxOG","type":"message","user":false,"content":"well done    ${cstComponent}!!!!!\n| Head | Head | Head | Head | Head | Head |\n| --- | --- | --- | --- | --- | --- |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |","position":{"x":1663,"y":158},"title":"Message","output":{"type":"null","id":"message_v5uoBbkLgj"},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":0,"properties":{}}},"size":{"h":349,"w":246}},"aS-yMKvbMJ":{"id":"aS-yMKvbMJ","type":"dumbotReactSnippet","user":true,"content":"this is a better content!!!!!\n\nadding some more!","position":{"x":992,"y":516},"title":"React Component","properties":{"label":"react snippet","code":"function dumbot_react_customNode(React, ReactDOM, Grommet, Icons, _, UUID, StyledLibrary) {/* -- readonly -- */\nconst {useState,useEffect} = React;\nconst {Box, Button, Spinner} = Grommet;\nconst {nanoid} = UUID;\nconst styled = StyledLibrary.default;\nconst {Trash} = Icons;\n\n const ActionButton = styled(Button)`;\n     width: 40px;\n  background-color: ${(props) =>{\n\n    return props.theme.global.colors[props.bgColor || \"botBubbleColor\"]}};\n  border: ${(props) =>\n    !props.plain\n      ? `2px solid ${\n          props.theme.global.colors[props.fontColor || \"botFontColor\"]\n        }`\n      : \"none\"};\n  border-radius: 50%;\n  color: ${(props) =>\n    props.theme.global.colors[props.fontColor || \"botFontColor\"]};\n  svg {\n    fill: ${(props) =>\n      props.theme.global.colors[\n        props.active ? \"botFocusColor\" : props.fontColor || \"botFontColor\"\n      ]};\n    stroke: ${(props) =>\n      props.theme.global.colors[\n        props.active ? \"botFocusColor\" : props.fontColor || \"botFontColor\"\n      ]};\n  }\n\n  &: hover\n    ${(props) =>\n      props.disabled\n        ? undefined\n        : `\n  {\n    transform: scale(1.1);\n    transition: 0.3s ease-out;\n    box-shadow: ${\n      props.noOutline\n        ? \"none\"\n        : `0 0 2px 2px ${props.theme.global.colors[\"botFocusColor\"]}`\n    };\n    color: ${props.theme.global.colors[\"botFocusColor\"]};\n    opacity: 0.9;\n    svg {\n      fill: ${props.theme.global.colors[\"botFocusColor\"]};\n      stroke: ${props.theme.global.colors[\"botFocusColor\"]};\n    }\n  }\n  `};\n`;\n\nconst ChildComponent = (props) => {\nreturn(<Box  background=\"bars\" pad=\"xlarge\">\n{props.loading?<Spinner size=\"medium\" color=\"red\" /> : <Box>I'm a child component</Box> }\n</Box>);\n}\n\nreturn function CustomUserComponent(nodeProps) { /* -- readonly -- */\n// lines in gray are readonly and you can't modify them.\n// the library imported are the ones yu can use for your component\n// this is just an example on what you can do\nconst [loading, setLoading] = useState(true);\nconst res = _.chunk(['a', 'b', 'c', 'd'], 2);\nconst uuid = nanoid();\nuseEffect(() => {\n    if(loading) {\n        setTimeout(() => {\n            setLoading(false);\n        }, 1000);\n    }\n\n},[loading])\nconst onUserActioncall = () => {\n  nodeProps.onUserAction({test:123, res, uuid },nodeProps.ports.exit0);\n}\nreturn(<Box  background=\"brand\" pad=\"xlarge\">\n    {loading?<Spinner size=\"medium\" /> : <Button  label=\"test remote prop\" primary onClick={onUserActioncall} /> }\n     <ActionButton\n              icon={<Trash size=\"small\" />}\n              onClick={onUserActioncall}\n              size=\"small\"\n              bgColor=\"bars\"\n              tip={nodeProps.variables.question1 || \"test\"}\n            />\n    <ChildComponent loading={loading}/>\n</Box>);\n}} /* -- readonly -- */\n"},"output":{"id":"cstComponent","type":"object"},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":1,"properties":{}},"exit1":{"bgColor":"options","id":"exit1","text":"exit 1","index":2,"properties":{"value":"exit 1"}},"exit2":{"bgColor":"options","id":"exit2","text":"exit 2","index":3,"properties":{"value":"exit 2"}}},"size":{"h":203,"w":246}},"heHGo4pKl2":{"id":"heHGo4pKl2","type":"remoteFederatedNode","user":true,"content":"Remote hosted federated module jj","position":{"x":922,"y":52},"title":"Remote federated module node","output":{"type":"object","id":"remoteFederatedNode_EUD-PvSvVV"},"properties":{"label":"test","module":"./RemoteNodeExample","scope":"DumbotFederatedModulesScope","remoteUrl":"https://dumbot-federatednode-dt44z.ondigitalocean.app/remoteEntry.js","customProps":{"childText":"pietro"}},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":1,"properties":{}},"exit1":{"bgColor":"options","id":"exit1","text":"exit 1","index":2,"properties":{"value":"exit 1"}},"exit2":{"bgColor":"options","id":"exit2","text":"exit 2","index":3,"properties":{"value":"exit 2"}}},"size":{"h":203,"w":246}},"ZT-AyLLws-":{"id":"ZT-AyLLws-","type":"question","user":true,"content":"You picked ${multiOut};\nCan you answer this now?? :smile:","position":{"x":617,"y":310},"title":"Question","output":{"type":"date","id":"question_w4vefIRD64"},"properties":{"label":"date (date range depending on format)","controlType":"input","type":"date","size":"medium","width":"100%","format":"dd/mm/yyyy-dd/mm/yyyy","textAlign":"start"},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":0,"properties":{}}},"size":{"h":157,"w":246}},"GRLFxkmKrV":{"id":"GRLFxkmKrV","type":"humanTakeOver","user":true,"content":"","position":{"x":623,"y":38},"title":"Human Take Over","output":{"type":"array","id":"humanTakeOver_uHjlevFtNF"},"properties":{"label":"","displayAs":"footer","background":"transparent","hideInteractionLabel":true},"ports":{"default":{"bgColor":"brand","id":"default","text":"default","index":0,"properties":{}}},"size":{"h":109,"w":246}}},"links":{"nP7JftRWdfHBdQVzFY5WH":{"from":{"nodeId":"node1","portId":"default"},"id":"nP7JftRWdfHBdQVzFY5WH","to":"KfB4u17Hzo"},"n_oFk-AdP41D6KL8b_G8E":{"from":{"nodeId":"KfB4u17Hzo","portId":"option5"},"id":"n_oFk-AdP41D6KL8b_G8E","to":"GRLFxkmKrV"},"8zOHEDNs3uc0uk477RVaJ":{"from":{"nodeId":"KfB4u17Hzo","portId":"option4"},"id":"8zOHEDNs3uc0uk477RVaJ","to":"GRLFxkmKrV"},"VU0V8Xn3STKhtaSMYVfuF":{"from":{"nodeId":"KfB4u17Hzo","portId":"option3"},"id":"VU0V8Xn3STKhtaSMYVfuF","to":"GRLFxkmKrV"},"DJ3euZg97xTSKJYnOQMsW":{"from":{"nodeId":"KfB4u17Hzo","portId":"option2"},"id":"DJ3euZg97xTSKJYnOQMsW","to":"ZT-AyLLws-"},"2_KEci98v-zdgLCosBhwL":{"from":{"nodeId":"KfB4u17Hzo","portId":"option1"},"id":"2_KEci98v-zdgLCosBhwL","to":"ZT-AyLLws-"},"90M4iO_pLjDpfnOFUIGhk":{"from":{"nodeId":"KfB4u17Hzo","portId":"default"},"id":"90M4iO_pLjDpfnOFUIGhk","to":"ZT-AyLLws-"},"kSjMkRcsJ50P_sK07bfIB":{"from":{"nodeId":"GRLFxkmKrV","portId":"default"},"id":"kSjMkRcsJ50P_sK07bfIB","to":"heHGo4pKl2"},"kw5Isndd9JPavXjRa_ulv":{"from":{"nodeId":"ZT-AyLLws-","portId":"default"},"id":"kw5Isndd9JPavXjRa_ulv","to":"heHGo4pKl2"},"zdlHfpdlbc3pCiTjs_YKb":{"from":{"nodeId":"heHGo4pKl2","portId":"default"},"id":"zdlHfpdlbc3pCiTjs_YKb","to":"aS-yMKvbMJ"},"_4MrS7Tr0uPDOfN_yOSGy":{"from":{"nodeId":"heHGo4pKl2","portId":"exit2"},"id":"_4MrS7Tr0uPDOfN_yOSGy","to":"0Z3bTAzvaE"},"dDE8yUL66kUYCwO1COqnP":{"from":{"nodeId":"heHGo4pKl2","portId":"exit1"},"id":"dDE8yUL66kUYCwO1COqnP","to":"0Z3bTAzvaE"},"DChHkk0zQMrG4mh2nncE-":{"from":{"nodeId":"aS-yMKvbMJ","portId":"exit2"},"id":"DChHkk0zQMrG4mh2nncE-","to":"N2XbELZtyn"},"z_y-BmqNjVy26VoTsiKN7":{"from":{"nodeId":"aS-yMKvbMJ","portId":"exit1"},"id":"z_y-BmqNjVy26VoTsiKN7","to":"0Z3bTAzvaE"},"8EBgsZVCnxD-jYWqklAZs":{"from":{"nodeId":"aS-yMKvbMJ","portId":"default"},"id":"8EBgsZVCnxD-jYWqklAZs","to":"0Z3bTAzvaE"},"ldLVXrQ6Pn64pdq3_gyrG":{"from":{"nodeId":"0Z3bTAzvaE","portId":"default"},"id":"ldLVXrQ6Pn64pdq3_gyrG","to":"N2XbELZtyn"},"c5ObPbVKylUpwdZrWuVyY":{"from":{"nodeId":"0Z3bTAzvaE","portId":"exit1"},"id":"c5ObPbVKylUpwdZrWuVyY","to":"N2XbELZtyn"},"DlP6ii_bHSgbgXaIcyaO-":{"from":{"nodeId":"N2XbELZtyn","portId":"default"},"id":"DlP6ii_bHSgbgXaIcyaO-","to":"Xe2ZftbxOG"},"OjsmC-CphQKffd0bPFF-e":{"from":{"nodeId":"0Z3bTAzvaE","portId":"exit2"},"id":"OjsmC-CphQKffd0bPFF-e","to":"Xe2ZftbxOG"},"q9XOkkJV8tUMwcUPPQJ1e":{"from":{"nodeId":"0Z3bTAzvaE","portId":"exit3"},"id":"q9XOkkJV8tUMwcUPPQJ1e","to":"Xe2ZftbxOG"}},"selected":{},"paths":{"node1-default":"KfB4u17Hzo","KfB4u17Hzo-option5":"GRLFxkmKrV","KfB4u17Hzo-option4":"GRLFxkmKrV","KfB4u17Hzo-option3":"GRLFxkmKrV","KfB4u17Hzo-option2":"ZT-AyLLws-","KfB4u17Hzo-option1":"ZT-AyLLws-","KfB4u17Hzo-default":"ZT-AyLLws-","GRLFxkmKrV-default":"heHGo4pKl2","ZT-AyLLws--default":"heHGo4pKl2","heHGo4pKl2-default":"aS-yMKvbMJ","heHGo4pKl2-exit2":"0Z3bTAzvaE","heHGo4pKl2-exit1":"0Z3bTAzvaE","aS-yMKvbMJ-exit2":"N2XbELZtyn","aS-yMKvbMJ-exit1":"0Z3bTAzvaE","aS-yMKvbMJ-default":"0Z3bTAzvaE","0Z3bTAzvaE-default":"N2XbELZtyn","0Z3bTAzvaE-exit1":"N2XbELZtyn","N2XbELZtyn-default":"Xe2ZftbxOG","0Z3bTAzvaE-exit2":"Xe2ZftbxOG","0Z3bTAzvaE-exit3":"Xe2ZftbxOG"}}
+{
+  "nodes": {
+    "node1": {
+      "id": "node1",
+      "title": "Start!",
+      "user": false,
+      "preventRemoval": true,
+      "content": "# A demo of React\n ${multiOut}   \n\nLift($L$) can be determined by Lift Coefficient ($C_L$) like the following\nequation.\n\n$$\nL = \\frac{1}{2} \\rho v^2 S C_L\n$$\n\nhttp://techslides.com/demos/sample-videos/small.webm\n\nWelcome *your* user with a nice **message**!😂\n  ![alt text](//v2.grommet.io/assets/IMG_4245.jpg \"Markdown Image\")    \n![image.png](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==)<dumbot-boubble/>\nThese features **do not work by default**.\n        \n        \n👆 Use the toggle above to add the plugin.\n\n`react-markdown` is a markdown component for R ${multiOut} eact.\n\n👉 Changes are re-rendered as you type.\n\n👈 Try writing some markdown on the left.\n\n## Overview\n\n* Follows [CommonMark](https://commonmark.org)\n* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)\n* Renders actual React elements instead of using `dangerouslySetInnerHTML`\n* Lets you define your own components (to render `MyHeading` instead of `h1`)\n* Has a lot of plugins\n\n## Table of contents\n\nHere is an example of a plugin in action\n([`remark-toc`](https://github.com/remarkjs/remark-toc)).\nThis section is replaced by an actual table of contents.\n\n## Syntax highlighting\n\nHere is an example of a plugin to highlight code:\n[`rehype-highlight`](https://github.com/rehypejs/rehype-highlight).\n\n```js\nimport React from 'react'\nimport ReactDOM from 'react-dom'\nimport ReactMarkdown from 'react-markdown'\nimport rehypeHighlight from 'rehype-highlight'\n\nReactDOM.render(\n  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{'# Your markdown here'}</ReactMarkdown>,\n  document.querySelector('#content')\n)\n```\n\nPretty neat, eh?\n\n## GitHub flavored markdown (GFM)\n\nFor GFM, you can *also* use a plugin:\n[`remark-gfm`](https://github.com/remarkjs/react-markdown#use).\nIt adds support for GitHub-specific extensions to the language:\ntables, strikethrough, tasklists, and literal URLs.\n\nThese features **do not work by default**.\n👆 Use the toggle above to add the plugin.\n\n| Feature    | Support              |\n| ---------: | :------------------- |\n| CommonMark | 100%                 |\n| GFM        | 100% w/ `remark-gfm` |\n\n~~strikethrough~~\n\n* [ ] task list\n* [x] checked item\n\nhttps://example.com\n\n## HTML in markdown\n\n⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can\nuse [`rehype-raw`](https://github.com/rehypejs/rehype-raw).\nYou should probably combine it with\n[`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize).\n\n<blockquote>\n  👆 Use the toggle above to add the plugin.\n</blockquote>\n\n## Components\n\nYou can pass components to change things:\n\n```js\nimport React from 'react'\nimport ReactDOM from 'react-dom'\nimport ReactMarkdown from 'react-markdown'\nimport MyFancyRule from './components/my-fancy-rule.js'\n\nReactDOM.render(\n  <ReactMarkdown\n    components={{\n      // Use h2s instead of h1s\n      h1: 'h2',\n      // Use a component instead of hrs\n      hr: ({node, ...props}) => <MyFancyRule {...props} />\n    }}\n  >\n    # Your markdown here\n  </ReactMarkdown>,\n  document.querySelector('#content')\n)\n```\n\n## More info?\n\nMuch more info is available in the\n[readme on GitHub](https://github.com/remarkjs/react-markdown)!\n\n***\n\nA component by [Espen Hovlandsdal](https://espen.codes/)",
+      "position": { "x": 0, "y": 0 },
+      "type": "start",
+      "output": { "type": "null", "id": "start" },
+      "ports": {
+        "default": {
+          "id": "default",
+          "bgColor": "brand",
+          "text": "default",
+          "index": 1,
+          "properties": {}
+        }
+      },
+      "size": { "h": 2893, "w": 246 }
+    },
+    "N2XbELZtyn": {
+      "id": "N2XbELZtyn",
+      "type": "message",
+      "user": false,
+      "content": "Type your message here",
+      "position": { "x": 1318.25, "y": 395.25 },
+      "title": "Message",
+      "output": { "type": "null", "id": "message_0_GqAK378P" },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 0,
+          "properties": {}
+        }
+      },
+      "size": { "h": 109, "w": 246 }
+    },
+    "KfB4u17Hzo": {
+      "id": "KfB4u17Hzo",
+      "type": "buttons",
+      "user": true,
+      "content": "pick the option!",
+      "position": { "x": 294, "y": 116 },
+      "title": "Buttons",
+      "output": { "id": "multiOut", "type": "text" },
+      "properties": {
+        "multiple": false,
+        "min": 2,
+        "max": 4,
+        "direction": "row",
+        "label": "buttons",
+        "displayAs": "message"
+      },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 1,
+          "properties": {}
+        },
+        "option1": {
+          "bgColor": "options",
+          "id": "option1",
+          "text": "test port 1",
+          "index": 2,
+          "properties": {
+            "value": "test port 1",
+            "icon": "Accessibility",
+            "text": "test port 1"
+          }
+        },
+        "option2": {
+          "bgColor": "options",
+          "id": "option2",
+          "text": "testport2 😂",
+          "index": 3,
+          "properties": {
+            "value": "testport2 😂",
+            "icon": "Achievement",
+            "text": "testport2 😂"
+          }
+        },
+        "option3": {
+          "bgColor": "options",
+          "id": "option3",
+          "text": "Chat with operator",
+          "index": 4,
+          "properties": {
+            "value": "Chat with operator",
+            "icon": "Accessibility",
+            "text": "Chat with operator"
+          }
+        },
+        "option4": {
+          "bgColor": "options",
+          "id": "option4",
+          "text": "edit me 2",
+          "index": 5,
+          "properties": {
+            "value": "edit me 2",
+            "icon": "",
+            "text": "edit me 2"
+          }
+        },
+        "option5": {
+          "bgColor": "options",
+          "id": "option5",
+          "text": "LibraryComponent",
+          "index": 6,
+          "properties": {
+            "value": "LibraryComponent",
+            "icon": "",
+            "text": "LibraryComponent"
+          }
+        }
+      },
+      "size": { "h": 284, "w": 246 }
+    },
+    "0Z3bTAzvaE": {
+      "id": "0Z3bTAzvaE",
+      "type": "dumbotSnippet",
+      "user": true,
+      "content": "Javascript Snippet",
+      "position": { "x": 1314.5, "y": 82 },
+      "title": "User snippet",
+      "properties": {
+        "label": "snippet",
+        "code": "async function _dumbot_user_snippet(SnippetContext)/* -- readonly -- */ \n  {\n  const callApi = async (label) => {\n    //onCallHost will call a function passed as a property into the bot instance if defined. You can cal an api\n    // from the host and provide data out\n    const data = await SnippetContext.onCallHost(label, SnippetContext.variables);\n    return data;\n  }\n\n  // you can use await \n  const res = await callApi(\"testlabel\");\n  console.log(\"RESPONSEEEEE\", res)\n  // set variables on the Bot\n  SnippetContext.onSetVariable(\"aaa\", res);\n  // read variables from the bot\n  console.log(\"Available variables\",SnippetContext.variables);\n  console.log(\"Available ports\",SnippetContext.ports);\n  // proceed with the flow on port default\n return SnippetContext.ports.exit2;\n}/* -- readonly -- */ "
+      },
+      "output": { "type": "object", "id": "dumbotSnippet_wGmwpsb2Ml" },
+      "silent": true,
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 1,
+          "properties": {}
+        },
+        "exit1": {
+          "bgColor": "options",
+          "id": "exit1",
+          "text": "exit 1",
+          "index": 2,
+          "properties": { "value": "exit 1" }
+        },
+        "exit2": {
+          "bgColor": "options",
+          "id": "exit2",
+          "text": "exit 2",
+          "index": 3,
+          "properties": { "value": "exit 2" }
+        },
+        "exit3": {
+          "bgColor": "options",
+          "id": "exit3",
+          "text": "exit 3",
+          "index": 4,
+          "properties": { "value": "exit 3" }
+        }
+      },
+      "size": { "h": 214, "w": 246 }
+    },
+    "Xe2ZftbxOG": {
+      "id": "Xe2ZftbxOG",
+      "type": "message",
+      "user": false,
+      "content": "well done    ${cstComponent}!!!!!\n| Head | Head | Head | Head | Head | Head |\n| --- | --- | --- | --- | --- | --- |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |\n| Data | Data | Data | Data | Data | Data |",
+      "position": { "x": 1663, "y": 158 },
+      "title": "Message",
+      "output": { "type": "null", "id": "message_v5uoBbkLgj" },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 0,
+          "properties": {}
+        }
+      },
+      "size": { "h": 349, "w": 246 }
+    },
+    "aS-yMKvbMJ": {
+      "id": "aS-yMKvbMJ",
+      "type": "dumbotReactSnippet",
+      "user": true,
+      "content": "this is a better content!!!!!\n\nadding some more!",
+      "position": { "x": 992, "y": 516 },
+      "title": "React Component",
+      "properties": {
+        "label": "react snippet",
+        "code": "function dumbot_react_customNode(React, ReactDOM, Grommet, Icons, _, UUID, StyledLibrary) {/* -- readonly -- */\nconst {useState,useEffect} = React;\nconst {Box, Button, Spinner} = Grommet;\nconst {nanoid} = UUID;\nconst styled = StyledLibrary.default;\nconst {Trash} = Icons;\n\n const ActionButton = styled(Button)`;\n     width: 40px;\n  background-color: ${(props) =>{\n\n    return props.theme.global.colors[props.bgColor || \"botBubbleColor\"]}};\n  border: ${(props) =>\n    !props.plain\n      ? `2px solid ${\n          props.theme.global.colors[props.fontColor || \"botFontColor\"]\n        }`\n      : \"none\"};\n  border-radius: 50%;\n  color: ${(props) =>\n    props.theme.global.colors[props.fontColor || \"botFontColor\"]};\n  svg {\n    fill: ${(props) =>\n      props.theme.global.colors[\n        props.active ? \"botFocusColor\" : props.fontColor || \"botFontColor\"\n      ]};\n    stroke: ${(props) =>\n      props.theme.global.colors[\n        props.active ? \"botFocusColor\" : props.fontColor || \"botFontColor\"\n      ]};\n  }\n\n  &: hover\n    ${(props) =>\n      props.disabled\n        ? undefined\n        : `\n  {\n    transform: scale(1.1);\n    transition: 0.3s ease-out;\n    box-shadow: ${\n      props.noOutline\n        ? \"none\"\n        : `0 0 2px 2px ${props.theme.global.colors[\"botFocusColor\"]}`\n    };\n    color: ${props.theme.global.colors[\"botFocusColor\"]};\n    opacity: 0.9;\n    svg {\n      fill: ${props.theme.global.colors[\"botFocusColor\"]};\n      stroke: ${props.theme.global.colors[\"botFocusColor\"]};\n    }\n  }\n  `};\n`;\n\nconst ChildComponent = (props) => {\nreturn(<Box  background=\"bars\" pad=\"xlarge\">\n{props.loading?<Spinner size=\"medium\" color=\"red\" /> : <Box>I'm a child component</Box> }\n</Box>);\n}\n\nreturn function CustomUserComponent(nodeProps) { /* -- readonly -- */\n// lines in gray are readonly and you can't modify them.\n// the library imported are the ones yu can use for your component\n// this is just an example on what you can do\nconst [loading, setLoading] = useState(true);\nconst res = _.chunk(['a', 'b', 'c', 'd'], 2);\nconst uuid = nanoid();\nuseEffect(() => {\n    if(loading) {\n        setTimeout(() => {\n            setLoading(false);\n        }, 1000);\n    }\n\n},[loading])\nconst onUserActioncall = () => {\n  nodeProps.onUserAction({test:123, res, uuid },nodeProps.ports.exit0);\n}\nreturn(<Box  background=\"brand\" pad=\"xlarge\">\n    {loading?<Spinner size=\"medium\" /> : <Button  label=\"test remote prop\" primary onClick={onUserActioncall} /> }\n     <ActionButton\n              icon={<Trash size=\"small\" />}\n              onClick={onUserActioncall}\n              size=\"small\"\n              bgColor=\"bars\"\n              tip={nodeProps.variables.question1 || \"test\"}\n            />\n    <ChildComponent loading={loading}/>\n</Box>);\n}} /* -- readonly -- */\n"
+      },
+      "output": { "id": "cstComponent", "type": "object" },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 1,
+          "properties": {}
+        },
+        "exit1": {
+          "bgColor": "options",
+          "id": "exit1",
+          "text": "exit 1",
+          "index": 2,
+          "properties": { "value": "exit 1" }
+        },
+        "exit2": {
+          "bgColor": "options",
+          "id": "exit2",
+          "text": "exit 2",
+          "index": 3,
+          "properties": { "value": "exit 2" }
+        }
+      },
+      "size": { "h": 203, "w": 246 }
+    },
+    "heHGo4pKl2": {
+      "id": "heHGo4pKl2",
+      "type": "remoteFederatedNode",
+      "user": true,
+      "content": "Remote hosted federated module jj",
+      "position": { "x": 922, "y": 52 },
+      "title": "Remote federated module node",
+      "output": { "type": "object", "id": "remoteFederatedNode_EUD-PvSvVV" },
+      "properties": {
+        "label": "test",
+        "module": "./RemoteNodeExample",
+        "scope": "DumbotFederatedModulesScope",
+        "remoteUrl": "https://dumbot-federatednode-dt44z.ondigitalocean.app/remoteEntry.js",
+        "customProps": { "childText": "pietro" }
+      },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 1,
+          "properties": {}
+        },
+        "exit1": {
+          "bgColor": "options",
+          "id": "exit1",
+          "text": "exit 1",
+          "index": 2,
+          "properties": { "value": "exit 1" }
+        },
+        "exit2": {
+          "bgColor": "options",
+          "id": "exit2",
+          "text": "exit 2",
+          "index": 3,
+          "properties": { "value": "exit 2" }
+        }
+      },
+      "size": { "h": 203, "w": 246 }
+    },
+    "ZT-AyLLws-": {
+      "id": "ZT-AyLLws-",
+      "type": "question",
+      "user": true,
+      "content": "You picked ${multiOut};\nCan you answer this now?? :smile:",
+      "position": { "x": 617, "y": 310 },
+      "title": "Question",
+      "output": { "type": "date", "id": "question_w4vefIRD64" },
+      "properties": {
+        "label": "date (date range depending on format)",
+        "controlType": "input",
+        "type": "date",
+        "size": "medium",
+        "width": "100%",
+        "format": "dd/mm/yyyy-dd/mm/yyyy",
+        "textAlign": "start"
+      },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 0,
+          "properties": {}
+        }
+      },
+      "size": { "h": 157, "w": 246 }
+    },
+    "GRLFxkmKrV": {
+      "id": "GRLFxkmKrV",
+      "type": "humanTakeOver",
+      "user": true,
+      "content": "",
+      "position": { "x": 623, "y": 38 },
+      "title": "Human Take Over",
+      "output": { "type": "array", "id": "humanTakeOver_uHjlevFtNF" },
+      "properties": {
+        "label": "",
+        "displayAs": "footer",
+        "background": "transparent",
+        "hideInteractionLabel": true
+      },
+      "ports": {
+        "default": {
+          "bgColor": "brand",
+          "id": "default",
+          "text": "default",
+          "index": 0,
+          "properties": {}
+        }
+      },
+      "size": { "h": 109, "w": 246 }
+    }
+  },
+  "links": {
+    "nP7JftRWdfHBdQVzFY5WH": {
+      "from": { "nodeId": "node1", "portId": "default" },
+      "id": "nP7JftRWdfHBdQVzFY5WH",
+      "to": "KfB4u17Hzo"
+    },
+    "n_oFk-AdP41D6KL8b_G8E": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "option5" },
+      "id": "n_oFk-AdP41D6KL8b_G8E",
+      "to": "GRLFxkmKrV"
+    },
+    "8zOHEDNs3uc0uk477RVaJ": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "option4" },
+      "id": "8zOHEDNs3uc0uk477RVaJ",
+      "to": "GRLFxkmKrV"
+    },
+    "VU0V8Xn3STKhtaSMYVfuF": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "option3" },
+      "id": "VU0V8Xn3STKhtaSMYVfuF",
+      "to": "GRLFxkmKrV"
+    },
+    "DJ3euZg97xTSKJYnOQMsW": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "option2" },
+      "id": "DJ3euZg97xTSKJYnOQMsW",
+      "to": "ZT-AyLLws-"
+    },
+    "2_KEci98v-zdgLCosBhwL": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "option1" },
+      "id": "2_KEci98v-zdgLCosBhwL",
+      "to": "ZT-AyLLws-"
+    },
+    "90M4iO_pLjDpfnOFUIGhk": {
+      "from": { "nodeId": "KfB4u17Hzo", "portId": "default" },
+      "id": "90M4iO_pLjDpfnOFUIGhk",
+      "to": "ZT-AyLLws-"
+    },
+    "kSjMkRcsJ50P_sK07bfIB": {
+      "from": { "nodeId": "GRLFxkmKrV", "portId": "default" },
+      "id": "kSjMkRcsJ50P_sK07bfIB",
+      "to": "heHGo4pKl2"
+    },
+    "kw5Isndd9JPavXjRa_ulv": {
+      "from": { "nodeId": "ZT-AyLLws-", "portId": "default" },
+      "id": "kw5Isndd9JPavXjRa_ulv",
+      "to": "heHGo4pKl2"
+    },
+    "zdlHfpdlbc3pCiTjs_YKb": {
+      "from": { "nodeId": "heHGo4pKl2", "portId": "default" },
+      "id": "zdlHfpdlbc3pCiTjs_YKb",
+      "to": "aS-yMKvbMJ"
+    },
+    "_4MrS7Tr0uPDOfN_yOSGy": {
+      "from": { "nodeId": "heHGo4pKl2", "portId": "exit2" },
+      "id": "_4MrS7Tr0uPDOfN_yOSGy",
+      "to": "0Z3bTAzvaE"
+    },
+    "dDE8yUL66kUYCwO1COqnP": {
+      "from": { "nodeId": "heHGo4pKl2", "portId": "exit1" },
+      "id": "dDE8yUL66kUYCwO1COqnP",
+      "to": "0Z3bTAzvaE"
+    },
+    "DChHkk0zQMrG4mh2nncE-": {
+      "from": { "nodeId": "aS-yMKvbMJ", "portId": "exit2" },
+      "id": "DChHkk0zQMrG4mh2nncE-",
+      "to": "N2XbELZtyn"
+    },
+    "z_y-BmqNjVy26VoTsiKN7": {
+      "from": { "nodeId": "aS-yMKvbMJ", "portId": "exit1" },
+      "id": "z_y-BmqNjVy26VoTsiKN7",
+      "to": "0Z3bTAzvaE"
+    },
+    "8EBgsZVCnxD-jYWqklAZs": {
+      "from": { "nodeId": "aS-yMKvbMJ", "portId": "default" },
+      "id": "8EBgsZVCnxD-jYWqklAZs",
+      "to": "0Z3bTAzvaE"
+    },
+    "ldLVXrQ6Pn64pdq3_gyrG": {
+      "from": { "nodeId": "0Z3bTAzvaE", "portId": "default" },
+      "id": "ldLVXrQ6Pn64pdq3_gyrG",
+      "to": "N2XbELZtyn"
+    },
+    "c5ObPbVKylUpwdZrWuVyY": {
+      "from": { "nodeId": "0Z3bTAzvaE", "portId": "exit1" },
+      "id": "c5ObPbVKylUpwdZrWuVyY",
+      "to": "N2XbELZtyn"
+    },
+    "DlP6ii_bHSgbgXaIcyaO-": {
+      "from": { "nodeId": "N2XbELZtyn", "portId": "default" },
+      "id": "DlP6ii_bHSgbgXaIcyaO-",
+      "to": "Xe2ZftbxOG"
+    },
+    "OjsmC-CphQKffd0bPFF-e": {
+      "from": { "nodeId": "0Z3bTAzvaE", "portId": "exit2" },
+      "id": "OjsmC-CphQKffd0bPFF-e",
+      "to": "Xe2ZftbxOG"
+    },
+    "q9XOkkJV8tUMwcUPPQJ1e": {
+      "from": { "nodeId": "0Z3bTAzvaE", "portId": "exit3" },
+      "id": "q9XOkkJV8tUMwcUPPQJ1e",
+      "to": "Xe2ZftbxOG"
+    }
+  },
+  "selected": {},
+  "paths": {
+    "node1-default": "KfB4u17Hzo",
+    "KfB4u17Hzo-option5": "GRLFxkmKrV",
+    "KfB4u17Hzo-option4": "GRLFxkmKrV",
+    "KfB4u17Hzo-option3": "GRLFxkmKrV",
+    "KfB4u17Hzo-option2": "ZT-AyLLws-",
+    "KfB4u17Hzo-option1": "ZT-AyLLws-",
+    "KfB4u17Hzo-default": "ZT-AyLLws-",
+    "GRLFxkmKrV-default": "heHGo4pKl2",
+    "ZT-AyLLws--default": "heHGo4pKl2",
+    "heHGo4pKl2-default": "aS-yMKvbMJ",
+    "heHGo4pKl2-exit2": "0Z3bTAzvaE",
+    "heHGo4pKl2-exit1": "0Z3bTAzvaE",
+    "aS-yMKvbMJ-exit2": "N2XbELZtyn",
+    "aS-yMKvbMJ-exit1": "0Z3bTAzvaE",
+    "aS-yMKvbMJ-default": "0Z3bTAzvaE",
+    "0Z3bTAzvaE-default": "N2XbELZtyn",
+    "0Z3bTAzvaE-exit1": "N2XbELZtyn",
+    "N2XbELZtyn-default": "Xe2ZftbxOG",
+    "0Z3bTAzvaE-exit2": "Xe2ZftbxOG",
+    "0Z3bTAzvaE-exit3": "Xe2ZftbxOG"
+  }
+}

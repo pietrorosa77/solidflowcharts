@@ -242,9 +242,9 @@ const Nodes: Component<{
     }
   );
 
-  onMount(() => {
-    console.log("mounting nodes");
-  });
+  // onMount(() => {
+  //   console.log("mounting nodes");
+  // });
 
   onCleanup(() => observer.disconnect());
 

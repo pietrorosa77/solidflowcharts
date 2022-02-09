@@ -30,7 +30,7 @@ const Diagram: Component<{
   const [state, actions] = useChartStore();
 
   onMount(() => {
-    console.log("mounting diagram");
+    console.log("Mounting flowchart diagram");
     if (onLoad) {
       onLoad(actions);
     }
@@ -93,7 +93,6 @@ const DiagramWrapper: Component<{
 }) => {
   createFontStyle(fontFace || defaultFontFace);
   (window as any).DMBRoot = root || document;
-  console.log("MAIN ENTRY POINT DIAGRAM");
   return (
     <ChartProvider chart={chart} onHistoryChange={onHistoryChange}>
       <ErrorBoundary fallback={(err) => err}>
