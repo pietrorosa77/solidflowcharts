@@ -244,11 +244,13 @@ export function ChartProvider(props: {
               );
             });
 
-            const pathsToDelete = Object.keys(state.chart.paths).filter((k) => {
-              const toDelete =
-                newPortKeys.filter((id) => k.endsWith(id)).length === 0;
-              return toDelete;
-            });
+            const oldNodePaths = Object.keys(state.chart.paths).filter((k) =>
+              k.startsWith(`${nodeId}-`)
+            );
+            const pathsToDelete = oldNodePaths.filter(
+              (path) =>
+                newPortKeys.filter((pid) => path.endsWith(pid)).length === 0
+            );
 
             removedLinks.forEach((l) => {
               setChart("chart", "links", l, () => undefined);

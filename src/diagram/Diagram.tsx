@@ -22,8 +22,16 @@ const Diagram: Component<{
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
+  separator: string;
   // eslint-disable-next-line
-}> = ({ onNodeSettingsClick, onLoad, availableNodes, width, height }) => {
+}> = ({
+  onNodeSettingsClick,
+  onLoad,
+  availableNodes,
+  width,
+  height,
+  separator,
+}) => {
   const minZoom = 0.2;
   const maxZoom = 2;
   const canvasId = nanoid(10);
@@ -59,7 +67,11 @@ const Diagram: Component<{
         minZoom={minZoom}
         maxZoom={maxZoom}
       >
-        <Nodes canvasId={canvasId} onNodeSettings={onNodeSettings} />
+        <Nodes
+          canvasId={canvasId}
+          onNodeSettings={onNodeSettings}
+          separator={separator}
+        />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
@@ -79,6 +91,7 @@ const DiagramWrapper: Component<{
   root?: any;
   width?: string;
   height?: string;
+  messageSeparator: string;
   // eslint-disable-next-line
 }> = ({
   chart,
@@ -90,6 +103,7 @@ const DiagramWrapper: Component<{
   root,
   width,
   height,
+  messageSeparator: separator,
 }) => {
   createFontStyle(fontFace || defaultFontFace);
   (window as any).DMBRoot = root || document;
@@ -99,6 +113,7 @@ const DiagramWrapper: Component<{
         <Diagram
           width={width}
           height={height}
+          separator={separator}
           onNodeSettingsClick={onNodeSettingsClick}
           onLoad={onLoad}
           availableNodes={availableNodes}

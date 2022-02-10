@@ -28,7 +28,7 @@ const NodeHead = (props: {
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={preventNodeDrag}>
-        // eslint-disable-next-line
+        {/* eslint-disable-next-line */}
         <Checkbox onChange={onToggle} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
@@ -55,8 +55,9 @@ const Node: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
+  separator: string;
   // eslint-disable-next-line
-}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings }) => {
+}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings, separator }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
 
@@ -223,7 +224,10 @@ const Node: Component<{
 
       <div class={styles.NodeContent}>
         <div class={styles.NodeContentView}>
-          <NodeContentReadonly content={getContent()} />
+          <NodeContentReadonly
+            content={getContent()}
+            separator={separator}
+          />
         </div>
       </div>
       <Ports nodeId={nodeId} canvasId={canvasId} />
@@ -234,8 +238,9 @@ const Node: Component<{
 const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
+  separator: string;
   // eslint-disable-next-line
-}> = ({ canvasId, onNodeSettings }) => {
+}> = ({ canvasId, onNodeSettings, separator }) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
     (evt: ResizeObserverEntry[]) => {
@@ -250,6 +255,7 @@ const Nodes: Component<{
       {(key) => {
         return (
           <Node
+            separator={separator}
             nodeId={key}
             sizeObserver={observer}
             canvasId={canvasId}
