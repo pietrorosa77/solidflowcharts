@@ -1,11 +1,9 @@
 import { render } from "solid-js/web";
 import { ExtendedNode, IChart } from "../definitions";
 import Diagram from "./diagram/Diagram";
-import { NodeContentReadonly } from "./node/NodeContent";
 import { ISidebarNode } from "./sidebar/Sidebar";
 import { IChartActions } from "./store/chartStore";
 import "./index.css";
-import { getCssVariables } from "./defaultTheme";
 
 interface IDGProps {
   chart: IChart;
@@ -17,6 +15,7 @@ interface IDGProps {
   root?: any;
   width?: string;
   height?: string;
+  getNodeHtml?: (content: string) => Promise<string>;
   messageSeparator: string;
 }
 
@@ -29,6 +28,7 @@ export function FChart(props: IDGProps, elementId: string) {
         height={props.height}
         root={props.root || document}
         fontFace={props.fontFace}
+        getNodeHtml={props.getNodeHtml}
         availableNodes={props.availableNodes}
         onNodeSettingsClick={props.onNodeSettingsClick}
         onHistoryChange={props.onHistoryChange}
@@ -37,31 +37,5 @@ export function FChart(props: IDGProps, elementId: string) {
       />
     ),
     document.getElementById(elementId) as HTMLElement
-  );
-}
-
-export function NodeRenderer(
-  props: {
-    content: string;
-    messageSeparator: string;
-  },
-  id: string
-) {
-  const cssVariables = {
-    ...getCssVariables("100%", "100%"),
-    width: "100%",
-    height: "100%",
-  };
-
-  render(
-    () => (
-      <div style={cssVariables}>
-        <NodeContentReadonly
-          content={props.content}
-          separator={props.messageSeparator}
-        />
-      </div>
-    ),
-    document.getElementById(id) as HTMLElement
   );
 }

@@ -23,6 +23,7 @@ const Diagram: Component<{
   width?: string;
   height?: string;
   separator: string;
+  getNodeHtml: (content: string) => Promise<string>;
   // eslint-disable-next-line
 }> = ({
   onNodeSettingsClick,
@@ -31,6 +32,7 @@ const Diagram: Component<{
   width,
   height,
   separator,
+  getNodeHtml,
 }) => {
   const minZoom = 0.2;
   const maxZoom = 2;
@@ -71,6 +73,7 @@ const Diagram: Component<{
           canvasId={canvasId}
           onNodeSettings={onNodeSettings}
           separator={separator}
+          getNodeHtml={getNodeHtml}
         />
         <Links />
         <Show when={!!state.newLink}>
@@ -92,6 +95,7 @@ const DiagramWrapper: Component<{
   width?: string;
   height?: string;
   messageSeparator: string;
+  getNodeHtml?: (content: string) => Promise<string>;
   // eslint-disable-next-line
 }> = ({
   chart,
@@ -104,15 +108,18 @@ const DiagramWrapper: Component<{
   width,
   height,
   messageSeparator: separator,
+  getNodeHtml
 }) => {
   createFontStyle(fontFace || defaultFontFace);
   (window as any).DMBRoot = root || document;
+  const defaultGetNodeContent = (rawContent: string) => Promise.resolve(rawContent) 
   return (
     <ChartProvider chart={chart} onHistoryChange={onHistoryChange}>
       <ErrorBoundary fallback={(err) => err}>
         <Diagram
           width={width}
           height={height}
+          getNodeHtml={getNodeHtml || defaultGetNodeContent}
           separator={separator}
           onNodeSettingsClick={onNodeSettingsClick}
           onLoad={onLoad}

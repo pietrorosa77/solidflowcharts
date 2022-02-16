@@ -56,8 +56,9 @@ const Node: Component<{
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
   separator: string;
+  getNodeHtml: (content: string) => Promise<string>;
   // eslint-disable-next-line
-}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings, separator }) => {
+}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings, separator, getNodeHtml }) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
 
@@ -227,6 +228,7 @@ const Node: Component<{
           <NodeContentReadonly
             content={getContent()}
             separator={separator}
+            getHtmlContent={getNodeHtml}
           />
         </div>
       </div>
@@ -239,8 +241,9 @@ const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   separator: string;
+  getNodeHtml: (content: string) => Promise<string>;
   // eslint-disable-next-line
-}> = ({ canvasId, onNodeSettings, separator }) => {
+}> = ({ canvasId, onNodeSettings, separator, getNodeHtml }) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
     (evt: ResizeObserverEntry[]) => {
@@ -257,6 +260,7 @@ const Nodes: Component<{
           <Node
             separator={separator}
             nodeId={key}
+            getNodeHtml={getNodeHtml}
             sizeObserver={observer}
             canvasId={canvasId}
             onNodeSettings={onNodeSettings}

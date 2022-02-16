@@ -11,17 +11,13 @@ export const getInitialSchema = () => {
 const App = (props: { initState: IChart }) => {
   let actions: IChartActions;
   let node: ExtendedNode;
-  const test = () => {
-    const nd = props.initState.nodes["node1"];
-    actions.onNodeChanged("node1", { ...nd, content: "asfafasf" });
-  };
+
   const onLoad = (actionsIn: IChartActions) => {
     actions = actionsIn;
     console.log("actions are", actions);
   };
   return (
     <>
-      <button onclick={test}>test</button>
       <Diagram
         chart={props.initState}
         fontFace={defaultFontFace}
