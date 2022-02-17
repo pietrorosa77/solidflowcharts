@@ -40346,7 +40346,9 @@ const getCssVariables = (width, height) => {
     "--node-bg-color": "#333333",
     "--node-head-font-size": "18px",
     "--bg-inactive": "rgb(153, 148, 148)",
-    "--warning-color": "rgb(248, 172, 59)"
+    "--warning-color": "rgb(248, 172, 59)",
+    "--node-content-bgcolor": "#4a4d70",
+    "--node-text-color": "#fff"
   };
 };
 
@@ -58785,13 +58787,13 @@ const Checkbox = props => {
   })();
 };
 
-const Node$2 = "_Node_14awk_1";
-const NodeSelected = "_NodeSelected_14awk_15";
-const NodeHead$1 = "_NodeHead_14awk_25";
-const NodeHeadTitle = "_NodeHeadTitle_14awk_44";
-const NodeContent = "_NodeContent_14awk_57";
-const NodeContentPart = "_NodeContentPart_14awk_69";
-const NodeCommands = "_NodeCommands_14awk_88";
+const Node$2 = "_Node_1a3q6_1";
+const NodeSelected = "_NodeSelected_1a3q6_15";
+const NodeHead$1 = "_NodeHead_1a3q6_25";
+const NodeHeadTitle = "_NodeHeadTitle_1a3q6_44";
+const NodeContent = "_NodeContent_1a3q6_57";
+const NodeContentPart = "_NodeContentPart_1a3q6_69";
+const NodeCommands = "_NodeCommands_1a3q6_82";
 var styles$4 = {
 	Node: Node$2,
 	NodeSelected: NodeSelected,
@@ -59076,7 +59078,7 @@ const NodeContentReadonly = props => {
       const parts = md.split(props.separator);
       const promises = parts.map(p => props.getHtmlContent(p));
       const partsParsed = await Promise.all(promises);
-      const nodeHtmBloksHtml = partsParsed.map(p => `<div class="${styles$4.NodeContentPart}">${p}</div>`);
+      const nodeHtmBloksHtml = partsParsed.map(p => `<div class="${styles$4.NodeContentPart}"><div class="dumbot-content-body">${p}</div></div>`);
       return nodeHtmBloksHtml.join("");
     } catch (error) {
       console.error(error);
@@ -59753,8 +59755,6 @@ const DiagramWrapper = ({
 
   });
 };
-
-var index = '';
 
 function FChart(props, elementId) {
   render(() => createComponent(DiagramWrapper, {

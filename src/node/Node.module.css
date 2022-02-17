@@ -67,22 +67,16 @@
 }
 
 .NodeContentPart {
-  background-color: var(--brand-color);
+  background-color: var(--node-content-bgcolor);
   display: inline-block;
   overflow: hidden;
   overflow-wrap: break-word;
   position: relative;
   font-size: 14px;
-  max-width: 100%;
-  border-radius: 18px 18px 18px 0;
-  box-shadow: 0 3px 5px 0 rgb(0 0 0 / 90%);
-  color: #fff;
+  width: 100%;
+  border-radius: 5px;
+  color:  var(--node-text-color);
   padding: 10px;
-  -webkit-animation: none;
-  animation: none;
-  -webkit-transform: none;
-  -ms-transform: none;
-  transform: none;
 }
 
 .NodeCommands {

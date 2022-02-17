@@ -13,7 +13,8 @@ export const NodeContentReadonly = (props: {
       const promises = parts.map((p) => props.getHtmlContent(p));
       const partsParsed = await Promise.all(promises);
       const nodeHtmBloksHtml = partsParsed.map(
-        (p) => `<div class="${styles.NodeContentPart}">${p}</div>`
+        (p) =>
+          `<div class="${styles.NodeContentPart}"><div class="dumbot-content-body">${p}</div></div>`
       );
       return nodeHtmBloksHtml.join("");
     } catch (error) {

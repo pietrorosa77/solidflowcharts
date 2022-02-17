@@ -19,28 +19,6 @@ export const defaultFontFace = `/* latin-ext */
 
 export const getCssVariables = (width?: string, height?: string) => {
   return {
-    // --text: #333;
-    // --negative-text: #eee;
-    // --background: #fff;
-    // --border-color: #ccc;
-    // --primary: #37c;
-    // --primary-text: #eee;
-    // --success: #dfd;
-    // --success-text: #060;
-    // --info: #ddf;
-    // --info-text: #00a;
-    // --warning: #ffd;
-    // --warning-text: #bb0;
-    // --error: #fdd;
-    // --error-text: #800;
-    // --random-color1: #89d;
-    // --random-color2: #9bd;
-    // --random-color3: #adb;
-    // --random-color4: #cc9;
-    // --random-color5: #db9;
-    // --random-color6: #d99;
-    // --random-color7: #c9a;
-    // --random-color8: #b9a;
     "--diagram-width": width || "100vw",
     "--diagram-height": height || "100vh",
     "--canvas-bg-color": "#3a5584",
@@ -60,5 +38,7 @@ export const getCssVariables = (width?: string, height?: string) => {
     "--node-head-font-size": "18px",
     "--bg-inactive": "rgb(153, 148, 148)",
     "--warning-color": "rgb(248, 172, 59)",
+    "--node-content-bgcolor": "#4a4d70",
+    "--node-text-color": "#fff",
   };
 };

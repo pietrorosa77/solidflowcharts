@@ -3,7 +3,6 @@ import { ExtendedNode, IChart } from "../definitions";
 import Diagram from "./diagram/Diagram";
 import { ISidebarNode } from "./sidebar/Sidebar";
 import { IChartActions } from "./store/chartStore";
-import "./index.css";
 
 interface IDGProps {
   chart: IChart;
