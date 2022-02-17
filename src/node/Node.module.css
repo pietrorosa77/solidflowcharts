@@ -60,7 +60,7 @@
   width: 100%;
   block-size: fit-content;
   overflow-wrap: break-word;
-  overflow: auto;
+  overflow: hidden;
 }
 .NodeContent * {
   margin: 0;
@@ -69,13 +69,13 @@
 .NodeContentPart {
   background-color: var(--node-content-bgcolor);
   display: inline-block;
-  overflow: hidden;
+  overflow: auto;
   overflow-wrap: break-word;
   position: relative;
   font-size: 14px;
   width: 100%;
   border-radius: 5px;
-  color:  var(--node-text-color);
+  color: var(--node-text-color);
   padding: 10px;
 }
 

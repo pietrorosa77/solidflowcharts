@@ -58787,13 +58787,13 @@ const Checkbox = props => {
   })();
 };
 
-const Node$2 = "_Node_1a3q6_1";
-const NodeSelected = "_NodeSelected_1a3q6_15";
-const NodeHead$1 = "_NodeHead_1a3q6_25";
-const NodeHeadTitle = "_NodeHeadTitle_1a3q6_44";
-const NodeContent = "_NodeContent_1a3q6_57";
-const NodeContentPart = "_NodeContentPart_1a3q6_69";
-const NodeCommands = "_NodeCommands_1a3q6_82";
+const Node$2 = "_Node_v56ue_1";
+const NodeSelected = "_NodeSelected_v56ue_15";
+const NodeHead$1 = "_NodeHead_v56ue_25";
+const NodeHeadTitle = "_NodeHeadTitle_v56ue_44";
+const NodeContent = "_NodeContent_v56ue_57";
+const NodeContentPart = "_NodeContentPart_v56ue_69";
+const NodeCommands = "_NodeCommands_v56ue_82";
 var styles$4 = {
 	Node: Node$2,
 	NodeSelected: NodeSelected,
@@ -59353,7 +59353,7 @@ const Node$1 = ({
         [`${styles$4.NodeSelected}`]: state.chart.selected[nodeId]
       },
             _v$6 = `translate(${state.chart.nodes[nodeId].position.x}px, ${state.chart.nodes[nodeId].position.y}px)`,
-            _v$7 = styles$4.NodeContent,
+            _v$7 = `${styles$4.NodeContent} flowchart-node-content`,
             _v$8 = styles$4.NodeContentView;
       _v$4 !== _p$._v$4 && (_el$6.className = _p$._v$4 = _v$4);
       _p$._v$5 = classList(_el$6, _v$5, _p$._v$5);

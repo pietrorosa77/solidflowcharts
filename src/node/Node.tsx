@@ -58,7 +58,14 @@ const Node: Component<{
   separator: string;
   getNodeHtml: (content: string) => Promise<string>;
   // eslint-disable-next-line
-}> = ({ nodeId, canvasId, sizeObserver, onNodeSettings, separator, getNodeHtml }) => {
+}> = ({
+  nodeId,
+  canvasId,
+  sizeObserver,
+  onNodeSettings,
+  separator,
+  getNodeHtml,
+}) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
 
@@ -223,7 +230,7 @@ const Node: Component<{
         onNodeSettings={onNodeSettingsClick}
       />
 
-      <div class={styles.NodeContent}>
+      <div class={`${styles.NodeContent} flowchart-node-content`}>
         <div class={styles.NodeContentView}>
           <NodeContentReadonly
             content={getContent()}
