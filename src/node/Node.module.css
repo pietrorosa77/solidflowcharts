@@ -34,11 +34,12 @@
   flex-direction: row;
   width: 100%;
   justify-content: center;
-  padding: 6px;
+  padding: 0px 3px;
+  height: 32px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   overflow: hidden;
-  align-items: center;
+  align-items: end;
 }
 
 .NodeHeadTitle {
