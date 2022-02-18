@@ -58730,7 +58730,7 @@ const Canvas = ({
 };
 
 var styles$5 = {
-	"sb-checkbox": "_sb-checkbox_1ruvo_1"
+	"sb-checkbox": "_sb-checkbox_1jivc_1"
 };
 
 const _tmpl$$6 = template(`<label><input type="checkbox"></label>`);
@@ -58787,13 +58787,13 @@ const Checkbox = props => {
   })();
 };
 
-const Node$2 = "_Node_v56ue_1";
-const NodeSelected = "_NodeSelected_v56ue_15";
-const NodeHead$1 = "_NodeHead_v56ue_25";
-const NodeHeadTitle = "_NodeHeadTitle_v56ue_44";
-const NodeContent = "_NodeContent_v56ue_57";
-const NodeContentPart = "_NodeContentPart_v56ue_69";
-const NodeCommands = "_NodeCommands_v56ue_82";
+const Node$2 = "_Node_1bmxy_1";
+const NodeSelected = "_NodeSelected_1bmxy_15";
+const NodeHead$1 = "_NodeHead_1bmxy_25";
+const NodeHeadTitle = "_NodeHeadTitle_1bmxy_44";
+const NodeContent = "_NodeContent_1bmxy_57";
+const NodeContentPart = "_NodeContentPart_1bmxy_69";
+const NodeCommands = "_NodeCommands_1bmxy_82";
 var styles$4 = {
 	Node: Node$2,
 	NodeSelected: NodeSelected,
