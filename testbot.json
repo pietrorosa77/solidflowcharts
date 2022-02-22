@@ -71,7 +71,8 @@
           "properties": {
             "value": "test port 1",
             "icon": "Accessibility",
-            "text": "test port 1"
+            "text": "test port 1",
+            "disabled": true
           }
         },
         "option2": {

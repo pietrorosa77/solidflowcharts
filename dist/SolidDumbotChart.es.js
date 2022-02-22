@@ -58835,8 +58835,8 @@ function TiArrowLoop(props) {
 }, ...props})
 }
 
-const _tmpl$$5 = template(`<div><div><div><span></span></div><div></div></div></div>`),
-      _tmpl$2$2 = template(`<div></div>`);
+const _tmpl$$5 = template(`<div></div>`),
+      _tmpl$2$2 = template(`<div><div><div><span></span></div></div></div>`);
 
 const getPortBgColor = port => {
   if (!port.bgColor) {
@@ -58929,6 +58929,8 @@ const Port = props => {
     return !!state.chart.paths[`${props.nodeId}-${props.portId}`];
   };
 
+  const forceHide = () => !!state.chart.nodes[props.nodeId].ports[props.portId].properties.disabled;
+
   const hasLoop = () => hasLink() && state.chart.paths[`${props.nodeId}-${props.portId}`] === props.nodeId;
 
   const deleteLinkAccessibilityProps = {
@@ -58936,11 +58938,10 @@ const Port = props => {
     "aria-text": `delete link`
   };
   return (() => {
-    const _el$ = _tmpl$$5.cloneNode(true),
+    const _el$ = _tmpl$2$2.cloneNode(true),
           _el$2 = _el$.firstChild,
           _el$3 = _el$2.firstChild,
-          _el$4 = _el$3.firstChild,
-          _el$5 = _el$3.nextSibling;
+          _el$4 = _el$3.firstChild;
 
     _el$.style.setProperty("width", "100%");
 
@@ -58967,37 +58968,52 @@ const Port = props => {
 
     }), null);
 
-    _el$5.$$pointerdown = handleMouseDown;
-
-    insert(_el$5, createComponent(Show, {
+    insert(_el$2, createComponent(Show, {
       get when() {
-        return hasLink();
-      },
-
-      get fallback() {
-        return (() => {
-          const _el$6 = _tmpl$2$2.cloneNode(true);
-
-          createRenderEffect(() => _el$6.className = styles$3.PortOutInner);
-
-          return _el$6;
-        })();
+        return !forceHide();
       },
 
       get children() {
-        return createComponent(BiTrash, mergeProps({
-          title: "delete link",
-          size: 24,
-          onPointerDown: onDeleteLink,
+        const _el$5 = _tmpl$$5.cloneNode(true);
 
-          get ["class"]() {
-            return styles$3.DeleteLinkIcon;
+        _el$5.$$pointerdown = handleMouseDown;
+
+        insert(_el$5, createComponent(Show, {
+          get when() {
+            return hasLink();
+          },
+
+          get fallback() {
+            return (() => {
+              const _el$6 = _tmpl$$5.cloneNode(true);
+
+              createRenderEffect(() => _el$6.className = styles$3.PortOutInner);
+
+              return _el$6;
+            })();
+          },
+
+          get children() {
+            return createComponent(BiTrash, mergeProps({
+              title: "delete link",
+              size: 24,
+              onPointerDown: onDeleteLink,
+
+              get ["class"]() {
+                return styles$3.DeleteLinkIcon;
+              }
+
+            }, deleteLinkAccessibilityProps));
           }
 
-        }, deleteLinkAccessibilityProps));
+        }));
+
+        createRenderEffect(() => _el$5.className = styles$3.PortOutContainer);
+
+        return _el$5;
       }
 
-    }));
+    }), null);
 
     createRenderEffect(_p$ => {
       const _v$ = styles$3.PortContainer,
@@ -59006,8 +59022,7 @@ const Port = props => {
             _v$4 = `${state.portHeight}px`,
             _v$5 = getPortBgColor(state.chart.nodes[props.nodeId].ports[props.portId]),
             _v$6 = styles$3.PortContent,
-            _v$7 = styles$3.PortText,
-            _v$8 = styles$3.PortOutContainer;
+            _v$7 = styles$3.PortText;
 
       _v$ !== _p$._v$ && (_el$.className = _p$._v$ = _v$);
       _v$2 !== _p$._v$2 && _el$.style.setProperty("height", _p$._v$2 = _v$2);
@@ -59016,7 +59031,6 @@ const Port = props => {
       _v$5 !== _p$._v$5 && _el$2.style.setProperty("background-color", _p$._v$5 = _v$5);
       _v$6 !== _p$._v$6 && (_el$3.className = _p$._v$6 = _v$6);
       _v$7 !== _p$._v$7 && (_el$4.className = _p$._v$7 = _v$7);
-      _v$8 !== _p$._v$8 && (_el$5.className = _p$._v$8 = _v$8);
       return _p$;
     }, {
       _v$: undefined,
@@ -59025,8 +59039,7 @@ const Port = props => {
       _v$4: undefined,
       _v$5: undefined,
       _v$6: undefined,
-      _v$7: undefined,
-      _v$8: undefined
+      _v$7: undefined
     });
 
     return _el$;
@@ -59041,7 +59054,7 @@ const Ports = ({
 }) => {
   const [state] = useChartStore();
   return (() => {
-    const _el$7 = _tmpl$2$2.cloneNode(true);
+    const _el$7 = _tmpl$$5.cloneNode(true);
 
     setAttribute(_el$7, "id", `${nodeId}-port-container`);
 

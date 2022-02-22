@@ -109,6 +109,9 @@ const Port = (props: {
     return !!state.chart.paths[`${props.nodeId}-${props.portId}`];
   };
 
+  const forceHide = () =>
+    !!state.chart.nodes[props.nodeId].ports[props.portId].properties.disabled;
+
   const hasLoop = () =>
     hasLink() &&
     state.chart.paths[`${props.nodeId}-${props.portId}`] === props.nodeId;
@@ -145,17 +148,22 @@ const Port = (props: {
             />
           </Show>
         </div>
-        <div class={styles.PortOutContainer} onPointerDown={handleMouseDown}>
-          <Show when={hasLink()} fallback={<div class={styles.PortOutInner} />}>
-            <BiTrash
-              title="delete link"
-              size={24}
-              onPointerDown={onDeleteLink}
-              class={styles.DeleteLinkIcon}
-              {...deleteLinkAccessibilityProps}
-            />
-          </Show>
-        </div>
+        <Show when={!forceHide()}>
+          <div class={styles.PortOutContainer} onPointerDown={handleMouseDown}>
+            <Show
+              when={hasLink()}
+              fallback={<div class={styles.PortOutInner} />}
+            >
+              <BiTrash
+                title="delete link"
+                size={24}
+                onPointerDown={onDeleteLink}
+                class={styles.DeleteLinkIcon}
+                {...deleteLinkAccessibilityProps}
+              />
+            </Show>
+          </div>
+        </Show>
       </div>
     </div>
   );
