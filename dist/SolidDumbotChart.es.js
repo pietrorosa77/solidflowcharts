@@ -57912,8 +57912,8 @@ const pointInNode = (node, point) => {
   const y2 = node.position.y + nodeSize.h;
   return point.x > x1 && point.x < x2 && point.y > y1 && point.y < y2;
 };
-const isValidLink = (nodeToId, links, _fromNodeId) => {
-  return links.filter((l) => l.to === nodeToId).length === 0;
+const isValidLink = (node, links, _fromNodeId) => {
+  return !node.properties?.onlyOut && links.filter((l) => l.to === node.id).length === 0;
 };
 const getLinksForPort = (chart, nodeId, portId) => {
   return Object.keys(chart.links).filter((k) => chart.links[k].from.nodeId === nodeId && chart.links[k].from.portId === portId).map((linkId) => chart.links[linkId]);
@@ -58023,7 +58023,7 @@ function ChartProvider(props) {
       batch(() => {
         const nodeTo = Object.keys(state.chart.nodes).map(key => state.chart.nodes[key]).find(n => link.posTo && pointInNode(n, link.posTo));
 
-        if (!nodeTo || !isValidLink(nodeTo.id, portLinks, link.from.nodeId)) {
+        if (!nodeTo || !isValidLink(nodeTo, portLinks, link.from.nodeId)) {
           setChart("newLink", () => undefined);
           return;
         }

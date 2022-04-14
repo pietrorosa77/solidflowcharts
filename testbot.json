@@ -233,6 +233,7 @@
       "output": { "type": "object", "id": "remoteFederatedNode_EUD-PvSvVV" },
       "properties": {
         "label": "test",
+        "onlyOut": true,
         "module": "./RemoteNodeExample",
         "scope": "DumbotFederatedModulesScope",
         "remoteUrl": "https://dumbot-federatednode-dt44z.ondigitalocean.app/remoteEntry.js",

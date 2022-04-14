@@ -1,11 +1,6 @@
 import { nanoid } from "nanoid";
 import { ExtendedNode } from "./definitions";
 import { ISidebarNode } from "./src/sidebar/Sidebar";
-import {
-  BsChatFill,
-  BsQuestionCircleFill,
-  BsMenuButtonWide,
-} from "solid-icons/bs";
 
 export const QUESTIONNODETYPE = "question";
 export const BUTTONSNODETYPE = "buttons";
@@ -127,6 +122,7 @@ const RemoteNode: ExtendedNode = {
     type: "object",
   },
   properties: {
+    preventInputLink: true,
     displayAs: "message",
     label: "test",
     module: "./RemoteNodeExample",

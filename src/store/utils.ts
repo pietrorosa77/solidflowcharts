@@ -1,4 +1,10 @@
-import { IChart, ILink, INode, IPosition } from "../../definitions";
+import {
+  ExtendedNode,
+  IChart,
+  ILink,
+  INode,
+  IPosition,
+} from "../../definitions";
 
 export function getPositionWithParentBoundsSize(
   canvasSize: { w: number; h: number },
@@ -106,14 +112,14 @@ export const pointInNode = (node: INode, point: IPosition) => {
 };
 
 export const isValidLink = (
-  nodeToId: string,
+  node: ExtendedNode,
   links: ILink[],
   // eslint-disable-next-line
   _fromNodeId: string
 ) => {
   return (
-    //nodeToId !== fromNodeId &&
-    links.filter((l) => l.to === nodeToId).length === 0
+    !node.properties?.onlyOut &&
+    links.filter((l) => l.to === node.id).length === 0
   );
 };
 

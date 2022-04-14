@@ -166,10 +166,7 @@ export function ChartProvider(props: {
               .map((key) => state.chart.nodes[key])
               .find((n) => link.posTo && pointInNode(n, link.posTo));
 
-            if (
-              !nodeTo ||
-              !isValidLink(nodeTo.id, portLinks, link.from.nodeId)
-            ) {
+            if (!nodeTo || !isValidLink(nodeTo, portLinks, link.from.nodeId)) {
               setChart("newLink", () => undefined);
               return;
             }
