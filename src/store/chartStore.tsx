@@ -63,25 +63,25 @@ export function ChartProvider(props: {
   };
 
   const [state, setChart] = createStore({
-      // eslint-disable-next-line
-      chart: props.chart,
-      scale: 1,
-      selection: false,
-      portHeight: 30,
-      portOffset: 35,
-      newLink: undefined,
-      canUndo: false,
-      canRedo: false,
-      sidebar: false,
-    } as DeepReadonly<{
-      chart: IChart;
-      scale: number;
-      newLink: undefined | ILink;
-      selection: boolean;
-      canUndo: boolean;
-      canRedo: boolean;
-      sidebar: boolean;
-    }>),
+    // eslint-disable-next-line
+    chart: props.chart,
+    scale: 1,
+    selection: false,
+    portHeight: 30,
+    portOffset: 35,
+    newLink: undefined,
+    canUndo: false,
+    canRedo: false,
+    sidebar: false,
+  } as DeepReadonly<{
+    chart: IChart;
+    scale: number;
+    newLink: undefined | ILink;
+    selection: boolean;
+    canUndo: boolean;
+    canRedo: boolean;
+    sidebar: boolean;
+  }>),
     store = [
       state,
       {
@@ -214,6 +214,7 @@ export function ChartProvider(props: {
             });
             ids.forEach((id) => {
               setChart("chart", "nodes", id, () => undefined);
+              setChart("chart", "selected", id, () => undefined);
             });
             links.forEach((l) => {
               setChart("chart", "links", l, () => undefined);

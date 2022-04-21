@@ -58065,6 +58065,7 @@ function ChartProvider(props) {
         });
         ids.forEach(id => {
           setChart("chart", "nodes", id, () => undefined);
+          setChart("chart", "selected", id, () => undefined);
         });
         links.forEach(l => {
           setChart("chart", "links", l, () => undefined);
