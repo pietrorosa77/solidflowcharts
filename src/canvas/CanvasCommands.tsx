@@ -2,7 +2,7 @@ import { Component, JSX, onMount } from "solid-js";
 import { Button } from "../components/Button";
 import { AiFillEye } from "solid-icons/ai";
 import { BiSolidHelpCircle } from "solid-icons/bi";
-import { FaSolidExpandArrowsAlt } from "solid-icons/fa";
+import { FaSolidArrowsUpDownLeftRight} from "solid-icons/fa";
 import { AiOutlineSelect } from "solid-icons/ai";
 import { IoAppsSharp } from "solid-icons/io";
 import { ImRedo, ImUndo } from "solid-icons/im";
@@ -83,7 +83,7 @@ const CanvasCommands: Component<{
           }}
           onClick={onEnablePanZoom}
         >
-          <FaSolidExpandArrowsAlt size={30} />
+          <FaSolidArrowsUpDownLeftRight size={30} />
         </Button>
         <Button
           variant="icon"
@@ -163,7 +163,7 @@ const CanvasCommands: Component<{
                       {` Collapse/expande node library sidebar`}
                     </li>
                     <li>
-                      <FaSolidExpandArrowsAlt
+                      <FaSolidArrowsUpDownLeftRight
                         size={30}
                         style={{ display: "inline" }}
                       />

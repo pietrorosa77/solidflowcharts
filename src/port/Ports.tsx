@@ -3,7 +3,7 @@ import { INode, IPort } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Ports.module.css";
 import { TiArrowLoop } from "solid-icons/ti";
-import { BiTrash } from "solid-icons/bi";
+import { BiSolidTrash } from "solid-icons/bi";
 import { getLinksForPort } from "../store/utils";
 
 const getPortBgColor = (port: IPort) => {
@@ -119,7 +119,7 @@ const Port = (props: {
   const deleteLinkAccessibilityProps = {
     role: "button",
     "aria-text": `delete link`,
-  };
+  } as any;
 
   return (
     <div
@@ -154,7 +154,7 @@ const Port = (props: {
               when={hasLink()}
               fallback={<div class={styles.PortOutInner} />}
             >
-              <BiTrash
+              <BiSolidTrash
                 title="delete link"
                 size={24}
                 onPointerDown={onDeleteLink}

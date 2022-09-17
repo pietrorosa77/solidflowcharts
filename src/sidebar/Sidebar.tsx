@@ -37,9 +37,9 @@ const Sidebar: Component<{
     >
       <div class={styles.sidenavHead}>
         <a
-          href="javascript:void(0)"
+          href=""
           class={styles.closebtn}
-          onclick={actions.onToggleSidebar}
+          onClick={actions.onToggleSidebar}
         >
           &times;
         </a>

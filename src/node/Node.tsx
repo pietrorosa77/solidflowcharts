@@ -10,7 +10,7 @@ import {
 import styles from "./Node.module.css";
 import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
-import { BiTrash } from "solid-icons/bi";
+import { BiSolidTrash } from "solid-icons/bi";
 import { NodeContentReadonly } from "./NodeContent";
 
 const NodeHead = (props: {
@@ -40,7 +40,7 @@ const NodeHead = (props: {
           class={styles.NodeCommands}
           onPointerDown={onNodeSettings}
         />
-        <BiTrash
+        <BiSolidTrash
           size={24}
           class={styles.NodeCommands}
           onPointerDown={onDeleteNode}

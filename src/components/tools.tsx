@@ -9,7 +9,7 @@ import {
 } from "solid-js";
 import * as faicons from "solid-icons/fa";
 import * as bsicons from "solid-icons/bs";
-import * as vsicons from "solid-icons/vsc";
+import * as vsicons from "solid-icons/vs";
 
 export type WrappedElement<P> = (props: P) => JSX.Element;
 
