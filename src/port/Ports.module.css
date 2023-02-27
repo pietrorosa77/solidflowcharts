@@ -67,11 +67,11 @@
 }
 
 .DeleteLinkIcon {
-  color: var(--connection-color);
+  color: var(--connection-color) !important; /* flag important needed because of solidicons */
 }
 
 .DeleteLinkIcon:hover {
-  color: var(--warning-color);
+  color: var(--warning-color) !important;/* flag important needed because of solidicons */
 }
 
 .LoopPortIndicator {

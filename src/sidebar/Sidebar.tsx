@@ -24,9 +24,14 @@ const onDragEnd = (e: DragEvent) => {
 
 const Sidebar: Component<{
   nodes: ISidebarNode[];
-  // eslint-disable-next-line
-}> = ({ nodes }) => {
+}> = (props) => {
   const [state, actions] = useChartStore();
+  const onSidebarCloseClick = (evt: Event) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    actions.onToggleSidebar();
+    return false;
+  }
   return (
     <div
       class={styles.sidenav}
@@ -39,17 +44,19 @@ const Sidebar: Component<{
         <a
           href=""
           class={styles.closebtn}
-          onClick={actions.onToggleSidebar}
+          onClick={onSidebarCloseClick}
         >
           &times;
         </a>
       </div>
       <div class={styles.nodesContainer}>
-        <For each={nodes}>
+        <For each={props.nodes}>
           {(node) => {
             return (
               <Button
-                class={styles.sidenavButton}
+                classList={{
+                  [`${styles.sidenavButton}`]: true,
+                }}
                 draggable={true}
                 onDragStart={(e: DragEvent) => onDragStart(e, node)}
                 onDragEnd={onDragEnd}

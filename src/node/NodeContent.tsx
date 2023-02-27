@@ -35,6 +35,6 @@ export const NodeContentReadonly = (props: {
       // eslint-disable-next-line
       innerHTML={nodeContent ? nodeContent() : "loading markdown..."}
       style={{ width: "100%", cursor: "unset" }}
-    ></div>
+    />
   );
 };

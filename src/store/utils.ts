@@ -114,9 +114,9 @@ export const pointInNode = (node: INode, point: IPosition) => {
 export const isValidLink = (
   node: ExtendedNode,
   links: ILink[],
-  // eslint-disable-next-line
-  _fromNodeId: string
+  fromNodeId: string
 ) => {
+  console.debug('from node', fromNodeId);
   return (
     !node.properties?.onlyOut &&
     links.filter((l) => l.to === node.id).length === 0

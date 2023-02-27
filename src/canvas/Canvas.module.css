@@ -46,14 +46,14 @@
 }
 
 .CanvasCommandsDisabled {
-  color: var(--bg-inactive) !important;
+  color: var(--bg-inactive) !important;  /* flag important needed because of solidicons */
   cursor: default !important;
 }
 
 .CanvasCommandsEnabled,
 .CanvasCommand:hover {
-  color: var(--accent-color) !important;
-  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important /* flag important needed because of solidicons */;
+  border-color: var(--accent-color) !important /* flag important needed because of solidicons */;
   box-shadow: unset !important;
   cursor: pointer;
 }

@@ -22,7 +22,7 @@ export function FChart(props: IDGProps, elementId: string) {
   render(
     () => (
       <Diagram
-        chart={props.chart}
+        initialChart={props.chart}
         width={props.width}
         height={props.height}
         root={props.root || document}

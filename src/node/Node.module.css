@@ -86,5 +86,5 @@
 
 .NodeCommands:hover {
   cursor: pointer;
-  color: var(--accent-color);
+  color: var(--accent-color) !important /* flag important needed because of solidicons */;
 }

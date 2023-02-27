@@ -14,12 +14,11 @@ const App = (props: { initState: IChart }) => {
 
   const onLoad = (actionsIn: IChartActions) => {
     actions = actionsIn;
-    console.log("actions are", actions);
+    console.debug("actions are", actions);
   };
   return (
-    <>
       <Diagram
-        chart={props.initState}
+        initialChart={props.initState}
         fontFace={defaultFontFace}
         messageSeparator="<dumbot-boubble/>"
         availableNodes={availableNodes}
@@ -27,14 +26,14 @@ const App = (props: { initState: IChart }) => {
           node = {
             ...nodeDt,
           };
-          console.log("settings for", node);
+          console.debug("settings for", node);
         }}
         onHistoryChange={(chart) => {
-          console.log("updated chart is", chart);
+          console.debug("updated chart is", chart);
         }}
         onLoad={onLoad}
       />
-    </>
+
   );
 };
 

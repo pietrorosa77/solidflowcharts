@@ -17,6 +17,17 @@ import {
   pointInNode,
 } from "./utils";
 
+type ChartStore = {
+  chart: IChart;
+  scale: number;
+  selection: boolean;
+  portHeight: number;
+  portOffset: number;
+  newLink: undefined;
+  canUndo: boolean;
+  canRedo: boolean;
+  sidebar: boolean;
+}
 const ChartContext = createContext();
 
 export interface IChartActions {
@@ -46,12 +57,12 @@ export interface IChartActions {
 }
 
 export function ChartProvider(props: {
-  chart: IChart;
+  initialChart: IChart;
   children: any;
   onHistoryChange?: (chart: IChart) => void;
 }) {
-  // eslint-disable-next-line
-  const history = new UndoRedoManager(cloneDeep(props.chart));
+
+  const history = new UndoRedoManager(cloneDeep(props.initialChart));
 
   const recordHistory = (chart: IChart, action: string, skipSaving = false) => {
     const current = skipSaving ? chart : history.save(chart, action);
@@ -63,8 +74,7 @@ export function ChartProvider(props: {
   };
 
   const [state, setChart] = createStore({
-    // eslint-disable-next-line
-    chart: props.chart,
+    chart: props.initialChart,
     scale: 1,
     selection: false,
     portHeight: 30,
@@ -73,18 +83,11 @@ export function ChartProvider(props: {
     canUndo: false,
     canRedo: false,
     sidebar: false,
-  } as DeepReadonly<{
-    chart: IChart;
-    scale: number;
-    newLink: undefined | ILink;
-    selection: boolean;
-    canUndo: boolean;
-    canRedo: boolean;
-    sidebar: boolean;
-  }>),
+  } as ChartStore),
     store = [
       state,
       {
+        // eslint-disable-next-line
         nodesSizeChanged(evt: ResizeObserverEntry[]) {
           batch(() => {
             evt.forEach((e) => {
@@ -99,14 +102,17 @@ export function ChartProvider(props: {
             recordHistory(state.chart, "onNodeSizeChanged");
           });
         },
+        // eslint-disable-next-line
         onNodeDrag(evt: { nodeId: string; position: IPosition }) {
           setChart("chart", "nodes", evt.nodeId, "position", () => {
             return evt.position;
           });
         },
+        // eslint-disable-next-line
         onToggleSidebar() {
           setChart("sidebar", () => !state.sidebar);
         },
+        // eslint-disable-next-line
         onMultiDrag(evt: {
           leaderId: string;
           leaderPos: IPosition;
@@ -136,30 +142,36 @@ export function ChartProvider(props: {
               });
           });
         },
+        // eslint-disable-next-line
         onScale(scale: number) {
           setChart("scale", () => scale);
         },
+        // eslint-disable-next-line
         onAreaSelection(selection: { [key: string]: boolean }) {
           batch(() => {
             setChart("chart", "selected", () => selection);
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onToggleNodeSelection(id: string, selected: boolean) {
           batch(() => {
             setChart("chart", "selected", id, () => selected);
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onToggleAreaSelection(enableSelection: boolean) {
           batch(() => {
             setChart("selection", () => enableSelection);
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onCreatingLink(link: ILink) {
           setChart("newLink", () => link as any);
         },
+        // eslint-disable-next-line
         onEndConnection(link: ILink, portLinks: DeepReadonly<ILink>[]) {
           batch(() => {
             const nodeTo = Object.keys(state.chart.nodes)
@@ -194,12 +206,13 @@ export function ChartProvider(props: {
           const portLinks = getLinksForPort(state.chart, nodeId, portId);
           batch(() => {
             portLinks.forEach((l) => {
-              setChart("chart", "links", l.id, () => undefined);
+              setChart("chart", "links", l.id, () => undefined as any);
             });
-            setChart("chart", "paths", `${nodeId}-${portId}`, () => undefined);
+            setChart("chart", "paths", `${nodeId}-${portId}`, () => undefined as any);
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onDeleteNodes(ids: string[]) {
           batch(() => {
             const links = Object.keys(state.chart.links).filter((k) => {
@@ -214,17 +227,18 @@ export function ChartProvider(props: {
             });
             ids.forEach((id) => {
               setChart("chart", "nodes", id, () => undefined);
-              setChart("chart", "selected", id, () => undefined);
+              setChart("chart", "selected", id, () => undefined as any);
             });
             links.forEach((l) => {
-              setChart("chart", "links", l, () => undefined);
+              setChart("chart", "links", l, () => undefined as any);
             });
             paths.forEach((p) => {
-              setChart("chart", "paths", p, () => undefined);
+              setChart("chart", "paths", p, () => undefined as any);
             });
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onNodeChanged(nodeId: string, node: ExtendedNode) {
           batch(() => {
             const oldNode = state.chart.nodes[nodeId];
@@ -251,16 +265,17 @@ export function ChartProvider(props: {
             );
 
             removedLinks.forEach((l) => {
-              setChart("chart", "links", l, () => undefined);
+              setChart("chart", "links", l, () => undefined as any);
             });
             pathsToDelete.forEach((p) => {
-              setChart("chart", "paths", p, () => undefined);
+              setChart("chart", "paths", p, () => undefined as any);
             });
             setChart("chart", "nodes", nodeId, () => node);
 
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onAddNode(node: ExtendedNode) {
           batch(() => {
             const newNode = {
@@ -272,6 +287,7 @@ export function ChartProvider(props: {
             recordHistory(state.chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onUndo() {
           batch(() => {
             const chart = history.undo();
@@ -279,6 +295,7 @@ export function ChartProvider(props: {
             recordHistory(state.chart, "undo");
           });
         },
+        // eslint-disable-next-line
         onRedo() {
           batch(() => {
             const chart = history.redo();
@@ -286,6 +303,7 @@ export function ChartProvider(props: {
             recordHistory(chart, "crtAction");
           });
         },
+        // eslint-disable-next-line
         onNodeDraggingEnd() {
           batch(() => {
             recordHistory(state.chart, "crtAction");
@@ -302,17 +320,7 @@ export function ChartProvider(props: {
 }
 
 export function useChartStore(): [
-  DeepReadonly<{
-    chart: IChart;
-    scale: number;
-    selection: boolean;
-    portHeight: number;
-    portOffset: number;
-    newLink: undefined | ILink;
-    canUndo: boolean;
-    canRedo: boolean;
-    sidebar: boolean;
-  }>,
+  ChartStore,
   IChartActions
 ] {
   return useContext(ChartContext) as any;

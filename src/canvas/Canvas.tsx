@@ -13,18 +13,18 @@ const Canvas: Component<{
   minZoom: number;
   maxZoom: number;
   onScale: (evt: PanZoom) => void;
-  // eslint-disable-next-line
-}> = ({ id, children, onScale, minZoom, maxZoom }) => {
+  children: any;
+}> = (props) => {
   let cnv: any;
   let zoomInstance: PanZoom;
   const [state, actions] = useChartStore();
   const zoomHandler = (e: PanZoom) => {
-    onScale(e);
+    props.onScale(e);
   };
   onMount(() => {
     zoomInstance = panzoom(cnv, {
-      minZoom,
-      maxZoom,
+      minZoom: props.minZoom,
+      maxZoom: props.maxZoom,
       zoomDoubleClickSpeed: 1,
       onDoubleClick: function () {
         // `e` - is current double click event.
@@ -84,7 +84,7 @@ const Canvas: Component<{
       <div class={styles.CanvasWrapper}>
         <div
           class={styles.Canvas}
-          id={id}
+          id={props.id}
           ref={cnv}
           onDrop={onBlockDrop}
           onDragOver={onDragOver}
@@ -92,7 +92,7 @@ const Canvas: Component<{
             cursor: state.selection ? "crosshair" : "grab",
           }}
         >
-          <AreaSelect>{children}</AreaSelect>
+          <AreaSelect>{props.children}</AreaSelect>
         </div>
       </div>
       <CanvasCommands

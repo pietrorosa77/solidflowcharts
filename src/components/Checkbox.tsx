@@ -58,7 +58,7 @@ export const Checkbox: Component<CheckboxProps> = (props) => {
         type="checkbox"
         role={content.switch ? "switch" : undefined}
         {...inputProps}
-        onchange={changeHandler}
+        onChange={changeHandler}
       />
       <Show when={content.align !== "right"}>{content.children}</Show>
     </label>

@@ -1,4 +1,4 @@
-import { Component, JSX, onMount, Show, ErrorBoundary } from "solid-js";
+import { Component, onMount, Show, ErrorBoundary } from "solid-js";
 import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
@@ -12,7 +12,7 @@ import {
 } from "../store/chartStore";
 import { PanZoom } from "panzoom";
 import { defaultFontFace, getCssVariables } from "../defaultTheme";
-import { createFontStyle } from "../store/utils";
+// import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
 
@@ -24,25 +24,16 @@ const Diagram: Component<{
   height?: string;
   separator: string;
   getNodeHtml: (content: string) => Promise<string>;
-  // eslint-disable-next-line
-}> = ({
-  onNodeSettingsClick,
-  onLoad,
-  availableNodes,
-  width,
-  height,
-  separator,
-  getNodeHtml,
-}) => {
+}> = (props) => {
   const minZoom = 0.2;
   const maxZoom = 2;
   const canvasId = nanoid(10);
   const [state, actions] = useChartStore();
 
   onMount(() => {
-    console.log("Mounting flowchart diagram");
-    if (onLoad) {
-      onLoad(actions);
+    console.debug("Mounting flowchart diagram");
+    if (props.onLoad) {
+      props.onLoad(actions);
     }
   });
 
@@ -50,19 +41,20 @@ const Diagram: Component<{
     actions.onScale(evt.getTransform().scale);
   };
 
-  const cssVariables: JSX.CSSProperties = {
-    ...getCssVariables(width, height),
-  };
-
   const onNodeSettings = (nodeId: string) => {
-    if (onNodeSettingsClick) {
-      onNodeSettingsClick(state.chart.nodes[nodeId]);
+    if (props.onNodeSettingsClick) {
+      props.onNodeSettingsClick(state.chart.nodes[nodeId]);
     }
   };
 
   return (
-    <div style={cssVariables} class={styles.Diagram}>
-      <Sidebar nodes={availableNodes} />
+    <div
+      style={{
+        ...getCssVariables(props.width, props.height),
+      }}
+      class={styles.Diagram}
+    >
+      <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
         onScale={onScale}
@@ -72,8 +64,8 @@ const Diagram: Component<{
         <Nodes
           canvasId={canvasId}
           onNodeSettings={onNodeSettings}
-          separator={separator}
-          getNodeHtml={getNodeHtml}
+          separator={props.separator}
+          getNodeHtml={props.getNodeHtml}
         />
         <Links />
         <Show when={!!state.newLink}>
@@ -85,7 +77,7 @@ const Diagram: Component<{
 };
 
 const DiagramWrapper: Component<{
-  chart: IChart;
+  initialChart: IChart;
   fontFace?: string;
   onNodeSettingsClick?: (node: ExtendedNode) => void;
   onLoad?: (ctions: IChartActions) => void;
@@ -96,37 +88,42 @@ const DiagramWrapper: Component<{
   height?: string;
   messageSeparator: string;
   getNodeHtml?: (content: string) => Promise<string>;
+}> = (props) => {
   // eslint-disable-next-line
-}> = ({
-  chart,
-  fontFace,
-  onNodeSettingsClick,
-  onLoad,
-  onHistoryChange,
-  availableNodes,
-  root,
-  width,
-  height,
-  messageSeparator: separator,
-  getNodeHtml
-}) => {
-  createFontStyle(fontFace || defaultFontFace);
-  (window as any).DMBRoot = root || document;
-  const defaultGetNodeContent = (rawContent: string) => Promise.resolve(rawContent) 
+  (window as any).DMBRoot = props.root || document;
+  const defaultGetNodeContent = (rawContent: string) =>
+    Promise.resolve(rawContent);
+  const onNodeSettings = (node: ExtendedNode) => {
+    props.onNodeSettingsClick?.(node);
+  };
+
+  const onLoad = (actions: IChartActions) => {
+    props.onLoad?.(actions);
+  };
+
+  const onHistoryChanged = (chart: IChart) => {
+    props.onHistoryChange?.(chart);
+  };
   return (
-    <ChartProvider chart={chart} onHistoryChange={onHistoryChange}>
-      <ErrorBoundary fallback={(err) => err}>
-        <Diagram
-          width={width}
-          height={height}
-          getNodeHtml={getNodeHtml || defaultGetNodeContent}
-          separator={separator}
-          onNodeSettingsClick={onNodeSettingsClick}
-          onLoad={onLoad}
-          availableNodes={availableNodes}
-        />
-      </ErrorBoundary>
-    </ChartProvider>
+    <>
+      <style type="text/css">{props.fontFace || defaultFontFace}</style>
+      <ChartProvider
+        initialChart={props.initialChart}
+        onHistoryChange={onHistoryChanged}
+      >
+        <ErrorBoundary fallback={(err) => err}>
+          <Diagram
+            width={props.width}
+            height={props.height}
+            getNodeHtml={props.getNodeHtml || defaultGetNodeContent}
+            separator={props.messageSeparator}
+            onNodeSettingsClick={onNodeSettings}
+            onLoad={onLoad}
+            availableNodes={props.availableNodes}
+          />
+        </ErrorBoundary>
+      </ChartProvider>
+    </>
   );
 };
 

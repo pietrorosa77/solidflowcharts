@@ -1,4 +1,4 @@
-import { createSignal, JSX } from "solid-js";
+import { createSignal, JSX, Show } from "solid-js";
 import { IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 
@@ -51,20 +51,22 @@ export function AreaSelect(props: { children: any }) {
   };
 
   const getSelectionBox = (selArea: any) => {
-    if (!selArea) {
-      return null;
-    }
+    const rect = selArea ? selectionBoxRect(selArea) : undefined;
 
-    const rect = selectionBoxRect(selArea);
+    const style: JSX.CSSProperties | undefined = rect
+      ? {
+          height: `${rect?.height}px`,
+          width: `${rect?.width}px`,
+          top: `${rect?.top}px`,
+          left: `${rect?.left}px`,
+        }
+      : undefined;
 
-    const style: JSX.CSSProperties = {
-      height: `${rect?.height}px`,
-      width: `${rect?.width}px`,
-      top: `${rect?.top}px`,
-      left: `${rect?.left}px`,
-    };
-
-    return <div style={style} class={styles.SelectedArea}></div>;
+    return (
+      <Show when={style}>
+        <div style={style} class={styles.SelectedArea} />
+      </Show>
+    );
   };
 
   const selectionBoxRect = (selArea: any) => {

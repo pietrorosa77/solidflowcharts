@@ -20,16 +20,23 @@ const NodeHead = (props: {
   onDeleteNode: () => void;
   onNodeSettings: () => void;
 }) => {
-  // eslint-disable-next-line
-  const { onToggle, onNodeSettings, onDeleteNode } = props;
   const preventNodeDrag = (e: PointerEvent) => {
     (e as any)["diagramDetails"] = "prevent node drag";
   };
+  const onCheckboxChange = () => {
+    props.onToggle();
+  }
+  const onNodeSettings = () => {
+    props.onNodeSettings()
+  }
+
+  const onNodeTrash = () => {
+    props.onDeleteNode()
+  }
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={preventNodeDrag}>
-        {/* eslint-disable-next-line */}
-        <Checkbox onChange={onToggle} checked={!!props.selected} />
+        <Checkbox onChange={onCheckboxChange} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
         <span>{props.title}</span>
@@ -43,7 +50,7 @@ const NodeHead = (props: {
         <BiSolidTrash
           size={24}
           class={styles.NodeCommands}
-          onPointerDown={onDeleteNode}
+          onPointerDown={onNodeTrash}
         />
       </div>
     </div>
@@ -57,30 +64,22 @@ const Node: Component<{
   sizeObserver: ResizeObserver;
   separator: string;
   getNodeHtml: (content: string) => Promise<string>;
-  // eslint-disable-next-line
-}> = ({
-  nodeId,
-  canvasId,
-  sizeObserver,
-  onNodeSettings,
-  separator,
-  getNodeHtml,
-}) => {
+}> = (props) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
 
   onMount(() => {
-    sizeObserver.observe(nodeRef);
+    props.sizeObserver.observe(nodeRef);
     (nodeRef as HTMLDivElement).addEventListener(
       "touchstart",
       blockEventHandler,
       { passive: false }
     );
-    console.log("mounting node", nodeId);
+    console.debug("mounting node", props.nodeId);
   });
 
   onCleanup(() => {
-    sizeObserver.unobserve(nodeRef);
+    props.sizeObserver.unobserve(nodeRef);
     (nodeRef as HTMLDivElement).removeEventListener(
       "touchstart",
       blockEventHandler
@@ -88,8 +87,8 @@ const Node: Component<{
   });
 
   const onToggleSelection = () => {
-    const selected = state.chart.selected[nodeId];
-    actions.onToggleNodeSelection(nodeId, !selected);
+    const selected = state.chart.selected[props.nodeId];
+    actions.onToggleNodeSelection(props.nodeId, !selected);
   };
 
   const onPointerDown = (e: PointerEvent) => {
@@ -102,7 +101,7 @@ const Node: Component<{
     }
     const scale = state.scale;
     const canvas: HTMLDivElement = (window as any).DMBRoot.getElementById(
-      canvasId
+      props.canvasId
     ) as any;
     let raFrameHandle = 0;
     const canvasRect = canvas.getBoundingClientRect();
@@ -111,9 +110,9 @@ const Node: Component<{
       w: canvasRect.width / scale,
       h: canvasRect.height / scale,
     };
-    let StartingDragPosition = state.chart.nodes[nodeId].position;
+    let StartingDragPosition = state.chart.nodes[props.nodeId].position;
     const isMulti =
-      state.chart.selected[nodeId] &&
+      state.chart.selected[props.nodeId] &&
       Object.entries(state.chart.selected).filter((e) => e[1]).length > 1;
     const nodeSize = { w: nodeRect.width / scale, h: nodeRect.height / scale };
     const multiSelectOffsets: any = isMulti
@@ -146,7 +145,7 @@ const Node: Component<{
       const finalPosition = getPositionWithParentBoundsSize(
         canvasSize,
         nodeSize,
-        multiSelectOffsets[`${nodeId}-drag-hat`] as any,
+        multiSelectOffsets[`${props.nodeId}-drag-hat`] as any,
         x,
         y
       );
@@ -159,12 +158,12 @@ const Node: Component<{
 
       if (!isMulti) {
         actions.onNodeDrag({
-          nodeId: nodeId,
+          nodeId: props.nodeId,
           position: finalPosition,
         });
       } else {
         actions.onMultiDrag({
-          leaderId: nodeId,
+          leaderId: props.nodeId,
           leaderPos: finalPosition,
           canvasSize,
           delta,
@@ -195,15 +194,15 @@ const Node: Component<{
   };
 
   const onDeleteNode = () => {
-    actions.onDeleteNodes([nodeId]);
+    actions.onDeleteNodes([props.nodeId]);
   };
 
   const onNodeSettingsClick = () => {
-    onNodeSettings(nodeId);
+    props.onNodeSettings(props.nodeId);
   };
 
   const getContent = () => {
-    const node = state.chart.nodes[nodeId];
+    const node = state.chart.nodes[props.nodeId];
     return node.content;
   };
 
@@ -212,19 +211,19 @@ const Node: Component<{
       onPointerDown={onPointerDown}
       class={styles.Node}
       classList={{
-        "drag-hat-selected": state.chart.selected[nodeId],
-        [`${styles.NodeSelected}`]: state.chart.selected[nodeId],
+        "drag-hat-selected": state.chart.selected[props.nodeId],
+        [`${styles.NodeSelected}`]: state.chart.selected[props.nodeId],
       }}
-      id={`${nodeId}-drag-hat`}
-      data-node-id={`${nodeId}`}
+      id={`${props.nodeId}-drag-hat`}
+      data-node-id={`${props.nodeId}`}
       ref={nodeRef}
       style={{
-        transform: `translate(${state.chart.nodes[nodeId].position.x}px, ${state.chart.nodes[nodeId].position.y}px)`,
+        transform: `translate(${state.chart.nodes[props.nodeId].position.x}px, ${state.chart.nodes[props.nodeId].position.y}px)`,
       }}
     >
       <NodeHead
-        selected={state.chart.selected[nodeId]}
-        title={state.chart.nodes[nodeId].title}
+        selected={state.chart.selected[props.nodeId]}
+        title={state.chart.nodes[props.nodeId].title}
         onToggle={onToggleSelection}
         onDeleteNode={onDeleteNode}
         onNodeSettings={onNodeSettingsClick}
@@ -234,12 +233,12 @@ const Node: Component<{
         <div class={styles.NodeContentView}>
           <NodeContentReadonly
             content={getContent()}
-            separator={separator}
-            getHtmlContent={getNodeHtml}
+            separator={props.separator}
+            getHtmlContent={props.getNodeHtml}
           />
         </div>
       </div>
-      <Ports nodeId={nodeId} canvasId={canvasId} />
+      <Ports nodeId={props.nodeId} canvasId={props.canvasId} />
     </div>
   );
 };
@@ -249,8 +248,7 @@ const Nodes: Component<{
   onNodeSettings: (nodeId: string) => void;
   separator: string;
   getNodeHtml: (content: string) => Promise<string>;
-  // eslint-disable-next-line
-}> = ({ canvasId, onNodeSettings, separator, getNodeHtml }) => {
+}> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
     (evt: ResizeObserverEntry[]) => {
@@ -265,12 +263,12 @@ const Nodes: Component<{
       {(key) => {
         return (
           <Node
-            separator={separator}
+            separator={props.separator}
             nodeId={key}
-            getNodeHtml={getNodeHtml}
+            getNodeHtml={props.getNodeHtml}
             sizeObserver={observer}
-            canvasId={canvasId}
-            onNodeSettings={onNodeSettings}
+            canvasId={props.canvasId}
+            onNodeSettings={props.onNodeSettings}
           />
         );
       }}

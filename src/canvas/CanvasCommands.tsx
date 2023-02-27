@@ -2,7 +2,7 @@ import { Component, JSX, onMount } from "solid-js";
 import { Button } from "../components/Button";
 import { AiFillEye } from "solid-icons/ai";
 import { BiSolidHelpCircle } from "solid-icons/bi";
-import { FaSolidArrowsUpDownLeftRight} from "solid-icons/fa";
+import { FaSolidArrowsUpDownLeftRight } from "solid-icons/fa";
 import { AiOutlineSelect } from "solid-icons/ai";
 import { IoAppsSharp } from "solid-icons/io";
 import { ImRedo, ImUndo } from "solid-icons/im";
@@ -23,12 +23,7 @@ const CanvasCommands: Component<{
   onResetAll: () => void;
   onEnableSelection: () => void;
   onEnablePanZoom: () => void;
-  // eslint-disable-next-line
-}> = ({
-  onResetAll,
-  onEnableSelection,
-  onEnablePanZoom,
-}) => {
+}> = (props) => {
   const [state, actions] = useChartStore();
 
   onMount(() => {});
@@ -60,13 +55,25 @@ const CanvasCommands: Component<{
       actions.onRedo();
     }
   };
+
+  const onEnablePanZoom = () => {
+    props.onEnablePanZoom();
+  };
+
+  const onEnableSelection = () => {
+    props.onEnableSelection();
+  };
+
+  const onResetAll = () => {
+    props.onResetAll();
+  };
   return (
     <>
       <div class={styles.CanvasCommands}>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !state.sidebar,
             [`${styles.CanvasCommandsEnabled}`]: state.sidebar,
           }}
@@ -76,8 +83,8 @@ const CanvasCommands: Component<{
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: state.selection,
             [`${styles.CanvasCommandsEnabled}`]: !state.selection,
           }}
@@ -87,8 +94,8 @@ const CanvasCommands: Component<{
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !state.selection,
             [`${styles.CanvasCommandsEnabled}`]: state.selection,
           }}
@@ -98,15 +105,17 @@ const CanvasCommands: Component<{
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
+          classList={{
+            [`${styles.CanvasCommand}`]: true,
+          }}
           onClick={onResetAll}
         >
           <AiFillEye size={30} />
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !state.canUndo,
           }}
           onClick={onUndo}
@@ -115,8 +124,8 @@ const CanvasCommands: Component<{
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !state.canRedo,
           }}
           onClick={onRedo}
@@ -125,8 +134,8 @@ const CanvasCommands: Component<{
         </Button>
         <Button
           variant="icon"
-          class={styles.CanvasCommand}
           classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !deleteEnabled(),
           }}
           onClick={onTrashNodes}
@@ -134,13 +143,15 @@ const CanvasCommands: Component<{
           <FaSolidTrash size={30} />
         </Button>
         <Modal closeOnClickOutside closeOnEsc style={cssVariables}>
-          {({ open, toggle }) => (
+          {(modalProps: any) => (
             <>
               <Button
-                aria-disabled={open()}
+                aria-disabled={modalProps.open()}
                 variant="icon"
-                class={styles.CanvasCommand}
-                onClick={toggle}
+                classList={{
+                  [`${styles.CanvasCommand}`]: true,
+                }}
+                onClick={modalProps.toggle}
               >
                 <BiSolidHelpCircle size={30} />
               </Button>
@@ -149,7 +160,7 @@ const CanvasCommands: Component<{
                   Canvas Commands Help
                   <Button
                     variant="icon"
-                    onclick={toggle}
+                    onclick={modalProps.toggle}
                     style={{ float: "right" }}
                   >
                     ✕
@@ -191,7 +202,7 @@ const CanvasCommands: Component<{
                   </ul>
                 </ModalBody>
                 <ModalFooter>
-                  <Button onclick={toggle}>OK</Button>
+                  <Button onclick={modalProps.toggle}>OK</Button>
                 </ModalFooter>
               </ModalContent>
             </>
