@@ -155,8 +155,9 @@ const Port = (props: {
               fallback={<div class={styles.PortOutInner} />}
             >
               <BiSolidTrash
+                aria-label="delete link"
                 title="delete link"
-                size={24}
+                size={20}
                 onPointerDown={onDeleteLink}
                 class={styles.DeleteLinkIcon}
                 {...deleteLinkAccessibilityProps}

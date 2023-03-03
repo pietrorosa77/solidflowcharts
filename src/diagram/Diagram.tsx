@@ -3,7 +3,7 @@ import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
 import { nanoid } from "nanoid";
-
+import "./Helper.css";
 import styles from "./Diagram.module.css";
 import {
   ChartProvider,

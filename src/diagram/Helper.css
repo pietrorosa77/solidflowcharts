@@ -1,0 +1,3 @@
+.disable-hover * {
+    pointer-events: none !important;
+  }

@@ -15,11 +15,18 @@
 .NodeSelected {
   box-shadow: 0 0 20px 5px var(--accent-color);
   border-color: var(--accent-color);
+  z-index: 3;
+  pointer-events: all;
 }
 
 .Node:hover {
   border-color: var(--accent-color);
   z-index: 2;
+}
+
+.NodeDragging {
+  z-index: 100000000000000000000;
+  pointer-events: all;
 }
 
 .NodeHead {

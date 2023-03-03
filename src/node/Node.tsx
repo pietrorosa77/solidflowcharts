@@ -105,6 +105,9 @@ const Node: Component<{
     ) as any;
     let raFrameHandle = 0;
     const canvasRect = canvas.getBoundingClientRect();
+    nodeRef.classList.add(styles.NodeDragging);
+    //while dragging make it faster disabling other css effects
+    document.body.classList.add('disable-hover');
     const nodeRect = nodeRef.getBoundingClientRect() as DOMRect;
     const canvasSize = {
       w: canvasRect.width / scale,
@@ -179,6 +182,8 @@ const Node: Component<{
       e.preventDefault();
       e.stopPropagation();
       cancelAnimationFrame(raFrameHandle);
+      nodeRef.classList.remove(styles.NodeDragging);
+      document.body.classList.remove('disable-hover');
       window.removeEventListener("pointerup", mouseUpHandler, false);
       window.removeEventListener("pointercancel", mouseUpHandler, false);
       window.removeEventListener("pointermove", throttledMove, true);
