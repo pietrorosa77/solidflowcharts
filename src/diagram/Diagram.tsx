@@ -11,7 +11,7 @@ import {
   useChartStore,
 } from "../store/chartStore";
 import { PanZoom } from "panzoom";
-import { defaultFontFace, getCssVariables } from "../defaultTheme";
+import { ICustomTheme, defaultFontFace, getCssVariables } from "../defaultTheme";
 // import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
@@ -49,9 +49,6 @@ const Diagram: Component<{
 
   return (
     <div
-      style={{
-        ...getCssVariables(props.width, props.height),
-      }}
       class={styles.Diagram}
     >
       <Sidebar nodes={props.availableNodes} />
@@ -88,6 +85,7 @@ const DiagramWrapper: Component<{
   height?: string;
   messageSeparator: string;
   getNodeHtml?: (content: string) => Promise<string>;
+  customTheme?: ICustomTheme
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
@@ -107,6 +105,9 @@ const DiagramWrapper: Component<{
   return (
     <>
       <style type="text/css">{props.fontFace || defaultFontFace}</style>
+      <style type="text/css" id="customBotCssOverrides">
+        {getCssVariables(props.width, props.height, props.customTheme)}
+      </style>
       <ChartProvider
         initialChart={props.initialChart}
         onHistoryChange={onHistoryChanged}

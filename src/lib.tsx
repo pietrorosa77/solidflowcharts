@@ -3,6 +3,7 @@ import { ExtendedNode, IChart } from "../definitions";
 import Diagram from "./diagram/Diagram";
 import { ISidebarNode } from "./sidebar/Sidebar";
 import { IChartActions } from "./store/chartStore";
+import { ICustomTheme } from "./defaultTheme";
 
 interface IDGProps {
   chart: IChart;
@@ -16,6 +17,7 @@ interface IDGProps {
   height?: string;
   getNodeHtml?: (content: string) => Promise<string>;
   messageSeparator: string;
+  customTheme?: ICustomTheme;
 }
 
 export function FChart(props: IDGProps, elementId: string) {
@@ -33,6 +35,7 @@ export function FChart(props: IDGProps, elementId: string) {
         onHistoryChange={props.onHistoryChange}
         onLoad={props.onLoad}
         messageSeparator={props.messageSeparator}
+        customTheme={props.customTheme}
       />
     ),
     document.getElementById(elementId) as HTMLElement

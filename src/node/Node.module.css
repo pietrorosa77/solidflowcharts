@@ -82,7 +82,7 @@
   font-size: 14px;
   width: 100%;
   border-radius: 5px;
-  color: var(--node-text-color);
+  color: var(--node-content-font-color);
   padding: 10px;
 }
 
