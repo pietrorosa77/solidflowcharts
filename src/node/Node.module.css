@@ -39,11 +39,12 @@
   min-width: 0;
   min-height: 0;
   flex-direction: row;
+  font-weight: 600;
   width: 100%;
   justify-content: center;
   padding: 3px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
   overflow: hidden;
   align-items: end;
 }

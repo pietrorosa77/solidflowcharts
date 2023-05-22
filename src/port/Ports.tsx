@@ -14,6 +14,14 @@ const getPortBgColor = (port: IPort) => {
   return port.bgColor;
 };
 
+const getPortColor = (port: IPort) => {
+  if (!port.fontColor) {
+    return undefined;
+  }
+
+  return port.fontColor;
+};
+
 const Port = (props: {
   portId: string;
   nodeId: string;
@@ -133,11 +141,13 @@ const Port = (props: {
           width: "100%",
           "background-color": getPortBgColor(
             state.chart.nodes[props.nodeId].ports[props.portId]
-          ),
+          )
         }}
       >
         <div class={styles.PortContent}>
-          <span class={styles.PortText}>
+          <span class={styles.PortText} style={{
+              color: getPortColor(state.chart.nodes[props.nodeId].ports[props.portId])
+          }}>
             {state.chart.nodes[props.nodeId].ports[props.portId].text}
           </span>
           <Show when={hasLoop()}>

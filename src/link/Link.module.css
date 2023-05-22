@@ -29,9 +29,9 @@
 }
 
 .LinkStyle:hover .LineMarker {
-  fill: var(--accent-color);
+  fill: var(--connection-hover-color);
 }
 
 .LinkStyle:hover .Line {
-  stroke: var(--accent-color);
+  stroke: var(--connection-hover-color);
 }

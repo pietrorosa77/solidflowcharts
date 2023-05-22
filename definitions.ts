@@ -39,6 +39,7 @@ export interface IPort {
   bgColor: string;
   text: string;
   index: number;
+  fontColor?: string;
   properties: {
     [key: string]: any;
   };

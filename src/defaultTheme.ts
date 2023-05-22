@@ -22,7 +22,8 @@ export const getCssVariables = (width?: string, height?: string, customTheme?: I
     --warning-color: ${customTheme?.warningColor || 'rgb(248, 172, 59)'};
     --node-content-bgcolor: ${customTheme?.nodeContentBgColor || '#4a4d70'};
     --node-content-font-color: ${customTheme?.nodeContentFontColor || '#fff'};
-    --node-head-bgcolor:  ${customTheme?.nodeHeadBgColor || '#4a4d70'};
+    --node-head-bgcolor: ${customTheme?.nodeHeadBgColor || '#4a4d70'};
+    --connection-hover-color: ${customTheme?.connectionHoverColor || 'rgba(81, 203, 238, 1)'};
   }`
 };
 
@@ -48,4 +49,5 @@ export interface ICustomTheme {
   nodeContentFontColor?: string;
   nodeHeadBgColor?: string;
   portsFontColor?: string;
+  connectionHoverColor?: string;
 }
