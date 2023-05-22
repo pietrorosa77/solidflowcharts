@@ -11,7 +11,7 @@ import {
   useChartStore,
 } from "../store/chartStore";
 import { PanZoom } from "panzoom";
-import { ICustomTheme, defaultFontFace, getCssVariables } from "../defaultTheme";
+import { ICustomTheme, getCssVariables } from "../defaultTheme";
 // import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
@@ -104,7 +104,6 @@ const DiagramWrapper: Component<{
   };
   return (
     <>
-      <style type="text/css">{props.fontFace || defaultFontFace}</style>
       <style type="text/css" id="customBotCssOverrides">
         {getCssVariables(props.width, props.height, props.customTheme)}
       </style>

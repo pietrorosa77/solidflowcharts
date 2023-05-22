@@ -1,5 +1,4 @@
 import { ExtendedNode, IChart } from "../definitions";
-import { defaultFontFace } from "./defaultTheme";
 import Diagram from "./diagram/Diagram";
 import { IChartActions } from "./store/chartStore";
 import { availableNodes } from "../testNodes";
@@ -19,7 +18,6 @@ const App = (props: { initState: IChart }) => {
   return (
       <Diagram
         initialChart={props.initState}
-        fontFace={defaultFontFace}
         messageSeparator="<dumbot-boubble/>"
         availableNodes={availableNodes}
         onNodeSettingsClick={(nodeDt: ExtendedNode) => {

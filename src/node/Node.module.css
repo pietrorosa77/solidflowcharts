@@ -33,7 +33,7 @@
   display: flex;
   box-sizing: border-box;
   max-width: 100%;
-  background-color: var(--brand-color);
+  background-color: var(--node-head-bgcolor);
   color: var(--node-font-color);
   font-size: var(--node-head-font-size);
   min-width: 0;
