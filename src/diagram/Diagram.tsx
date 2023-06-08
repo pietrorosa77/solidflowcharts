@@ -21,7 +21,8 @@ const Diagram: Component<{
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
-  getNodeHtml: (content: any) => Promise<string[]>;
+  editorJsTools?: any;
+  getNodeHtml?: (content: any) => Promise<string[]>;
 }> = (props) => {
   const minZoom = 0.2;
   const maxZoom = 2;
@@ -80,11 +81,11 @@ const DiagramWrapper: Component<{
   height?: string;
   getNodeHtml?: (content: string) => Promise<string[]>;
   customTheme?: ICustomTheme;
+  editorJsTools?: any;
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
-  const defaultGetNodeContent = (rawContent: string) =>
-    Promise.resolve([rawContent]);
+
   const onNodeSettings = (node: ExtendedNode) => {
     props.onNodeSettingsClick?.(node);
   };
@@ -109,9 +110,10 @@ const DiagramWrapper: Component<{
           <Diagram
             width={props.width}
             height={props.height}
-            getNodeHtml={props.getNodeHtml || defaultGetNodeContent}
+            getNodeHtml={props.getNodeHtml}
             onNodeSettingsClick={onNodeSettings}
             onLoad={onLoad}
+            editorJsTools={props.editorJsTools}
             availableNodes={props.availableNodes}
           />
         </ErrorBoundary>

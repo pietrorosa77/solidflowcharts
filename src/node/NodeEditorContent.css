@@ -1,0 +1,21 @@
+.codex-editor__redactor {
+  padding-bottom: 0px !important;
+  margin-right: unset !important;
+}
+
+.ce-block {
+  background-color: var(--node-content-bgcolor);
+  display: inline-block;
+  overflow: auto;
+  overflow-wrap: break-word;
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  border-radius: 5px;
+  color: var(--node-content-font-color);
+  padding: 10px;
+}
+
+.codex-editor__loader {
+  height: 50px;
+}

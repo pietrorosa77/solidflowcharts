@@ -1,4 +1,4 @@
-import { Component, For, onMount, onCleanup } from "solid-js";
+import { Component, For, onMount, onCleanup, Switch, Match } from "solid-js";
 import { Checkbox } from "../components/Checkbox";
 import { useChartStore } from "../store/chartStore";
 import {
@@ -12,6 +12,7 @@ import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiSolidTrash } from "solid-icons/bi";
 import { NodeContentReadonly } from "./NodeContent";
+import { NodeEditorContent } from "./NodeEditorContent";
 
 const NodeHead = (props: {
   title: string;
@@ -62,7 +63,8 @@ const Node: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
-  getNodeHtml: (content: any) => Promise<string[]>;
+  getNodeHtml?: (content: any) => Promise<string[]>;
+  editorJsTools?: any;
 }> = (props) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
@@ -237,10 +239,21 @@ const Node: Component<{
 
       <div class={`${styles.NodeContent} flowchart-node-content`}>
         <div class={styles.NodeContentView}>
-          <NodeContentReadonly
-            content={getContent()}
-            getHtmlContent={props.getNodeHtml}
-          />
+          <Switch>
+            <Match when={!!props.getNodeHtml}>
+              <NodeContentReadonly
+                content={getContent()}
+                getHtmlContent={props.getNodeHtml as any}
+              />
+            </Match>
+            <Match when={!props.getNodeHtml}>
+              <NodeEditorContent
+                content={getContent()}
+                id={props.nodeId}
+                editorTools={props.editorJsTools}
+              />
+            </Match>
+          </Switch>
         </div>
       </div>
       <Ports nodeId={props.nodeId} canvasId={props.canvasId} />
@@ -251,7 +264,8 @@ const Node: Component<{
 const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
-  getNodeHtml: (content: any) => Promise<string[]>;
+  getNodeHtml?: (content: any) => Promise<string[]>;
+  editorJsTools?: any;
 }> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -272,6 +286,7 @@ const Nodes: Component<{
             sizeObserver={observer}
             canvasId={props.canvasId}
             onNodeSettings={props.onNodeSettings}
+            editorJsTools={props.editorJsTools}
           />
         );
       }}
