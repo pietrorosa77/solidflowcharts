@@ -31,7 +31,7 @@ const Sidebar: Component<{
     evt.stopPropagation();
     actions.onToggleSidebar();
     return false;
-  }
+  };
   return (
     <div
       class={styles.sidenav}
@@ -41,11 +41,7 @@ const Sidebar: Component<{
       }}
     >
       <div class={styles.sidenavHead}>
-        <a
-          href=""
-          class={styles.closebtn}
-          onClick={onSidebarCloseClick}
-        >
+        <a href="" class={styles.closebtn} onClick={onSidebarCloseClick}>
           &times;
         </a>
       </div>

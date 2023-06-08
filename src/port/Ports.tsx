@@ -141,13 +141,18 @@ const Port = (props: {
           width: "100%",
           "background-color": getPortBgColor(
             state.chart.nodes[props.nodeId].ports[props.portId]
-          )
+          ),
         }}
       >
         <div class={styles.PortContent}>
-          <span class={styles.PortText} style={{
-              color: getPortColor(state.chart.nodes[props.nodeId].ports[props.portId])
-          }}>
+          <span
+            class={styles.PortText}
+            style={{
+              color: getPortColor(
+                state.chart.nodes[props.nodeId].ports[props.portId]
+              ),
+            }}
+          >
             {state.chart.nodes[props.nodeId].ports[props.portId].text}
           </span>
           <Show when={hasLoop()}>
@@ -198,7 +203,13 @@ const Ports: Component<{
     >
       <For each={getPortsSorted(state.chart.nodes[props.nodeId])}>
         {(key) => {
-          return <Port portId={key} canvasId={props.canvasId} nodeId={props.nodeId} />;
+          return (
+            <Port
+              portId={key}
+              canvasId={props.canvasId}
+              nodeId={props.nodeId}
+            />
+          );
         }}
       </For>
     </div>

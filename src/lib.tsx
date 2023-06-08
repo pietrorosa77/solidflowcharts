@@ -15,7 +15,7 @@ interface IDGProps {
   root?: any;
   width?: string;
   height?: string;
-  getNodeHtml?: (content: string) => Promise<string>;
+  getNodeHtml?: (content: any) => Promise<string[]>;
   messageSeparator: string;
   customTheme?: ICustomTheme;
 }
@@ -34,7 +34,6 @@ export function FChart(props: IDGProps, elementId: string) {
         onNodeSettingsClick={props.onNodeSettingsClick}
         onHistoryChange={props.onHistoryChange}
         onLoad={props.onLoad}
-        messageSeparator={props.messageSeparator}
         customTheme={props.customTheme}
       />
     ),

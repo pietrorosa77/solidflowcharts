@@ -168,7 +168,7 @@ export const getElements = (
   return result;
 };
 
-export const getIcon = (icon: string, size?: string) => {
+export const getIcon = (icon: string, size?: string): any => {
   const IconComponent =
     (faicons as any)[icon] || (bsicons as any)[icon] || (vsicons as any)[icon];
 

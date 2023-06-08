@@ -90,9 +90,12 @@
 .NodeCommands {
   cursor: pointer;
   display: inline;
+  fill: var(--node-content-font-color);
 }
 
 .NodeCommands:hover {
   cursor: pointer;
-  color: var(--accent-color) !important /* flag important needed because of solidicons */;
+  fill: var(
+    --accent-color
+  ) !important /* flag important needed because of solidicons */;
 }

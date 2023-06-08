@@ -25,14 +25,14 @@ const NodeHead = (props: {
   };
   const onCheckboxChange = () => {
     props.onToggle();
-  }
+  };
   const onNodeSettings = () => {
-    props.onNodeSettings()
-  }
+    props.onNodeSettings();
+  };
 
   const onNodeTrash = () => {
-    props.onDeleteNode()
-  }
+    props.onDeleteNode();
+  };
   return (
     <div class={styles.NodeHead}>
       <div onPointerDown={preventNodeDrag}>
@@ -62,8 +62,7 @@ const Node: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
-  separator: string;
-  getNodeHtml: (content: string) => Promise<string>;
+  getNodeHtml: (content: any) => Promise<string[]>;
 }> = (props) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
@@ -107,7 +106,7 @@ const Node: Component<{
     const canvasRect = canvas.getBoundingClientRect();
     nodeRef.classList.add(styles.NodeDragging);
     //while dragging make it faster disabling other css effects
-    document.body.classList.add('disable-hover');
+    document.body.classList.add("disable-hover");
     const nodeRect = nodeRef.getBoundingClientRect() as DOMRect;
     const canvasSize = {
       w: canvasRect.width / scale,
@@ -183,7 +182,7 @@ const Node: Component<{
       e.stopPropagation();
       cancelAnimationFrame(raFrameHandle);
       nodeRef.classList.remove(styles.NodeDragging);
-      document.body.classList.remove('disable-hover');
+      document.body.classList.remove("disable-hover");
       window.removeEventListener("pointerup", mouseUpHandler, false);
       window.removeEventListener("pointercancel", mouseUpHandler, false);
       window.removeEventListener("pointermove", throttledMove, true);
@@ -223,7 +222,9 @@ const Node: Component<{
       data-node-id={`${props.nodeId}`}
       ref={nodeRef}
       style={{
-        transform: `translate(${state.chart.nodes[props.nodeId].position.x}px, ${state.chart.nodes[props.nodeId].position.y}px)`,
+        transform: `translate(${
+          state.chart.nodes[props.nodeId].position.x
+        }px, ${state.chart.nodes[props.nodeId].position.y}px)`,
       }}
     >
       <NodeHead
@@ -238,7 +239,6 @@ const Node: Component<{
         <div class={styles.NodeContentView}>
           <NodeContentReadonly
             content={getContent()}
-            separator={props.separator}
             getHtmlContent={props.getNodeHtml}
           />
         </div>
@@ -251,8 +251,7 @@ const Node: Component<{
 const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
-  separator: string;
-  getNodeHtml: (content: string) => Promise<string>;
+  getNodeHtml: (content: any) => Promise<string[]>;
 }> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -268,7 +267,6 @@ const Nodes: Component<{
       {(key) => {
         return (
           <Node
-            separator={props.separator}
             nodeId={key}
             getNodeHtml={props.getNodeHtml}
             sizeObserver={observer}

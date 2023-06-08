@@ -27,7 +27,7 @@ type ChartStore = {
   canUndo: boolean;
   canRedo: boolean;
   sidebar: boolean;
-}
+};
 const ChartContext = createContext();
 
 export interface IChartActions {
@@ -61,7 +61,6 @@ export function ChartProvider(props: {
   children: any;
   onHistoryChange?: (chart: IChart) => void;
 }) {
-
   const history = new UndoRedoManager(cloneDeep(props.initialChart));
 
   const recordHistory = (chart: IChart, action: string, skipSaving = false) => {
@@ -74,16 +73,16 @@ export function ChartProvider(props: {
   };
 
   const [state, setChart] = createStore({
-    chart: props.initialChart,
-    scale: 1,
-    selection: false,
-    portHeight: 30,
-    portOffset: 35,
-    newLink: undefined,
-    canUndo: false,
-    canRedo: false,
-    sidebar: false,
-  } as ChartStore),
+      chart: props.initialChart,
+      scale: 1,
+      selection: false,
+      portHeight: 30,
+      portOffset: 35,
+      newLink: undefined,
+      canUndo: false,
+      canRedo: false,
+      sidebar: false,
+    } as ChartStore),
     store = [
       state,
       {
@@ -208,7 +207,12 @@ export function ChartProvider(props: {
             portLinks.forEach((l) => {
               setChart("chart", "links", l.id, () => undefined as any);
             });
-            setChart("chart", "paths", `${nodeId}-${portId}`, () => undefined as any);
+            setChart(
+              "chart",
+              "paths",
+              `${nodeId}-${portId}`,
+              () => undefined as any
+            );
             recordHistory(state.chart, "crtAction");
           });
         },
@@ -319,9 +323,6 @@ export function ChartProvider(props: {
   );
 }
 
-export function useChartStore(): [
-  ChartStore,
-  IChartActions
-] {
+export function useChartStore(): [ChartStore, IChartActions] {
   return useContext(ChartContext) as any;
 }

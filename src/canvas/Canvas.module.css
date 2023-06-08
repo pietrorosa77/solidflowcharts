@@ -46,14 +46,29 @@
 }
 
 .CanvasCommandsDisabled {
-  color: var(--bg-inactive) !important;  /* flag important needed because of solidicons */
+  fill: var(
+    --bg-inactive
+  ) !important; /* flag important needed because of solidicons */
   cursor: default !important;
+}
+
+.CanvasCommand {
+  fill: var(--node-font-color);
 }
 
 .CanvasCommandsEnabled,
 .CanvasCommand:hover {
-  color: var(--accent-color) !important /* flag important needed because of solidicons */;
-  border-color: var(--accent-color) !important /* flag important needed because of solidicons */;
+  fill: var(
+    --accent-color
+  ) !important /* flag important needed because of solidicons */;
+  border-color: var(
+    --accent-color
+  ) !important /* flag important needed because of solidicons */;
   box-shadow: unset !important;
   cursor: pointer;
+}
+
+.CanvasModal {
+  font-family: var(--diagram-font-family);
+  fill: var(--node-font-color);
 }

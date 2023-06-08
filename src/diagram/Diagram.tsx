@@ -12,7 +12,6 @@ import {
 } from "../store/chartStore";
 import { PanZoom } from "panzoom";
 import { ICustomTheme, getCssVariables } from "../defaultTheme";
-// import { createFontStyle } from "../store/utils";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
 
@@ -22,8 +21,7 @@ const Diagram: Component<{
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
-  separator: string;
-  getNodeHtml: (content: string) => Promise<string>;
+  getNodeHtml: (content: any) => Promise<string[]>;
 }> = (props) => {
   const minZoom = 0.2;
   const maxZoom = 2;
@@ -48,9 +46,7 @@ const Diagram: Component<{
   };
 
   return (
-    <div
-      class={styles.Diagram}
-    >
+    <div class={styles.Diagram}>
       <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
@@ -61,7 +57,6 @@ const Diagram: Component<{
         <Nodes
           canvasId={canvasId}
           onNodeSettings={onNodeSettings}
-          separator={props.separator}
           getNodeHtml={props.getNodeHtml}
         />
         <Links />
@@ -83,14 +78,13 @@ const DiagramWrapper: Component<{
   root?: any;
   width?: string;
   height?: string;
-  messageSeparator: string;
-  getNodeHtml?: (content: string) => Promise<string>;
-  customTheme?: ICustomTheme
+  getNodeHtml?: (content: string) => Promise<string[]>;
+  customTheme?: ICustomTheme;
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
   const defaultGetNodeContent = (rawContent: string) =>
-    Promise.resolve(rawContent);
+    Promise.resolve([rawContent]);
   const onNodeSettings = (node: ExtendedNode) => {
     props.onNodeSettingsClick?.(node);
   };
@@ -116,7 +110,6 @@ const DiagramWrapper: Component<{
             width={props.width}
             height={props.height}
             getNodeHtml={props.getNodeHtml || defaultGetNodeContent}
-            separator={props.messageSeparator}
             onNodeSettingsClick={onNodeSettings}
             onLoad={onLoad}
             availableNodes={props.availableNodes}

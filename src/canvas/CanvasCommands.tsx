@@ -1,4 +1,4 @@
-import { Component, JSX, onMount } from "solid-js";
+import { Component, onMount } from "solid-js";
 import { Button } from "../components/Button";
 import { AiFillEye } from "solid-icons/ai";
 import { BiSolidHelpCircle } from "solid-icons/bi";
@@ -16,7 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "../components/Modal";
-import { getCssVariables } from "../defaultTheme";
+
 import { useChartStore } from "../store/chartStore";
 
 const CanvasCommands: Component<{
@@ -27,9 +27,6 @@ const CanvasCommands: Component<{
   const [state, actions] = useChartStore();
 
   onMount(() => {});
-  const cssVariables: JSX.CSSProperties = {
-    ...getCssVariables(),
-  };
 
   const deleteEnabled = () => {
     return (
@@ -142,7 +139,11 @@ const CanvasCommands: Component<{
         >
           <FaSolidTrash size={30} />
         </Button>
-        <Modal closeOnClickOutside closeOnEsc style={cssVariables}>
+        <Modal
+          closeOnClickOutside
+          closeOnEsc
+          classList={{ [`${styles.CanvasModal}`]: true }}
+        >
           {(modalProps: any) => (
             <>
               <Button

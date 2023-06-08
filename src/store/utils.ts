@@ -116,7 +116,7 @@ export const isValidLink = (
   links: ILink[],
   fromNodeId: string
 ) => {
-  console.debug('from node', fromNodeId);
+  console.debug("from node", fromNodeId);
   return (
     !node.properties?.onlyOut &&
     links.filter((l) => l.to === node.id).length === 0

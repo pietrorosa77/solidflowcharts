@@ -16,22 +16,20 @@ const App = (props: { initState: IChart }) => {
     console.debug("actions are", actions);
   };
   return (
-      <Diagram
-        initialChart={props.initState}
-        messageSeparator="<dumbot-boubble/>"
-        availableNodes={availableNodes}
-        onNodeSettingsClick={(nodeDt: ExtendedNode) => {
-          node = {
-            ...nodeDt,
-          };
-          console.debug("settings for", node);
-        }}
-        onHistoryChange={(chart) => {
-          console.debug("updated chart is", chart);
-        }}
-        onLoad={onLoad}
-      />
-
+    <Diagram
+      initialChart={props.initState}
+      availableNodes={availableNodes}
+      onNodeSettingsClick={(nodeDt: ExtendedNode) => {
+        node = {
+          ...nodeDt,
+        };
+        console.debug("settings for", node);
+      }}
+      onHistoryChange={(chart) => {
+        console.debug("updated chart is", chart);
+      }}
+      onLoad={onLoad}
+    />
   );
 };
 

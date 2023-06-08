@@ -2,14 +2,11 @@ import { createSignal, onMount, Show } from "solid-js";
 import styles from "./Node.module.css";
 
 const getNodeContent = async (
-  md: string,
-  separator: string,
-  transpiler: (input: string) => Promise<string>
+  content: any,
+  transpiler: (input: any) => Promise<string[]>
 ) => {
   try {
-    const parts = md.split(separator);
-    const promises = parts.map((p) => transpiler(p));
-    const partsParsed = await Promise.all(promises);
+    const partsParsed = await transpiler(content);
     const nodeHtmBloksHtml = partsParsed.map(
       (p) =>
         `<div class="${styles.NodeContentPart}"><div class="dumbot-content-body">${p}</div></div>`
@@ -22,19 +19,14 @@ const getNodeContent = async (
 };
 export const NodeContentReadonly = (props: {
   content: any;
-  separator: string;
-  getHtmlContent: (content: string) => Promise<string>;
+  getHtmlContent: (content: any) => Promise<string[]>;
 }) => {
   const [nodeContent, setNodeContent] = createSignal<string | undefined>(
     undefined
   );
 
   onMount(async () => {
-    const html = await getNodeContent(
-      props.content,
-      props.separator,
-      props.getHtmlContent
-    );
+    const html = await getNodeContent(props.content, props.getHtmlContent);
     setNodeContent(html);
   });
 

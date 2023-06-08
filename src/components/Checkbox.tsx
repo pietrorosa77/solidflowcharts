@@ -49,10 +49,7 @@ export const Checkbox: Component<CheckboxProps> = (props) => {
     content.onchange?.((ev.target as HTMLInputElement)?.checked);
 
   return (
-    <label
-      class={styles["sb-checkbox"]}
-      {...labelProps}
-    >
+    <label class={styles["sb-checkbox"]} {...labelProps}>
       <Show when={content.align === "right"}>{content.children}</Show>
       <input
         type="checkbox"

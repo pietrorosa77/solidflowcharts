@@ -127,7 +127,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
       <Match when={open() && local.noPortal}>
         <>
           {otherChildren()}
-          <div ref={modalRef} {...divProps} />
+          <div ref={modalRef} {...(divProps as any)} />
         </>
       </Match>
       <Match when={open() && !local.noPortal}>
@@ -136,7 +136,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
           <Portal
             mount={(window as any).DMBRoot.body || (window as any).DMBRoot}
           >
-            <div ref={modalRef} {...divProps} />
+            <div ref={modalRef} {...(divProps as any)} />
           </Portal>
         </>
       </Match>

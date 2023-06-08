@@ -64,6 +64,10 @@
   align-items: center;
 }
 
+.btnContent svg {
+  fill: var(--node-font-color);
+}
+
 .btnDragging {
   border: none !important;
   border-radius: 0 !important;
