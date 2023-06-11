@@ -27,6 +27,8 @@ type ChartStore = {
   canUndo: boolean;
   canRedo: boolean;
   sidebar: boolean;
+  editNodeContent?: string;
+  editNodeSettings?: string;
 };
 const ChartContext = createContext();
 
@@ -51,6 +53,8 @@ export interface IChartActions {
   onAddNode: (node: ExtendedNode) => void;
   onToggleAreaSelection: (enableSelection: boolean) => void;
   onAreaSelection: (selection: { [key: string]: boolean }) => void;
+  onToggleEditNodeContent: (nodeId?: string) => void;
+  onToggleEditNodeSettings: (nodeId?: string) => void;
   onUndo: () => void;
   onRedo: () => void;
   onToggleSidebar: () => void;
@@ -312,6 +316,14 @@ export function ChartProvider(props: {
           batch(() => {
             recordHistory(state.chart, "crtAction");
           });
+        },
+        // eslint-disable-next-line
+        onToggleEditNodeContent(nodeId?: string) {
+          setChart("editNodeContent", () => nodeId || undefined);
+        },
+        // eslint-disable-next-line
+        onToggleEditNodeSettings(nodeId?: string) {
+          setChart("editNodeSettings", () => nodeId || undefined);
         },
       } as IChartActions,
     ];

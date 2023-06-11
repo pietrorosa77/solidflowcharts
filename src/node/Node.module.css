@@ -99,3 +99,9 @@
     --accent-color
   ) !important /* flag important needed because of solidicons */;
 }
+
+.NodeCommandsContainer {
+  display: flex;
+  gap: 5px;
+  align-self: center;
+}

@@ -34,6 +34,8 @@ export type ModalProps = Omit<
   closeOnEsc?: boolean;
   open?: boolean;
   noPortal?: boolean;
+  onClose?: () => void;
+  width?: string;
   children: WrappedElement<WrappedModalContentProps> | JSX.Element;
 };
 
@@ -47,8 +49,18 @@ export const Modal = (props: ModalProps): JSX.Element => {
   ]);
   // eslint-disable-next-line
   const [open, setOpen] = createSignal(local.open);
-  const toggle = (open?: boolean) =>
+
+  createEffect(() => {
+    const popupStatus = open();
+    if (popupStatus === false) {
+      props.onClose?.();
+    }
+    console.log("popup is", open());
+  });
+
+  const toggle = (open?: boolean) => {
     setOpen(typeof open === "boolean" ? open : (o) => !o);
+  };
   const modalContent = createMemo(
     () =>
       getElements(
@@ -94,6 +106,8 @@ export const Modal = (props: ModalProps): JSX.Element => {
     role: "dialog",
     tabIndex: -1,
     // eslint-disable-next-line
+    style: { "--sb-modal-width": props.width || "unset" },
+    // eslint-disable-next-line
     class: props.class ? `sb-modal ${props.class}` : "sb-modal",
     // eslint-disable-next-line
     children: modalContent(),
@@ -114,7 +128,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
       props.closeOnEsc !== false
         ? (ev: KeyboardEvent) => {
             if (ev.key === "Escape" && !ev.defaultPrevented) {
-              setOpen(false);
+              toggle(false);
             }
           }
         : undefined

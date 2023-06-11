@@ -31,9 +31,20 @@ export const getCssVariables = (
     --node-content-bgcolor: ${customTheme?.nodeContentBgColor || "#4a4d70"};
     --node-content-font-color: ${customTheme?.nodeContentFontColor || "#fff"};
     --node-head-bgcolor: ${customTheme?.nodeHeadBgColor || "#4a4d70"};
+    --text-selection-color:#000;
+    --text-selection-bgcolor:#fff;
     --connection-hover-color: ${
       customTheme?.connectionHoverColor || "rgba(81, 203, 238, 1)"
     };
+  }
+  ::-moz-selection { /* Code for Firefox */
+    color: var(--text-selection-color);
+    background: var(--text-selection-bgcolor);
+  }
+
+  ::selection {
+    color: var(--text-selection-color);
+    background: var(--text-selection-bgcolor);
   }`;
 };
 

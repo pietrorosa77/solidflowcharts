@@ -15,10 +15,8 @@ interface IDGProps {
   root?: any;
   width?: string;
   height?: string;
-  getNodeHtml?: (content: any) => Promise<string[]>;
   messageSeparator: string;
   customTheme?: ICustomTheme;
-  editorJsTools?: any;
 }
 
 export function FChart(props: IDGProps, elementId: string) {
@@ -30,12 +28,10 @@ export function FChart(props: IDGProps, elementId: string) {
         height={props.height}
         root={props.root || document}
         fontFace={props.fontFace}
-        getNodeHtml={props.getNodeHtml}
         availableNodes={props.availableNodes}
         onNodeSettingsClick={props.onNodeSettingsClick}
         onHistoryChange={props.onHistoryChange}
         onLoad={props.onLoad}
-        editorJsTools={props.editorJsTools}
         customTheme={props.customTheme}
       />
     ),

@@ -1,4 +1,4 @@
-import { Component, For, onMount, onCleanup, Switch, Match } from "solid-js";
+import { Component, For, onMount, onCleanup } from "solid-js";
 import { Checkbox } from "../components/Checkbox";
 import { useChartStore } from "../store/chartStore";
 import {
@@ -11,8 +11,8 @@ import styles from "./Node.module.css";
 import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiSolidTrash } from "solid-icons/bi";
-import { NodeContentReadonly } from "./NodeContent";
 import { NodeEditorContent } from "./NodeEditorContent";
+import { BsPencilFill } from "solid-icons/bs";
 
 const NodeHead = (props: {
   title: string;
@@ -20,6 +20,7 @@ const NodeHead = (props: {
   onToggle: () => void;
   onDeleteNode: () => void;
   onNodeSettings: () => void;
+  onNodeContentEdit: () => void;
 }) => {
   const preventNodeDrag = (e: PointerEvent) => {
     (e as any)["diagramDetails"] = "prevent node drag";
@@ -29,6 +30,10 @@ const NodeHead = (props: {
   };
   const onNodeSettings = () => {
     props.onNodeSettings();
+  };
+
+  const onNodeContentEdit = () => {
+    props.onNodeContentEdit();
   };
 
   const onNodeTrash = () => {
@@ -43,13 +48,18 @@ const NodeHead = (props: {
         <span>{props.title}</span>
       </div>
       <div class={styles.NodeCommandsContainer} onPointerDown={preventNodeDrag}>
+        <BsPencilFill
+          size={18}
+          class={styles.NodeCommands}
+          onPointerDown={onNodeContentEdit}
+        />
         <AiFillSetting
-          size={24}
+          size={18}
           class={styles.NodeCommands}
           onPointerDown={onNodeSettings}
         />
         <BiSolidTrash
-          size={24}
+          size={18}
           class={styles.NodeCommands}
           onPointerDown={onNodeTrash}
         />
@@ -63,8 +73,6 @@ const Node: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
-  getNodeHtml?: (content: any) => Promise<string[]>;
-  editorJsTools?: any;
 }> = (props) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
@@ -207,9 +215,8 @@ const Node: Component<{
     props.onNodeSettings(props.nodeId);
   };
 
-  const getContent = () => {
-    const node = state.chart.nodes[props.nodeId];
-    return node.content;
+  const onNodeContentEdit = () => {
+    actions.onToggleEditNodeContent(props.nodeId);
   };
 
   return (
@@ -235,25 +242,15 @@ const Node: Component<{
         onToggle={onToggleSelection}
         onDeleteNode={onDeleteNode}
         onNodeSettings={onNodeSettingsClick}
+        onNodeContentEdit={onNodeContentEdit}
       />
 
       <div class={`${styles.NodeContent} flowchart-node-content`}>
         <div class={styles.NodeContentView}>
-          <Switch>
-            <Match when={!!props.getNodeHtml}>
-              <NodeContentReadonly
-                content={getContent()}
-                getHtmlContent={props.getNodeHtml as any}
-              />
-            </Match>
-            <Match when={!props.getNodeHtml}>
-              <NodeEditorContent
-                content={getContent()}
-                id={props.nodeId}
-                editorTools={props.editorJsTools}
-              />
-            </Match>
-          </Switch>
+          <NodeEditorContent
+            id={props.nodeId}
+            content={state.chart.nodes[props.nodeId].content}
+          />
         </div>
       </div>
       <Ports nodeId={props.nodeId} canvasId={props.canvasId} />
@@ -264,8 +261,6 @@ const Node: Component<{
 const Nodes: Component<{
   canvasId: string;
   onNodeSettings: (nodeId: string) => void;
-  getNodeHtml?: (content: any) => Promise<string[]>;
-  editorJsTools?: any;
 }> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -282,11 +277,9 @@ const Nodes: Component<{
         return (
           <Node
             nodeId={key}
-            getNodeHtml={props.getNodeHtml}
             sizeObserver={observer}
             canvasId={props.canvasId}
             onNodeSettings={props.onNodeSettings}
-            editorJsTools={props.editorJsTools}
           />
         );
       }}

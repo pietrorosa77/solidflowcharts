@@ -1,9 +1,9 @@
-.codex-editor__redactor {
+.flowchart-node-content .codex-editor__redactor {
   padding-bottom: 0px !important;
   margin-right: unset !important;
 }
 
-.ce-block {
+.flowchart-node-content .ce-block {
   background-color: var(--node-content-bgcolor);
   display: inline-block;
   overflow: auto;
@@ -16,6 +16,19 @@
   padding: 10px;
 }
 
-.codex-editor__loader {
+.node-content-editor-readonly .codex-editor__loader {
   height: 50px;
+}
+
+.tc-wrap--readonly {
+  margin: 0 !important;
+  border-left: 1px solid !important;
+}
+
+.ce-code__textarea {
+  min-height: unset;
+}
+
+.cdx-attaches__file-info {
+  color: var(--brand-color) !important;
 }

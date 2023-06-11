@@ -1,29 +1,44 @@
-import { onMount } from "solid-js";
-import EditorJS from "@editorjs/editorjs";
+import { createEffect, onCleanup, onMount } from "solid-js";
+import EditorJS, { OutputData } from "@editorjs/editorjs";
 import "./NodeEditorContent.css";
+import { onReady, tools } from "../components/EditorJsExtensions";
 
 const contentStyle = { width: "100%", cursor: "unset" };
 export const NodeEditorContent = (props: {
-  content: any;
+  content: OutputData;
   id: string;
-  editorTools: any;
 }) => {
-  let contentRef: HTMLDivElement | undefined;
+  let editor: EditorJS;
   onMount(() => {
-    if (!contentRef) {
-      return;
-    }
-    new EditorJS({
+    editor = new EditorJS({
       placeholder: "Please, add some content to this node!!",
       holder: props.id,
       readOnly: true,
-      tools: props.editorTools,
-      data: props.content,
-      //   onReady: () => {
-      //     debugger
-      //  }
+      tools,
+      onReady
     });
   });
 
-  return <div id={props.id} ref={contentRef} style={contentStyle} />;
+  onCleanup(() => {
+    console.log("cleaning the mess");
+    if (editor && editor.destroy) {
+      editor.destroy();
+    }
+  });
+
+  // eslint-disable-next-line
+  createEffect(async () => {
+    if (editor && Object.keys(props.content).length > 0) {
+      await editor.isReady;
+      editor.render(props.content);
+    }
+  });
+
+  return (
+    <div
+      id={props.id}
+      class="node-content-editor-readonly"
+      style={contentStyle}
+    />
+  );
 };

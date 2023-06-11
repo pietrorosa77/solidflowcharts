@@ -14,6 +14,7 @@ import { PanZoom } from "panzoom";
 import { ICustomTheme, getCssVariables } from "../defaultTheme";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
+import EditorHtml from "../components/EditorHtml";
 
 const Diagram: Component<{
   onNodeSettingsClick?: (node: ExtendedNode) => void;
@@ -21,8 +22,6 @@ const Diagram: Component<{
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
-  editorJsTools?: any;
-  getNodeHtml?: (content: any) => Promise<string[]>;
 }> = (props) => {
   const minZoom = 0.2;
   const maxZoom = 2;
@@ -48,6 +47,7 @@ const Diagram: Component<{
 
   return (
     <div class={styles.Diagram}>
+      <EditorHtml />
       <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
@@ -55,11 +55,7 @@ const Diagram: Component<{
         minZoom={minZoom}
         maxZoom={maxZoom}
       >
-        <Nodes
-          canvasId={canvasId}
-          onNodeSettings={onNodeSettings}
-          getNodeHtml={props.getNodeHtml}
-        />
+        <Nodes canvasId={canvasId} onNodeSettings={onNodeSettings} />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
@@ -81,7 +77,6 @@ const DiagramWrapper: Component<{
   height?: string;
   getNodeHtml?: (content: string) => Promise<string[]>;
   customTheme?: ICustomTheme;
-  editorJsTools?: any;
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
@@ -110,10 +105,8 @@ const DiagramWrapper: Component<{
           <Diagram
             width={props.width}
             height={props.height}
-            getNodeHtml={props.getNodeHtml}
             onNodeSettingsClick={onNodeSettings}
             onLoad={onLoad}
-            editorJsTools={props.editorJsTools}
             availableNodes={props.availableNodes}
           />
         </ErrorBoundary>

@@ -13,7 +13,19 @@ const MessageNode: ExtendedNode = {
   id: "MessageNode",
   type: "message",
   user: false,
-  content: {},
+  content: {
+    time: 1686328152749,
+    blocks: [
+      {
+        id: "4Xibd-Y5MI",
+        type: "paragraph",
+        data: {
+          text: "rr",
+        },
+      },
+    ],
+    version: "2.27.0",
+  },
   position: {
     x: 0,
     y: 0,
@@ -38,7 +50,19 @@ const QuestionNode: ExtendedNode = {
   id: "QuestionNode",
   type: QUESTIONNODETYPE,
   user: true,
-  content: {},
+  content: {
+    time: 1686328152749,
+    blocks: [
+      {
+        id: "4Xibd-Y5MI",
+        type: "paragraph",
+        data: {
+          text: "rr",
+        },
+      },
+    ],
+    version: "2.27.0",
+  },
   position: {
     x: 0,
     y: 0,

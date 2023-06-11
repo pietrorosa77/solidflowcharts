@@ -17,18 +17,33 @@
   z-index: 999;
 }
 .sb-modal[role="dialog"] .sb-modal-content {
-  background: var(--bars-color);
+  background: var(--brand-color);
   border-radius: 8px;
   color: var(--node-font-color);
-  padding: 0.5em;
+
   z-index: 1000;
+  width: var(--sb-modal-width);
 }
 .sb-modal[role="dialog"] .sb-modal-header {
   display: flex;
   justify-content: space-between;
   font-weight: 700;
+  padding: 1em;
+  background: var(--bars-color);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 .sb-modal[role="dialog"] .sb-modal-footer {
   display: flex;
   justify-content: flex-end;
+  padding: 1em;
+  background: var(--bars-color);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.sb-modal-body {
+  max-height: 80vh;
+  overflow: auto;
+  padding: 1em;
 }
