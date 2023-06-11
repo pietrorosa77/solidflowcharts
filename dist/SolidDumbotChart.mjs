@@ -56287,12 +56287,11 @@ var l7 = {},
       );
     })([
       function (l, r, o) {
-        o(1)
-        /*!
-         * Codex JavaScript Notification module
-         * https://github.com/codex-team/js-notifier
-         */,
-          (l.exports = (function () {
+        o(1),
+          /*!
+           * Codex JavaScript Notification module
+           * https://github.com/codex-team/js-notifier
+           */ (l.exports = (function () {
             var h = o(6),
               s = "cdx-notify--bounce-in",
               u = null;
@@ -65353,15 +65352,13 @@ class Hb1 extends M1 {
       z = e.pageY;
     if (
       e.target instanceof Element &&
-      e.target.isEqualNode(this.nodes.redactor)
+      e.target.isEqualNode(this.nodes.redactor) &&
       /**
        * If there is cross block selection started, target will be equal to redactor so we need additional check
-       */ &&
-      !l.anyBlockSelected
+       */ !l.anyBlockSelected &&
       /**
        * Prevent caret jumping (to last block) when clicking between blocks
-       */ &&
-      u < z
+       */ u < z
     ) {
       r();
       const { BlockManager: f, Caret: m, Toolbar: V } = this.Editor;

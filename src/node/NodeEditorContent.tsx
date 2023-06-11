@@ -15,7 +15,7 @@ export const NodeEditorContent = (props: {
       holder: props.id,
       readOnly: true,
       tools,
-      onReady
+      onReady,
     });
   });
 

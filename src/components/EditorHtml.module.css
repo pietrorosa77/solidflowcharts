@@ -35,7 +35,6 @@
   overflow-x: hidden;
 }
 
-
 .EditorHtmlModal :global .inline-image__image-gallery {
   display: block;
   overflow-y: auto;
@@ -55,7 +54,7 @@
   margin: 0px;
 }
 
-.EditorHtmlModal :global .ce-conversion-tool__icon, 
+.EditorHtmlModal :global .ce-conversion-tool__icon,
 .EditorHtmlModal :global .ce-conversion-toolbar--showed {
   background-color: var(--bars-color) !important;
 }
@@ -70,20 +69,19 @@
   background-color: var(--brand-color) !important;
 }
 .EditorHtmlModal :global .tc-toolbox--row {
-    left: -15px;
+  left: -15px;
 }
-
 
 .EditorHtmlModal :global .cdx-attaches__file-info {
-    color: var(--brand-color) !important;
+  color: var(--brand-color) !important;
 }
 
-.EditorHtmlModal :global  .colorPlugin {
-    position: relative;
+.EditorHtmlModal :global .colorPlugin {
+  position: relative;
 }
-.EditorHtmlModal :global  xy-color-picker {
-    position: absolute;
-    left: 4px;
-    bottom: -22px;
-    background-color: transparent;
+.EditorHtmlModal :global xy-color-picker {
+  position: absolute;
+  left: 4px;
+  bottom: -22px;
+  background-color: transparent;
 }
