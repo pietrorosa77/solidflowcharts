@@ -40,6 +40,7 @@
   color: var(--primary-color);
   padding-left: 3em;
   padding-top: 10px;
+  padding-right: 5px;
   border-radius: 6px;
   padding-bottom: 10px;
   border-left: 8px solid var(--node-content-font-color);
