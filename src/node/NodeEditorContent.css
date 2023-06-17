@@ -32,3 +32,57 @@
 .cdx-attaches__file-info {
   color: var(--brand-color) !important;
 }
+
+.flowchart-node-content .ce-block blockquote {
+  font-size: 1.2em;
+  width: 100%;
+  font-style: italic;
+  color: var(--primary-color);
+  padding-left: 3em;
+  padding-top: 10px;
+  border-radius: 6px;
+  padding-bottom: 10px;
+  border-left: 8px solid var(--node-content-font-color);
+  line-height: unset;
+  position: relative;
+  background: var(--node-bg-color);
+}
+
+.flowchart-node-content .ce-block blockquote::before {
+  content: "\201C";
+  color: var(--node-content-font-color);
+  font-size: 4em;
+  position: absolute;
+  left: 10px;
+  top: -10px;
+}
+
+.flowchart-node-content .ce-block blockquote::after {
+  content: "";
+}
+
+.flowchart-node-content .ce-block blockquote .cdx-quote__caption {
+  display: block;
+  color: var(--node-content-font-color);
+  font-style: normal;
+  font-weight: bold;
+  margin-top: 1em;
+  padding: 0;
+}
+
+.flowchart-node-content .cdx-quote__text {
+  padding: 0;
+  min-height: unset;
+}
+
+/* .flowchart-node-content .ce-block {
+  padding: 0;
+  overflow: unset;
+} */
+.flowchart-node-content .cdx-input:empty {
+  display: none;
+}
+.flowchart-node-content .cdx-input {
+  border: none;
+  box-shadow: none;
+}

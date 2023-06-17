@@ -17,6 +17,7 @@ import Marker from "@editorjs/marker";
 import Color from "editorjs-text-color-plugin";
 import Underline from "@editorjs/underline";
 import InlineCode from "@editorjs/inline-code";
+import Tribute from "tributejs";
 
 class AttachesExtend extends AttachesTool {
   constructor(params) {
@@ -51,7 +52,6 @@ export const tools: any = {
   Color,
   Underline,
   InlineCode,
-  Mention,
   Image: {
     class: Image,
     inlineToolbar: true,
@@ -118,6 +118,19 @@ export const tools: any = {
   },
 };
 
-export const onReady = () => {
+export const onReady = (
+  id?: string,
+  variabels?: { key: string; type: string }[]
+) => {
   MermaidTool.config({ theme: "neutral" });
+  if (!id || !variabels || !variabels.length) {
+    return;
+  }
+  const tribute = new Tribute({
+    values: variabels,
+    selectTemplate: (item) => {
+      return `<span class='dumbot-variable' data-type='${item.original.type}' data-variable='${item.original.key}'>$\{${item.original.key}\}</span>`;
+    },
+  });
+  tribute.attach(document.getElementById(id));
 };

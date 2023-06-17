@@ -18,6 +18,7 @@ export interface IChart {
     [id: string]: boolean;
   };
   paths: { [id: string]: string };
+  variables?: any;
 }
 
 export interface INode {

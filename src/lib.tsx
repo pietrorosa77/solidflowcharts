@@ -4,6 +4,7 @@ import Diagram from "./diagram/Diagram";
 import { ISidebarNode } from "./sidebar/Sidebar";
 import { IChartActions } from "./store/chartStore";
 import { ICustomTheme } from "./defaultTheme";
+export * from "./components/EditorJsExtensions";
 
 interface IDGProps {
   chart: IChart;
@@ -15,7 +16,6 @@ interface IDGProps {
   root?: any;
   width?: string;
   height?: string;
-  messageSeparator: string;
   customTheme?: ICustomTheme;
 }
 

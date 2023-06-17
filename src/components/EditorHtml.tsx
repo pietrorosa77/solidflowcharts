@@ -13,8 +13,10 @@ import {
 
 import { useChartStore } from "../store/chartStore";
 import { onReady, tools } from "./EditorJsExtensions";
-const contentStyle = { width: "100%", cursor: "unset" };
-const EditorHtml: Component = () => {
+const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
+const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
+  props
+) => {
   let editor: EditorJS;
   const [state, actions] = useChartStore();
   const deatroyEditor = () => {
@@ -29,7 +31,9 @@ const EditorHtml: Component = () => {
         placeholder: "Please, add some content to this node!!",
         holder: `${state.editNodeContent}_editing`,
         tools,
-        onReady,
+        onReady: () => {
+          onReady(`${state.editNodeContent}_editing`, props.variables);
+        },
         data: state.chart.nodes[state.editNodeContent].content,
       });
     }
