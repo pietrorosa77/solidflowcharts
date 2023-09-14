@@ -1,4 +1,4 @@
-import { Component, Show, createEffect, onCleanup } from "solid-js";
+import { Component, Show, createEffect, onCleanup, createSignal } from "solid-js";
 import EditorJS from "@editorjs/editorjs";
 import { Button } from "../components/Button";
 
@@ -19,7 +19,9 @@ const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
 ) => {
   let editor: EditorJS;
   const [state, actions] = useChartStore();
-  const deatroyEditor = () => {
+  const [ready, setReady] = createSignal(false);
+  const [title, setTitle] = createSignal('');
+  const destroyEditor = () => {
     if (editor) {
       editor.destroy();
       editor = undefined as any;
@@ -32,7 +34,12 @@ const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
         holder: `${state.editNodeContent}_editing`,
         tools,
         onReady: () => {
-          onReady(`${state.editNodeContent}_editing`, props.variables);
+          if(state.editNodeContent) {
+            setTitle(state.chart.nodes[state.editNodeContent].title);
+            onReady(`${state.editNodeContent}_editing`, props.variables);
+          }
+
+          setReady(true)
         },
         data: state.chart.nodes[state.editNodeContent].content,
       });
@@ -40,22 +47,26 @@ const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
   });
 
   onCleanup(() => {
-    deatroyEditor();
+    destroyEditor();
   });
 
   const onConfirm = async () => {
+    if(!title()) {
+      return;
+    }
     const data = await editor?.save();
     const updatedNode = {
       ...state.chart.nodes[state.editNodeContent as string],
       content: data,
+      title: title()
     };
-    deatroyEditor();
+    destroyEditor();
     actions.onToggleEditNodeContent(undefined);
     actions.onNodeChanged(updatedNode.id, updatedNode);
   };
 
   const onClose = () => {
-    deatroyEditor();
+    destroyEditor();
     actions.onToggleEditNodeContent(undefined);
   };
 
@@ -74,7 +85,10 @@ const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
         {(modalProps: any) => (
           <ModalContent>
             <ModalHeader>
-              Edit Node Content
+             {ready() ? <input classList={ {
+              [`${styles.invalidTitle}`]: !title(),
+              [`${styles.titleEdit}`]: true
+             }} type="text" value={title()} onChange={(e) => setTitle(e.target.value)}/> : `Initializing node content editor....`}
               <Button
                 variant="icon"
                 onclick={modalProps.toggle}

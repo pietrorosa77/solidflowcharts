@@ -71,7 +71,6 @@ const NodeHead = (props: {
 const Node: Component<{
   nodeId: string;
   canvasId: string;
-  onNodeSettings: (nodeId: string) => void;
   sizeObserver: ResizeObserver;
 }> = (props) => {
   let nodeRef: any;
@@ -212,7 +211,7 @@ const Node: Component<{
   };
 
   const onNodeSettingsClick = () => {
-    props.onNodeSettings(props.nodeId);
+    actions.onToggleEditNodeSettings(props.nodeId);
   };
 
   const onNodeContentEdit = () => {
@@ -260,7 +259,6 @@ const Node: Component<{
 
 const Nodes: Component<{
   canvasId: string;
-  onNodeSettings: (nodeId: string) => void;
 }> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -279,7 +277,6 @@ const Nodes: Component<{
             nodeId={key}
             sizeObserver={observer}
             canvasId={props.canvasId}
-            onNodeSettings={props.onNodeSettings}
           />
         );
       }}

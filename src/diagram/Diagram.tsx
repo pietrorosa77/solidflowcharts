@@ -1,5 +1,5 @@
 import { Component, onMount, Show, ErrorBoundary } from "solid-js";
-import { ExtendedNode, IChart } from "../../definitions";
+import { IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
 import { nanoid } from "nanoid";
@@ -15,9 +15,9 @@ import { ICustomTheme, getCssVariables } from "../defaultTheme";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
 import EditorHtml from "../components/EditorHtml";
+import EditorNodeSettings from "../components/EditorNodeSettings";
 
 const Diagram: Component<{
-  onNodeSettingsClick?: (node: ExtendedNode) => void;
   onLoad?: (ctions: IChartActions) => void;
   availableNodes: ISidebarNode[];
   width?: string;
@@ -39,15 +39,10 @@ const Diagram: Component<{
     actions.onScale(evt.getTransform().scale);
   };
 
-  const onNodeSettings = (nodeId: string) => {
-    if (props.onNodeSettingsClick) {
-      props.onNodeSettingsClick(state.chart.nodes[nodeId]);
-    }
-  };
-
   return (
     <div class={styles.Diagram}>
       <EditorHtml variables={state.chart.variables} />
+      <EditorNodeSettings variables={state.chart.variables} nodes={props.availableNodes}/>
       <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
@@ -55,7 +50,7 @@ const Diagram: Component<{
         minZoom={minZoom}
         maxZoom={maxZoom}
       >
-        <Nodes canvasId={canvasId} onNodeSettings={onNodeSettings} />
+        <Nodes canvasId={canvasId} />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
@@ -68,7 +63,6 @@ const Diagram: Component<{
 const DiagramWrapper: Component<{
   initialChart: IChart;
   fontFace?: string;
-  onNodeSettingsClick?: (node: ExtendedNode) => void;
   onLoad?: (ctions: IChartActions) => void;
   onHistoryChange?: (chart: IChart) => void;
   availableNodes: ISidebarNode[];
@@ -80,10 +74,6 @@ const DiagramWrapper: Component<{
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
-
-  const onNodeSettings = (node: ExtendedNode) => {
-    props.onNodeSettingsClick?.(node);
-  };
 
   const onLoad = (actions: IChartActions) => {
     props.onLoad?.(actions);
@@ -105,7 +95,6 @@ const DiagramWrapper: Component<{
           <Diagram
             width={props.width}
             height={props.height}
-            onNodeSettingsClick={onNodeSettings}
             onLoad={onLoad}
             availableNodes={props.availableNodes}
           />

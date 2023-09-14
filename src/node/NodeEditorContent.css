@@ -76,13 +76,6 @@
   min-height: unset;
 }
 
-/* .flowchart-node-content .ce-block {
-  padding: 0;
-  overflow: unset;
-} */
-.flowchart-node-content .cdx-input:empty {
-  display: none;
-}
 .flowchart-node-content .cdx-input {
   border: none;
   box-shadow: none;

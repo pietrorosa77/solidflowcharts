@@ -1,7 +1,6 @@
 import { Component, For } from "solid-js";
 import { ExtendedNode } from "../../definitions";
 import { Button } from "../components/Button";
-import { getIcon } from "../components/tools";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Sidebar.module.css";
 
@@ -58,7 +57,7 @@ const Sidebar: Component<{
                 onDragEnd={onDragEnd}
               >
                 <div class={styles.btnContent}>
-                  {getIcon(node.icon)}
+                  <i class={node.icon} />
                   {node.title}
                 </div>
               </Button>

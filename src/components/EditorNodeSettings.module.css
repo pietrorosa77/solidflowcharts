@@ -1,0 +1,13 @@
+
+.EditorNodeSettingsModal {
+    font-family: var(--diagram-font-family);
+    fill: var(--node-font-color);
+}
+
+.EditorNodeSettingsModal :global .sb-modal-body {
+    background-color: var(--node-bg-color);
+    opacity: 0.9;
+    padding: 5px;
+    height: calc(100vh - 120px);
+    overflow-x: hidden;
+}

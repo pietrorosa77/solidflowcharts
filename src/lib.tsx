@@ -1,5 +1,5 @@
 import { render } from "solid-js/web";
-import { ExtendedNode, IChart } from "../definitions";
+import { IChart } from "../definitions";
 import Diagram from "./diagram/Diagram";
 import { ISidebarNode } from "./sidebar/Sidebar";
 import { IChartActions } from "./store/chartStore";
@@ -9,7 +9,6 @@ export * from "./components/EditorJsExtensions";
 interface IDGProps {
   chart: IChart;
   fontFace?: string;
-  onNodeSettingsClick?: (node: ExtendedNode) => void;
   onLoad?: (ctions: IChartActions) => void;
   onHistoryChange?: (chart: IChart) => void;
   availableNodes: ISidebarNode[];
@@ -29,7 +28,6 @@ export function FChart(props: IDGProps, elementId: string) {
         root={props.root || document}
         fontFace={props.fontFace}
         availableNodes={props.availableNodes}
-        onNodeSettingsClick={props.onNodeSettingsClick}
         onHistoryChange={props.onHistoryChange}
         onLoad={props.onLoad}
         customTheme={props.customTheme}

@@ -113,13 +113,13 @@ export const availableNodes: ISidebarNode[] = [
   {
     id: "MessageNode",
     title: "Message",
-    icon: "BsChatFill",
+    icon: "fas fa-comment",
     getNode: () => createNode(MessageNode),
   },
   {
     id: "QuestionNode",
     title: "Question",
-    icon: "BsQuestionCircleFill",
+    icon: "fas fa-question-circle",
     getNode: () => createNode(QuestionNode),
   },
 ];

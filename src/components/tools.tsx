@@ -7,9 +7,6 @@ import {
   Accessor,
   Setter,
 } from "solid-js";
-import * as faicons from "solid-icons/fa";
-import * as bsicons from "solid-icons/bs";
-import * as vsicons from "solid-icons/vs";
 
 export type WrappedElement<P> = (props: P) => JSX.Element;
 
@@ -166,11 +163,4 @@ export const getElements = (
     }
   }
   return result;
-};
-
-export const getIcon = (icon: string, size?: string): any => {
-  const IconComponent =
-    (faicons as any)[icon] || (bsicons as any)[icon] || (vsicons as any)[icon];
-
-  return () => (IconComponent ? <IconComponent size={size} /> : undefined);
 };

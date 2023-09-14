@@ -3,6 +3,15 @@
   fill: var(--node-font-color);
 }
 
+.invalidTitle {
+  border: 1px solid red;
+  background-color: rgb(244, 125, 125);
+}
+
+.titleEdit {
+  width: 100%;
+}
+
 .EditorHtmlModal :global .ce-inline-toolbar {
   background-color: var(--bars-color) !important;
 }

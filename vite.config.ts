@@ -9,7 +9,7 @@ export default defineConfig({
   },
   plugins: [solidPlugin(), eslintPlugin({ cache: false })],
   build: {
-    target: "esnext",
+    target: "es2015",
     polyfillDynamicImport: false,
     lib: {
       entry: path.resolve(__dirname, "src/lib.tsx"),
