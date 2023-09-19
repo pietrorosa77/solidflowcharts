@@ -17,6 +17,7 @@ import { BsPencilFill } from "solid-icons/bs";
 const NodeHead = (props: {
   title: string;
   selected: boolean;
+  preventRemoval?: boolean;
   onToggle: () => void;
   onDeleteNode: () => void;
   onNodeSettings: () => void;
@@ -58,11 +59,11 @@ const NodeHead = (props: {
           class={styles.NodeCommands}
           onPointerDown={onNodeSettings}
         />
-        <BiSolidTrash
+        {!props.preventRemoval && <BiSolidTrash
           size={18}
           class={styles.NodeCommands}
           onPointerDown={onNodeTrash}
-        />
+        />}
       </div>
     </div>
   );
@@ -238,6 +239,7 @@ const Node: Component<{
       <NodeHead
         selected={state.chart.selected[props.nodeId]}
         title={state.chart.nodes[props.nodeId].title}
+        preventRemoval={state.chart.nodes[props.nodeId].preventRemoval}
         onToggle={onToggleSelection}
         onDeleteNode={onDeleteNode}
         onNodeSettings={onNodeSettingsClick}

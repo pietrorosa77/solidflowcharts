@@ -145,3 +145,16 @@ export const getLinksForPort = (
     )
     .map((linkId) => chart.links[linkId]);
 };
+
+export const getVariables = (chart:IChart) => {
+  return Object.keys(chart.nodes).map((key) => {
+    const node = chart.nodes[key];
+    return node.output ? {
+      key: node.output.id,
+      type: node.output.type
+    } : {
+      key: null,
+      type: null
+    }
+  }).filter(out => out.key && (out.type && out.type !== 'null'))
+}

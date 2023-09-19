@@ -13,10 +13,9 @@ import {
 
 import { useChartStore } from "../store/chartStore";
 import { onReady, tools } from "./EditorJsExtensions";
+import { getVariables } from "../store/utils";
 const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
-const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
-  props
-) => {
+const EditorHtml: Component = () => {
   let editor: EditorJS;
   const [state, actions] = useChartStore();
   const [ready, setReady] = createSignal(false);
@@ -36,7 +35,7 @@ const EditorHtml: Component<{ variables?: { key: string; type: string }[] }> = (
         onReady: () => {
           if(state.editNodeContent) {
             setTitle(state.chart.nodes[state.editNodeContent].title);
-            onReady(`${state.editNodeContent}_editing`, props.variables);
+            onReady(`${state.editNodeContent}_editing`, getVariables(state.chart));
           }
 
           setReady(true)

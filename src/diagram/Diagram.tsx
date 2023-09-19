@@ -41,8 +41,8 @@ const Diagram: Component<{
 
   return (
     <div class={styles.Diagram}>
-      <EditorHtml variables={state.chart.variables} />
-      <EditorNodeSettings variables={state.chart.variables} nodes={props.availableNodes}/>
+      <EditorHtml />
+      <EditorNodeSettings nodes={props.availableNodes}/>
       <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}

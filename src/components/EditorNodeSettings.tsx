@@ -12,17 +12,16 @@ import {
 } from "../components/Modal";
 
 import { useChartStore } from "../store/chartStore";
-import { messageschema } from "../defaultSchemas/test";
 import "bootstrap/dist/css/bootstrap.css";
 import { ISidebarNode } from "../sidebar/Sidebar";
-import { ExtendedNode } from "../../definitions";
+import { ExtendedNode, IPort } from "../../definitions";
 
 JSONEditor.defaults.options.iconlib = "bootstrap";
 const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
-const EditorNodeSettings: Component<{ variables?: { key: string; type: string }[], nodes: ISidebarNode[]; }> = () => {
+const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
   let editor: any;
   const [state, actions] = useChartStore();
-  const [ready, setReady] = createSignal(false);
+  const [_ready, setReady] = createSignal(false);
   const destroyEditor = () => {
     if (editor) {
       editor.destroy();
@@ -33,17 +32,17 @@ const EditorNodeSettings: Component<{ variables?: { key: string; type: string }[
     if (state.editNodeSettings && !editor) {
       const node: ExtendedNode =state.chart.nodes[state.editNodeSettings];
       const holder = (window as any).DMBRoot.getElementById(`${state.editNodeSettings}_editing_settings`);
+      const sidebarNode = props.nodes.find(n => n.type === node.type);
 
       editor = new JSONEditor(holder, {
-        schema: messageschema,
+        schema: sidebarNode ? sidebarNode.schema : null,
         disable_collapse: false,
         disable_edit_json: false,
         disable_properties: true,
         no_additional_properties: true,
-        remove_empty_properties: true,
-        remove_button_labels: true,
+        remove_empty_properties: false,
+        remove_button_labels: false,
         theme: 'bootstrap5',
-        iconlib: 'fontawesome5',
         object_layout: 'normal',
       });
       
@@ -59,8 +58,31 @@ const EditorNodeSettings: Component<{ variables?: { key: string; type: string }[
     destroyEditor();
   });
 
+  const geteditedPorts = (portsArray: IPort[]) => {
+    return portsArray.reduce((acc, curr, index) => {
+      return {
+        ...acc,
+        [`${curr.id}`]: {
+          ...curr,
+          index: index + 1
+        }
+      }
+    }, {})
+  }
+
   const onConfirm = async () => {
+    const value = editor.getValue();
+    const oldNode = state.chart.nodes[state.editNodeSettings as string];
+    const updatedNode: ExtendedNode = {
+      ...oldNode,
+      output: value.output,
+      properties: value.properties || { displayAs: 'message' },
+      ports: value.ports && value.ports.length ? geteditedPorts(value.ports) : oldNode.ports 
+
+    };
     actions.onToggleEditNodeSettings(undefined);
+   
+    actions.onNodeChanged(updatedNode.id, updatedNode);
     destroyEditor();
   };
 
@@ -84,7 +106,6 @@ const EditorNodeSettings: Component<{ variables?: { key: string; type: string }[
           <ModalContent>
             <ModalHeader>
               Edit node settings
-
               <Button
                 variant="icon"
                 onclick={modalProps.toggle}

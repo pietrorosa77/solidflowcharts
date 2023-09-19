@@ -8,6 +8,9 @@ export interface ISidebarNode {
   id: string;
   title: string;
   icon: string;
+  type: string;
+  schema: any;
+  hide?: boolean;
   getNode: () => ExtendedNode;
 }
 
@@ -45,7 +48,7 @@ const Sidebar: Component<{
         </a>
       </div>
       <div class={styles.nodesContainer}>
-        <For each={props.nodes}>
+        <For each={props.nodes.filter(n => !n.hide)}>
           {(node) => {
             return (
               <Button

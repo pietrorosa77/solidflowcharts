@@ -9,6 +9,7 @@ export default defineConfig({
   },
   plugins: [solidPlugin(), eslintPlugin({ cache: false })],
   build: {
+    minify: true,
     target: "es2015",
     polyfillDynamicImport: false,
     lib: {
