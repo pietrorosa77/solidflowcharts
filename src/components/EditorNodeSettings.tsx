@@ -28,6 +28,7 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
       editor = undefined as any;
     }
   };
+
   createEffect(() => {
     if (state.editNodeSettings && !editor) {
       const node: ExtendedNode =state.chart.nodes[state.editNodeSettings];
@@ -48,7 +49,10 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
       
       editor.on('ready', () => {
         // Now the api methods will be available
-        editor.setValue(node);
+        editor.setValue({
+          ...node,
+          ports: getPortsArray(node.ports)
+        });
         setReady(true)
       });
     }
@@ -69,6 +73,15 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
       }
     }, {})
   }
+
+  const getPortsArray = (
+    portDictionary: { [key: string]: IPort }
+  ): IPort[] =>
+    Object.keys(portDictionary)
+      .map((key) => ({
+        ...portDictionary[key],
+        id: key
+      }));
 
   const onConfirm = async () => {
     const value = editor.getValue();
