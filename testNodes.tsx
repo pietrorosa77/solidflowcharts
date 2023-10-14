@@ -13,19 +13,7 @@ const MessageNode: ExtendedNode = {
   id: "MessageNode",
   type: "message",
   user: false,
-  content: {
-    time: 1686328152749,
-    blocks: [
-      {
-        id: "4Xibd-Y5MI",
-        type: "paragraph",
-        data: {
-          text: "rr",
-        },
-      },
-    ],
-    version: "2.27.0",
-  },
+  content: `this is your <strong>html</strong>formatted message***this is another content block`,
   position: {
     x: 0,
     y: 0,
@@ -35,6 +23,7 @@ const MessageNode: ExtendedNode = {
     id: "messageout",
     type: "null",
   },
+  preventEdit:['ports', 'output'],
   ports: {
     default: {
       bgColor: "brand",
@@ -50,19 +39,7 @@ const QuestionNode: ExtendedNode = {
   id: "QuestionNode",
   type: QUESTIONNODETYPE,
   user: true,
-  content: {
-    time: 1686328152749,
-    blocks: [
-      {
-        id: "4Xibd-Y5MI",
-        type: "paragraph",
-        data: {
-          text: "rr",
-        },
-      },
-    ],
-    version: "2.27.0",
-  },
+  content: `can you answer this question?***Please give it a go`,
   position: {
     x: 0,
     y: 0,
@@ -87,6 +64,7 @@ const QuestionNode: ExtendedNode = {
     textAlign: "start",
     displayAs: "message",
   },
+  preventEdit:['ports'],
   ports: {
     default: {
       bgColor: "brand",

@@ -2,6 +2,7 @@ import { Component, For, Show } from "solid-js";
 import { IChart, ILink, IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Link.module.css";
+import { getSmoothStepPath } from "./SmoothStepPath";
 
 export function calculatePosition(
   portOffset: number,
@@ -42,7 +43,7 @@ export function defaultPath(startPos: IPosition, endPos: IPosition) {
   const hx1 = x1 + Math.abs(x2 - x1) * bezierWeight;
   const hx2 = x2 - Math.abs(x2 - x1) * bezierWeight;
 
-  return `M ${x1} ${y1} C ${hx1} ${y1} ${hx2} ${y2} ${x2} ${y2}`;
+  return [`M ${x1} ${y1} C ${hx1} ${y1} ${hx2} ${y2} ${x2} ${y2}`];
 }
 
 export function straightPath(startPos: IPosition, endPos: IPosition) {
@@ -62,6 +63,7 @@ const getLinePoints = (
   const link = newLink || chart.links[linkId];
   const nodeFrom = chart.nodes[link.from.nodeId];
   const posTo = link.posTo || chart.nodes[link.to].position;
+  const isUsingBezier = !!chart.properties?.useBezierPath;
 
   const portIndex = nodeFrom.ports[link.from.portId].index;
   const { startPos, endPos } = calculatePosition(
@@ -72,7 +74,19 @@ const getLinePoints = (
     nodeFrom.size,
     newLink ? true : false
   );
-  return defaultPath(startPos, endPos);
+  
+  const [path] = isUsingBezier ? defaultPath(startPos, endPos) : getSmoothStepPath({
+    sourceX:startPos.x,
+    sourceY: startPos.y,
+    sourcePosition: 'Right',
+    targetX: endPos.x,
+    targetY: endPos.y,
+    targetPosition: 'Left',
+    borderRadius: 20,
+    offset: 20,
+  });
+
+  return path;
 };
 
 export const Link = (props: { linkId: string; creating?: boolean }) => {

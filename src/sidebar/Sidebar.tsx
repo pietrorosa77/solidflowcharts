@@ -8,8 +8,7 @@ export interface ISidebarNode {
   id: string;
   title: string;
   icon: string;
-  type: string;
-  schema: any;
+  schema?: any;
   hide?: boolean;
   getNode: () => ExtendedNode;
 }

@@ -46,6 +46,7 @@ export interface IChartActions {
   onScale: (scale: number) => void;
   onToggleNodeSelection: (id: string, selected: boolean) => void;
   onCreatingLink: (link: ILink) => void;
+  onUpdateChartProps: (props: any) => void;
   onEndConnection: (link: ILink, portLinks: DeepReadonly<ILink>[]) => void;
   onRemoveLinks: (nodeId: string, portId: string) => void;
   onDeleteNodes: (nodeIds: string[]) => void;
@@ -53,7 +54,6 @@ export interface IChartActions {
   onAddNode: (node: ExtendedNode) => void;
   onToggleAreaSelection: (enableSelection: boolean) => void;
   onAreaSelection: (selection: { [key: string]: boolean }) => void;
-  onToggleEditNodeContent: (nodeId?: string) => void;
   onToggleEditNodeSettings: (nodeId?: string) => void;
   onUndo: () => void;
   onRedo: () => void;
@@ -148,6 +148,16 @@ export function ChartProvider(props: {
         // eslint-disable-next-line
         onScale(scale: number) {
           setChart("scale", () => scale);
+        },
+        // eslint-disable-next-line
+        onUpdateChartProps(props: any) {
+          const oldProps = state.chart.properties || {};
+          const newProps = {
+            ...oldProps,
+            ...props
+          }
+          setChart("chart", "properties", () => newProps);
+          
         },
         // eslint-disable-next-line
         onAreaSelection(selection: { [key: string]: boolean }) {
@@ -316,10 +326,6 @@ export function ChartProvider(props: {
           batch(() => {
             recordHistory(state.chart, "crtAction");
           });
-        },
-        // eslint-disable-next-line
-        onToggleEditNodeContent(nodeId?: string) {
-          setChart("editNodeContent", () => nodeId || undefined);
         },
         // eslint-disable-next-line
         onToggleEditNodeSettings(nodeId?: string) {

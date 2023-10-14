@@ -118,7 +118,7 @@ const Port = (props: {
   };
 
   const forceHide = () =>
-    !!state.chart.nodes[props.nodeId].ports[props.portId].properties.disabled;
+    !!state.chart.nodes[props.nodeId].ports[props.portId].properties?.disabled;
 
   const hasLoop = () =>
     hasLink() &&

@@ -72,3 +72,7 @@
   font-family: var(--diagram-font-family);
   fill: var(--node-font-color);
 }
+
+.ModalHelp li {
+    padding-bottom: 15px;
+}

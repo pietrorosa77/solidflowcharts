@@ -1,4 +1,4 @@
-import { Component, For, onMount, onCleanup } from "solid-js";
+import { Component, For, onMount, onCleanup, Show } from "solid-js";
 import { Checkbox } from "../components/Checkbox";
 import { useChartStore } from "../store/chartStore";
 import {
@@ -6,22 +6,22 @@ import {
   getMultiselectionSquareRectOffsets,
   getPositionWithParentBoundsSize,
 } from "../store/utils";
-
+import {NodeContentReadonly} from './NodeContent'
 import styles from "./Node.module.css";
 import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
 import { BiSolidTrash } from "solid-icons/bi";
-import { NodeEditorContent } from "./NodeEditorContent";
-import { BsPencilFill } from "solid-icons/bs";
+import { ExtendedNode } from "../../definitions";
 
 const NodeHead = (props: {
+  nodeId: string;
   title: string;
   selected: boolean;
   preventRemoval?: boolean;
   onToggle: () => void;
   onDeleteNode: () => void;
   onNodeSettings: () => void;
-  onNodeContentEdit: () => void;
+  onCustomEditNode?: (nodeId: string) => void;
 }) => {
   const preventNodeDrag = (e: PointerEvent) => {
     (e as any)["diagramDetails"] = "prevent node drag";
@@ -30,11 +30,11 @@ const NodeHead = (props: {
     props.onToggle();
   };
   const onNodeSettings = () => {
-    props.onNodeSettings();
-  };
-
-  const onNodeContentEdit = () => {
-    props.onNodeContentEdit();
+    if(props.onCustomEditNode) {
+      props.onCustomEditNode(props.nodeId);
+    } else {
+      props.onNodeSettings();
+    }
   };
 
   const onNodeTrash = () => {
@@ -49,11 +49,6 @@ const NodeHead = (props: {
         <span>{props.title}</span>
       </div>
       <div class={styles.NodeCommandsContainer} onPointerDown={preventNodeDrag}>
-        <BsPencilFill
-          size={18}
-          class={styles.NodeCommands}
-          onPointerDown={onNodeContentEdit}
-        />
         <AiFillSetting
           size={18}
           class={styles.NodeCommands}
@@ -73,6 +68,8 @@ const Node: Component<{
   nodeId: string;
   canvasId: string;
   sizeObserver: ResizeObserver;
+  customNodeContentRenderer?: (node: ExtendedNode) => any;
+  onCustomEditNode?: (nodeID: string) => void;
 }> = (props) => {
   let nodeRef: any;
   const [state, actions] = useChartStore();
@@ -84,6 +81,12 @@ const Node: Component<{
       blockEventHandler,
       { passive: false }
     );
+    if(props.customNodeContentRenderer) {
+      props.customNodeContentRenderer({
+        ...state.chart.nodes[props.nodeId],
+        holderEl: document.getElementById(`node_content_${props.nodeId}`)
+      })
+    }
     console.debug("mounting node", props.nodeId);
   });
 
@@ -215,10 +218,6 @@ const Node: Component<{
     actions.onToggleEditNodeSettings(props.nodeId);
   };
 
-  const onNodeContentEdit = () => {
-    actions.onToggleEditNodeContent(props.nodeId);
-  };
-
   return (
     <div
       onPointerDown={onPointerDown}
@@ -237,21 +236,23 @@ const Node: Component<{
       }}
     >
       <NodeHead
+        nodeId={props.nodeId}
         selected={state.chart.selected[props.nodeId]}
         title={state.chart.nodes[props.nodeId].title}
         preventRemoval={state.chart.nodes[props.nodeId].preventRemoval}
         onToggle={onToggleSelection}
         onDeleteNode={onDeleteNode}
         onNodeSettings={onNodeSettingsClick}
-        onNodeContentEdit={onNodeContentEdit}
+        onCustomEditNode={props.onCustomEditNode}
       />
 
       <div class={`${styles.NodeContent} flowchart-node-content`}>
-        <div class={styles.NodeContentView}>
-          <NodeEditorContent
-            id={props.nodeId}
-            content={state.chart.nodes[props.nodeId].content}
-          />
+        <div class={styles.NodeContentView} id={`node_content_${props.nodeId}`}>
+          <Show when={!props.customNodeContentRenderer}>
+              <NodeContentReadonly
+                content={state.chart.nodes[props.nodeId].content}
+              />
+          </Show>
         </div>
       </div>
       <Ports nodeId={props.nodeId} canvasId={props.canvasId} />
@@ -261,6 +262,8 @@ const Node: Component<{
 
 const Nodes: Component<{
   canvasId: string;
+  customNodeContentRenderer?: (node: ExtendedNode) => any;
+  onCustomEditNode?: (nodeID: string) => void;
 }> = (props) => {
   const [state, actions] = useChartStore();
   const observer: ResizeObserver = new ResizeObserver(
@@ -279,6 +282,7 @@ const Nodes: Component<{
             nodeId={key}
             sizeObserver={observer}
             canvasId={props.canvasId}
+            customNodeContentRenderer={props.customNodeContentRenderer}
           />
         );
       }}

@@ -43,6 +43,7 @@ export interface IPort {
   text: string;
   index: number;
   fontColor?: string;
+  blockEdit?: boolean;
   properties: {
     [key: string]: any;
   };

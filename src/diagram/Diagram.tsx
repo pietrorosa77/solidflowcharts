@@ -1,5 +1,5 @@
 import { Component, onMount, Show, ErrorBoundary } from "solid-js";
-import { IChart } from "../../definitions";
+import { ExtendedNode, IChart } from "../../definitions";
 import Canvas from "../canvas/Canvas";
 import Nodes from "../node/Node";
 import { nanoid } from "nanoid";
@@ -14,14 +14,16 @@ import { PanZoom } from "panzoom";
 import { ICustomTheme, getCssVariables } from "../defaultTheme";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
-import EditorHtml from "../components/EditorHtml";
 import EditorNodeSettings from "../components/EditorNodeSettings";
 
 const Diagram: Component<{
   onLoad?: (ctions: IChartActions) => void;
+  onNodeChanged:(oldNode: ExtendedNode, newNode: ExtendedNode) => void;
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
+  onCustomEditNode?: (node: ExtendedNode) => void;
+  customNodeContentRenderer?: (node: ExtendedNode) => void;
 }> = (props) => {
   const minZoom = 0.2;
   const maxZoom = 2;
@@ -39,10 +41,21 @@ const Diagram: Component<{
     actions.onScale(evt.getTransform().scale);
   };
 
+  const onSettingsChanged = (oldNode: ExtendedNode, newNode: ExtendedNode) => {
+      props.onNodeChanged?.(oldNode, newNode);
+  };
+
+  const onCustomEditNode = (nodeId: string) => {
+    if (props.onCustomEditNode) {
+      props.onCustomEditNode(state.chart.nodes[nodeId]);
+    }
+  };
+
   return (
     <div class={styles.Diagram}>
-      <EditorHtml />
-      <EditorNodeSettings nodes={props.availableNodes}/>
+      <Show when={!props.onCustomEditNode}>
+        <EditorNodeSettings nodes={props.availableNodes} onSettingsChanged={onSettingsChanged}/>
+      </Show>
       <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
@@ -50,7 +63,7 @@ const Diagram: Component<{
         minZoom={minZoom}
         maxZoom={maxZoom}
       >
-        <Nodes canvasId={canvasId} />
+        <Nodes onCustomEditNode={props.onCustomEditNode ? onCustomEditNode : undefined} canvasId={canvasId} customNodeContentRenderer={props.customNodeContentRenderer} />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
@@ -62,6 +75,7 @@ const Diagram: Component<{
 
 const DiagramWrapper: Component<{
   initialChart: IChart;
+  onNodeChanged?:(oldNode: ExtendedNode, newNode: ExtendedNode) => void;
   fontFace?: string;
   onLoad?: (ctions: IChartActions) => void;
   onHistoryChange?: (chart: IChart) => void;
@@ -71,6 +85,8 @@ const DiagramWrapper: Component<{
   height?: string;
   getNodeHtml?: (content: string) => Promise<string[]>;
   customTheme?: ICustomTheme;
+  customNodeContentRenderer?: (node: ExtendedNode) => void;
+  onCustomEditNode?: (node: ExtendedNode) => void;
 }> = (props) => {
   // eslint-disable-next-line
   (window as any).DMBRoot = props.root || document;
@@ -81,6 +97,10 @@ const DiagramWrapper: Component<{
 
   const onHistoryChanged = (chart: IChart) => {
     props.onHistoryChange?.(chart);
+  };
+
+  const onNodeChanged = (oldNode: ExtendedNode, newNode: ExtendedNode) => {
+    props.onNodeChanged?.(oldNode, newNode);
   };
   return (
     <>
@@ -96,7 +116,10 @@ const DiagramWrapper: Component<{
             width={props.width}
             height={props.height}
             onLoad={onLoad}
+            onNodeChanged={onNodeChanged}
             availableNodes={props.availableNodes}
+            customNodeContentRenderer={props.customNodeContentRenderer}
+            onCustomEditNode={props.onCustomEditNode}
           />
         </ErrorBoundary>
       </ChartProvider>

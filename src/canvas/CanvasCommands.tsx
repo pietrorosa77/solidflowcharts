@@ -6,7 +6,7 @@ import { FaSolidArrowsUpDownLeftRight } from "solid-icons/fa";
 import { AiOutlineSelect } from "solid-icons/ai";
 import { IoAppsSharp } from "solid-icons/io";
 import { ImRedo, ImUndo } from "solid-icons/im";
-import { FaSolidTrash } from "solid-icons/fa";
+import { FaSolidTrash, FaSolidBezierCurve } from "solid-icons/fa";
 
 import styles from "./Canvas.module.css";
 import {
@@ -40,6 +40,11 @@ const CanvasCommands: Component<{
       .map((k) => k);
     actions.onDeleteNodes(ids);
   };
+
+  const onUseBezierPathClick = () => {
+    const isUsingBezier = !!state.chart.properties?.useBezierPath;
+    actions.onUpdateChartProps({ useBezierPath: !isUsingBezier})
+  }
 
   const onUndo = () => {
     if (state.canUndo) {
@@ -113,6 +118,17 @@ const CanvasCommands: Component<{
           variant="icon"
           classList={{
             [`${styles.CanvasCommand}`]: true,
+            [`${styles.CanvasCommandsDisabled}`]: !state.chart.properties?.useBezierPath,
+            [`${styles.CanvasCommandsEnabled}`]: !!state.chart.properties?.useBezierPath,
+          }}
+          onClick={onUseBezierPathClick}
+        >
+          <FaSolidBezierCurve size={30} />
+        </Button>
+        <Button
+          variant="icon"
+          classList={{
+            [`${styles.CanvasCommand}`]: true,
             [`${styles.CanvasCommandsDisabled}`]: !state.canUndo,
           }}
           onClick={onUndo}
@@ -168,7 +184,9 @@ const CanvasCommands: Component<{
                   </Button>
                 </ModalHeader>
                 <ModalBody>
-                  <ul>
+                  <ul classList={{
+            [`${styles.ModalHelp}`]: true,
+          }}>
                     <li>
                       <IoAppsSharp size={30} style={{ display: "inline" }} />
                       <strong> Node Library:</strong>
@@ -199,6 +217,11 @@ const CanvasCommands: Component<{
                       <FaSolidTrash size={30} style={{ display: "inline" }} />
                       <strong> Delete nodes:</strong>
                       {` Delete selected nodes`}
+                    </li>
+                    <li>
+                      <FaSolidBezierCurve size={30} style={{ display: "inline" }} />
+                      <strong> Bezier/SmoothStep connections:</strong>
+                      {` Use Bezier or Smooth Step connection line (Smooth Step is default)`}
                     </li>
                   </ul>
                 </ModalBody>

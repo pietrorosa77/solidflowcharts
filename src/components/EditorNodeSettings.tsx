@@ -1,7 +1,6 @@
-import { Component, Show, createEffect, onCleanup, createSignal } from "solid-js";
+import { Component, Show, createEffect, onCleanup } from "solid-js";
 import { Button } from "../components/Button";
-//@ts-ignore
-import { JSONEditor } from '@json-editor/json-editor/dist/jsoneditor.js';
+import { JSONContent, JSONEditor, TextContent,isTextContent } from 'vanilla-jsoneditor'
 import styles from "./EditorNodeSettings.module.css";
 import {
   Modal,
@@ -12,49 +11,44 @@ import {
 } from "../components/Modal";
 
 import { useChartStore } from "../store/chartStore";
-import "bootstrap/dist/css/bootstrap.css";
-import { ISidebarNode } from "../sidebar/Sidebar";
-import { ExtendedNode, IPort } from "../../definitions";
 
-JSONEditor.defaults.options.iconlib = "bootstrap";
+import { ISidebarNode } from "../sidebar/Sidebar";
+import { ExtendedNode } from "../../definitions";
+import {omit} from "lodash";
+
 const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
-const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
-  let editor: any;
+const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; onSettingsChanged: (oldNode: ExtendedNode, newNode: ExtendedNode) => void }> = (props) => {
+  let editor: JSONEditor;
   const [state, actions] = useChartStore();
-  const [_ready, setReady] = createSignal(false);
   const destroyEditor = () => {
     if (editor) {
-      editor.destroy();
+      editor.destroy().then((value) => {
+        console.log('json editor destroyed', value)
+
+      });
       editor = undefined as any;
     }
   };
 
   createEffect(() => {
     if (state.editNodeSettings && !editor) {
-      const node: ExtendedNode =state.chart.nodes[state.editNodeSettings];
-      const holder = (window as any).DMBRoot.getElementById(`${state.editNodeSettings}_editing_settings`);
-      const sidebarNode = props.nodes.find(n => n.type === node.type);
+      const node: ExtendedNode = state.chart.nodes[state.editNodeSettings];
+      const target = (window as any).DMBRoot.getElementById(`${state.editNodeSettings}_editing_settings`);
+      const nodeSpecificPreventEdit = node.preventEdit || [];
+      const toEdit = omit( node, ['id','preventEdit','position','size', 'type', 'user', 'ports.default', ...nodeSpecificPreventEdit] )
+      const content: any = {
+        text: undefined,
+        json: {
+          ...toEdit,
+        }
+      }
 
-      editor = new JSONEditor(holder, {
-        schema: sidebarNode ? sidebarNode.schema : null,
-        disable_collapse: false,
-        disable_edit_json: false,
-        disable_properties: true,
-        no_additional_properties: true,
-        remove_empty_properties: false,
-        remove_button_labels: false,
-        theme: 'bootstrap5',
-        object_layout: 'normal',
-      });
-      
-      editor.on('ready', () => {
-        // Now the api methods will be available
-        editor.setValue({
-          ...node,
-          ports: getPortsArray(node.ports)
-        });
-        setReady(true)
-      });
+      editor = new JSONEditor({
+        target,
+        props: {
+          content
+        }
+      })
     }
   });
 
@@ -62,40 +56,24 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; }> = (props) => {
     destroyEditor();
   });
 
-  const geteditedPorts = (portsArray: IPort[]) => {
-    return portsArray.reduce((acc, curr, index) => {
-      return {
-        ...acc,
-        [`${curr.id}`]: {
-          ...curr,
-          index: index + 1
-        }
-      }
-    }, {})
-  }
-
-  const getPortsArray = (
-    portDictionary: { [key: string]: IPort }
-  ): IPort[] =>
-    Object.keys(portDictionary)
-      .map((key) => ({
-        ...portDictionary[key],
-        id: key
-      }));
-
   const onConfirm = async () => {
-    const value = editor.getValue();
+    const value: JSONContent | TextContent = editor.get();
+    const updatedNodeValue =  isTextContent(value) ? JSON.parse((value as TextContent).text || "{}") : (value as JSONContent).json;
+
     const oldNode = state.chart.nodes[state.editNodeSettings as string];
+    
     const updatedNode: ExtendedNode = {
       ...oldNode,
-      output: value.output,
-      properties: value.properties || { displayAs: 'message' },
-      ports: value.ports && value.ports.length ? geteditedPorts(value.ports) : oldNode.ports 
+      ...(updatedNodeValue || {}),
+      ports: {
+        ...updatedNodeValue.ports,
+        default: oldNode.ports.default
+      }
+    }
 
-    };
     actions.onToggleEditNodeSettings(undefined);
-   
     actions.onNodeChanged(updatedNode.id, updatedNode);
+    props.onSettingsChanged(oldNode,updatedNode);
     destroyEditor();
   };
 
