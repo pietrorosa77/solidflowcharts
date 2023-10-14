@@ -1,6 +1,11 @@
 import { Component, Show, createEffect, onCleanup } from "solid-js";
 import { Button } from "../components/Button";
-import { JSONContent, JSONEditor, TextContent,isTextContent } from 'vanilla-jsoneditor'
+import {
+  JSONContent,
+  JSONEditor,
+  TextContent,
+  isTextContent,
+} from "vanilla-jsoneditor";
 import styles from "./EditorNodeSettings.module.css";
 import {
   Modal,
@@ -14,17 +19,19 @@ import { useChartStore } from "../store/chartStore";
 
 import { ISidebarNode } from "../sidebar/Sidebar";
 import { ExtendedNode } from "../../definitions";
-import {omit} from "lodash";
+import { omit } from "lodash";
 
 const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
-const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; onSettingsChanged: (oldNode: ExtendedNode, newNode: ExtendedNode) => void }> = (props) => {
+const EditorNodeSettings: Component<{
+  nodes: ISidebarNode[];
+  onSettingsChanged: (oldNode: ExtendedNode, newNode: ExtendedNode) => void;
+}> = (props) => {
   let editor: JSONEditor;
   const [state, actions] = useChartStore();
   const destroyEditor = () => {
     if (editor) {
       editor.destroy().then((value) => {
-        console.log('json editor destroyed', value)
-
+        console.log("json editor destroyed", value);
       });
       editor = undefined as any;
     }
@@ -33,22 +40,33 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; onSettingsChanged: 
   createEffect(() => {
     if (state.editNodeSettings && !editor) {
       const node: ExtendedNode = state.chart.nodes[state.editNodeSettings];
-      const target = (window as any).DMBRoot.getElementById(`${state.editNodeSettings}_editing_settings`);
+      const target = (window as any).DMBRoot.getElementById(
+        `${state.editNodeSettings}_editing_settings`,
+      );
       const nodeSpecificPreventEdit = node.preventEdit || [];
-      const toEdit = omit( node, ['id','preventEdit','position','size', 'type', 'user', 'ports.default', ...nodeSpecificPreventEdit] )
+      const toEdit = omit(node, [
+        "id",
+        "preventEdit",
+        "position",
+        "size",
+        "type",
+        "user",
+        "ports.default",
+        ...nodeSpecificPreventEdit,
+      ]);
       const content: any = {
         text: undefined,
         json: {
           ...toEdit,
-        }
-      }
+        },
+      };
 
       editor = new JSONEditor({
         target,
         props: {
-          content
-        }
-      })
+          content,
+        },
+      });
     }
   });
 
@@ -58,22 +76,24 @@ const EditorNodeSettings: Component<{ nodes: ISidebarNode[]; onSettingsChanged: 
 
   const onConfirm = async () => {
     const value: JSONContent | TextContent = editor.get();
-    const updatedNodeValue =  isTextContent(value) ? JSON.parse((value as TextContent).text || "{}") : (value as JSONContent).json;
+    const updatedNodeValue = isTextContent(value)
+      ? JSON.parse((value as TextContent).text || "{}")
+      : (value as JSONContent).json;
 
     const oldNode = state.chart.nodes[state.editNodeSettings as string];
-    
+
     const updatedNode: ExtendedNode = {
       ...oldNode,
       ...(updatedNodeValue || {}),
       ports: {
         ...updatedNodeValue.ports,
-        default: oldNode.ports.default
-      }
-    }
+        default: oldNode.ports.default,
+      },
+    };
 
     actions.onToggleEditNodeSettings(undefined);
     actions.onNodeChanged(updatedNode.id, updatedNode);
-    props.onSettingsChanged(oldNode,updatedNode);
+    props.onSettingsChanged(oldNode, updatedNode);
     destroyEditor();
   };
 

@@ -43,8 +43,8 @@ const CanvasCommands: Component<{
 
   const onUseBezierPathClick = () => {
     const isUsingBezier = !!state.chart.properties?.useBezierPath;
-    actions.onUpdateChartProps({ useBezierPath: !isUsingBezier})
-  }
+    actions.onUpdateChartProps({ useBezierPath: !isUsingBezier });
+  };
 
   const onUndo = () => {
     if (state.canUndo) {
@@ -118,8 +118,10 @@ const CanvasCommands: Component<{
           variant="icon"
           classList={{
             [`${styles.CanvasCommand}`]: true,
-            [`${styles.CanvasCommandsDisabled}`]: !state.chart.properties?.useBezierPath,
-            [`${styles.CanvasCommandsEnabled}`]: !!state.chart.properties?.useBezierPath,
+            [`${styles.CanvasCommandsDisabled}`]:
+              !state.chart.properties?.useBezierPath,
+            [`${styles.CanvasCommandsEnabled}`]:
+              !!state.chart.properties?.useBezierPath,
           }}
           onClick={onUseBezierPathClick}
         >
@@ -184,9 +186,11 @@ const CanvasCommands: Component<{
                   </Button>
                 </ModalHeader>
                 <ModalBody>
-                  <ul classList={{
-            [`${styles.ModalHelp}`]: true,
-          }}>
+                  <ul
+                    classList={{
+                      [`${styles.ModalHelp}`]: true,
+                    }}
+                  >
                     <li>
                       <IoAppsSharp size={30} style={{ display: "inline" }} />
                       <strong> Node Library:</strong>
@@ -219,7 +223,10 @@ const CanvasCommands: Component<{
                       {` Delete selected nodes`}
                     </li>
                     <li>
-                      <FaSolidBezierCurve size={30} style={{ display: "inline" }} />
+                      <FaSolidBezierCurve
+                        size={30}
+                        style={{ display: "inline" }}
+                      />
                       <strong> Bezier/SmoothStep connections:</strong>
                       {` Use Bezier or Smooth Step connection line (Smooth Step is default)`}
                     </li>

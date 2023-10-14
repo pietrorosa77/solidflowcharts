@@ -137,7 +137,7 @@ export function ChartProvider(props: {
                   currNode.size || { w: 0, h: 0 },
                   evt.multiSelectOffsets[`${currNode.id}-drag-hat`],
                   currNode.position.x + evt.delta.x,
-                  currNode.position.y + evt.delta.y
+                  currNode.position.y + evt.delta.y,
                 );
                 setChart("chart", "nodes", nodeId, "position", () => {
                   return newPosition;
@@ -154,10 +154,9 @@ export function ChartProvider(props: {
           const oldProps = state.chart.properties || {};
           const newProps = {
             ...oldProps,
-            ...props
-          }
+            ...props,
+          };
           setChart("chart", "properties", () => newProps);
-          
         },
         // eslint-disable-next-line
         onAreaSelection(selection: { [key: string]: boolean }) {
@@ -208,7 +207,7 @@ export function ChartProvider(props: {
               "chart",
               "paths",
               `${newLink.from.nodeId}-${newLink.from.portId}`,
-              () => newLink.to
+              () => newLink.to,
             );
             setChart("newLink", () => undefined);
             recordHistory(state.chart, "crtAction");
@@ -225,7 +224,7 @@ export function ChartProvider(props: {
               "chart",
               "paths",
               `${nodeId}-${portId}`,
-              () => undefined as any
+              () => undefined as any,
             );
             recordHistory(state.chart, "crtAction");
           });
@@ -264,7 +263,7 @@ export function ChartProvider(props: {
             const newPortKeys = Object.keys(node.ports);
 
             const removedPorts = oldPortsKeys.filter(
-              (k) => !newPortKeys.includes(k)
+              (k) => !newPortKeys.includes(k),
             );
             const removedLinks = Object.keys(state.chart.links).filter((k) => {
               const l = state.chart.links[k];
@@ -275,11 +274,11 @@ export function ChartProvider(props: {
             });
 
             const oldNodePaths = Object.keys(state.chart.paths).filter((k) =>
-              k.startsWith(`${nodeId}-`)
+              k.startsWith(`${nodeId}-`),
             );
             const pathsToDelete = oldNodePaths.filter(
               (path) =>
-                newPortKeys.filter((pid) => path.endsWith(pid)).length === 0
+                newPortKeys.filter((pid) => path.endsWith(pid)).length === 0,
             );
 
             removedLinks.forEach((l) => {

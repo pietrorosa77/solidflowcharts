@@ -23,7 +23,7 @@ export class UndoRedoManager {
       type: "undo" | "redo" | "save" | "reset";
       payload?: IChart;
       merge?: boolean;
-    }
+    },
   ): UndoRedoState => {
     const { past, present, future } = oldState;
     let ret = {

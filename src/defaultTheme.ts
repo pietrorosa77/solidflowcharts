@@ -1,7 +1,7 @@
 export const getCssVariables = (
   width?: string,
   height?: string,
-  customTheme?: ICustomTheme
+  customTheme?: ICustomTheme,
 ) => {
   return `:root {
     --diagram-width: ${width || "100vw"};

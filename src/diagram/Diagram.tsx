@@ -18,7 +18,7 @@ import EditorNodeSettings from "../components/EditorNodeSettings";
 
 const Diagram: Component<{
   onLoad?: (ctions: IChartActions) => void;
-  onNodeChanged:(oldNode: ExtendedNode, newNode: ExtendedNode) => void;
+  onNodeChanged: (oldNode: ExtendedNode, newNode: ExtendedNode) => void;
   availableNodes: ISidebarNode[];
   width?: string;
   height?: string;
@@ -42,7 +42,7 @@ const Diagram: Component<{
   };
 
   const onSettingsChanged = (oldNode: ExtendedNode, newNode: ExtendedNode) => {
-      props.onNodeChanged?.(oldNode, newNode);
+    props.onNodeChanged?.(oldNode, newNode);
   };
 
   const onCustomEditNode = (nodeId: string) => {
@@ -54,7 +54,10 @@ const Diagram: Component<{
   return (
     <div class={styles.Diagram}>
       <Show when={!props.onCustomEditNode}>
-        <EditorNodeSettings nodes={props.availableNodes} onSettingsChanged={onSettingsChanged}/>
+        <EditorNodeSettings
+          nodes={props.availableNodes}
+          onSettingsChanged={onSettingsChanged}
+        />
       </Show>
       <Sidebar nodes={props.availableNodes} />
       <Canvas
@@ -63,7 +66,13 @@ const Diagram: Component<{
         minZoom={minZoom}
         maxZoom={maxZoom}
       >
-        <Nodes onCustomEditNode={props.onCustomEditNode ? onCustomEditNode : undefined} canvasId={canvasId} customNodeContentRenderer={props.customNodeContentRenderer} />
+        <Nodes
+          onCustomEditNode={
+            props.onCustomEditNode ? onCustomEditNode : undefined
+          }
+          canvasId={canvasId}
+          customNodeContentRenderer={props.customNodeContentRenderer}
+        />
         <Links />
         <Show when={!!state.newLink}>
           <NewLink linkId="newLink" creating />
@@ -75,7 +84,7 @@ const Diagram: Component<{
 
 const DiagramWrapper: Component<{
   initialChart: IChart;
-  onNodeChanged?:(oldNode: ExtendedNode, newNode: ExtendedNode) => void;
+  onNodeChanged?: (oldNode: ExtendedNode, newNode: ExtendedNode) => void;
   fontFace?: string;
   onLoad?: (ctions: IChartActions) => void;
   onHistoryChange?: (chart: IChart) => void;

@@ -18,7 +18,7 @@ export function getPositionWithParentBoundsSize(
       }
     | undefined,
   x: number,
-  y: number
+  y: number,
 ): IPosition {
   const offsetLeft = multiSelectOffsets?.offsetLeft || 0;
   const offsetRight = multiSelectOffsets?.offsetRight || 0;
@@ -44,7 +44,7 @@ export function getPositionWithParentBoundsSize(
 
 export const getMultiselectionSquareRectOffsets = (scale: number) => {
   const elements: Element[] = (window as any).DMBRoot.querySelectorAll(
-    ".drag-hat-selected"
+    ".drag-hat-selected",
   );
 
   if (!elements.length) {
@@ -114,7 +114,7 @@ export const pointInNode = (node: INode, point: IPosition) => {
 export const isValidLink = (
   node: ExtendedNode,
   links: ILink[],
-  fromNodeId: string
+  fromNodeId: string,
 ) => {
   console.debug("from node", fromNodeId);
   return (
@@ -124,37 +124,44 @@ export const isValidLink = (
 };
 
 export const getChartPaths = (links: { [id: string]: ILink }) =>
-  Object.values(links).reduce((acc, current) => {
-    const linksMapKey = `${current.from.nodeId}-${current.from.portId}`;
-    return {
-      ...acc,
-      [`${linksMapKey}`]: current.to,
-    };
-  }, {} as { [id: string]: string });
+  Object.values(links).reduce(
+    (acc, current) => {
+      const linksMapKey = `${current.from.nodeId}-${current.from.portId}`;
+      return {
+        ...acc,
+        [`${linksMapKey}`]: current.to,
+      };
+    },
+    {} as { [id: string]: string },
+  );
 
 export const getLinksForPort = (
   chart: IChart,
   nodeId: string,
-  portId: string
+  portId: string,
 ) => {
   return Object.keys(chart.links)
     .filter(
       (k) =>
         chart.links[k].from.nodeId === nodeId &&
-        chart.links[k].from.portId === portId
+        chart.links[k].from.portId === portId,
     )
     .map((linkId) => chart.links[linkId]);
 };
 
-export const getVariables = (chart:IChart) => {
-  return Object.keys(chart.nodes).map((key) => {
-    const node = chart.nodes[key];
-    return node.output ? {
-      key: node.output.id,
-      type: node.output.type
-    } : {
-      key: null,
-      type: null
-    }
-  }).filter(out => out.key && (out.type && out.type !== 'null'))
-}
+export const getVariables = (chart: IChart) => {
+  return Object.keys(chart.nodes)
+    .map((key) => {
+      const node = chart.nodes[key];
+      return node.output
+        ? {
+            key: node.output.id,
+            type: node.output.type,
+          }
+        : {
+            key: null,
+            type: null,
+          };
+    })
+    .filter((out) => out.key && out.type && out.type !== "null");
+};

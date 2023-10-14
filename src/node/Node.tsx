@@ -6,7 +6,7 @@ import {
   getMultiselectionSquareRectOffsets,
   getPositionWithParentBoundsSize,
 } from "../store/utils";
-import {NodeContentReadonly} from './NodeContent'
+import { NodeContentReadonly } from "./NodeContent";
 import styles from "./Node.module.css";
 import Ports from "../port/Ports";
 import { AiFillSetting } from "solid-icons/ai";
@@ -30,7 +30,7 @@ const NodeHead = (props: {
     props.onToggle();
   };
   const onNodeSettings = () => {
-    if(props.onCustomEditNode) {
+    if (props.onCustomEditNode) {
       props.onCustomEditNode(props.nodeId);
     } else {
       props.onNodeSettings();
@@ -54,11 +54,13 @@ const NodeHead = (props: {
           class={styles.NodeCommands}
           onPointerDown={onNodeSettings}
         />
-        {!props.preventRemoval && <BiSolidTrash
-          size={18}
-          class={styles.NodeCommands}
-          onPointerDown={onNodeTrash}
-        />}
+        {!props.preventRemoval && (
+          <BiSolidTrash
+            size={18}
+            class={styles.NodeCommands}
+            onPointerDown={onNodeTrash}
+          />
+        )}
       </div>
     </div>
   );
@@ -79,13 +81,13 @@ const Node: Component<{
     (nodeRef as HTMLDivElement).addEventListener(
       "touchstart",
       blockEventHandler,
-      { passive: false }
+      { passive: false },
     );
-    if(props.customNodeContentRenderer) {
+    if (props.customNodeContentRenderer) {
       props.customNodeContentRenderer({
         ...state.chart.nodes[props.nodeId],
-        holderEl: document.getElementById(`node_content_${props.nodeId}`)
-      })
+        holderEl: document.getElementById(`node_content_${props.nodeId}`),
+      });
     }
     console.debug("mounting node", props.nodeId);
   });
@@ -94,7 +96,7 @@ const Node: Component<{
     props.sizeObserver.unobserve(nodeRef);
     (nodeRef as HTMLDivElement).removeEventListener(
       "touchstart",
-      blockEventHandler
+      blockEventHandler,
     );
   });
 
@@ -113,7 +115,7 @@ const Node: Component<{
     }
     const scale = state.scale;
     const canvas: HTMLDivElement = (window as any).DMBRoot.getElementById(
-      props.canvasId
+      props.canvasId,
     ) as any;
     let raFrameHandle = 0;
     const canvasRect = canvas.getBoundingClientRect();
@@ -162,7 +164,7 @@ const Node: Component<{
         nodeSize,
         multiSelectOffsets[`${props.nodeId}-drag-hat`] as any,
         x,
-        y
+        y,
       );
 
       const delta = {
@@ -249,9 +251,9 @@ const Node: Component<{
       <div class={`${styles.NodeContent} flowchart-node-content`}>
         <div class={styles.NodeContentView} id={`node_content_${props.nodeId}`}>
           <Show when={!props.customNodeContentRenderer}>
-              <NodeContentReadonly
-                content={state.chart.nodes[props.nodeId].content}
-              />
+            <NodeContentReadonly
+              content={state.chart.nodes[props.nodeId].content}
+            />
           </Show>
         </div>
       </div>
@@ -269,7 +271,7 @@ const Nodes: Component<{
   const observer: ResizeObserver = new ResizeObserver(
     (evt: ResizeObserverEntry[]) => {
       actions.nodesSizeChanged(evt);
-    }
+    },
   );
 
   onCleanup(() => observer.disconnect());

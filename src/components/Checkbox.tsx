@@ -42,7 +42,7 @@ export const Checkbox: Component<CheckboxProps> = (props) => {
       "required",
       "value",
     ],
-    ["align", "children", "onchange", "switch"]
+    ["align", "children", "onchange", "switch"],
   );
 
   const changeHandler = (ev: Event) =>

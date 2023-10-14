@@ -20,7 +20,11 @@
     linear-gradient(90deg, var(--grid-lines-color) 2px, transparent 2px),
     linear-gradient(var(--grid-lines-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-lines-color) 1px, transparent 1px);
-  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-size:
+    50px 50px,
+    50px 50px,
+    10px 10px,
+    10px 10px;
   outline: 1px dashed var(--grid-lines-outline-color);
   position: relative;
   border: 1px solid var(--grid-lines-color);
@@ -74,5 +78,5 @@
 }
 
 .ModalHelp li {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }

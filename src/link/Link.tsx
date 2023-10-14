@@ -10,7 +10,7 @@ export function calculatePosition(
   to: IPosition,
   portIndex: number,
   fromSize?: { h: number; w: number },
-  creating?: boolean
+  creating?: boolean,
 ) {
   //  10 + 100 +
   const offsetY = portOffset / 2;
@@ -58,7 +58,7 @@ const getLinePoints = (
   chart: IChart,
   linkId: string,
   portOffset: number,
-  newLink?: ILink
+  newLink?: ILink,
 ) => {
   const link = newLink || chart.links[linkId];
   const nodeFrom = chart.nodes[link.from.nodeId];
@@ -72,19 +72,21 @@ const getLinePoints = (
     posTo,
     portIndex,
     nodeFrom.size,
-    newLink ? true : false
+    newLink ? true : false,
   );
-  
-  const [path] = isUsingBezier ? defaultPath(startPos, endPos) : getSmoothStepPath({
-    sourceX:startPos.x,
-    sourceY: startPos.y,
-    sourcePosition: 'Right',
-    targetX: endPos.x,
-    targetY: endPos.y,
-    targetPosition: 'Left',
-    borderRadius: 20,
-    offset: 20,
-  });
+
+  const [path] = isUsingBezier
+    ? defaultPath(startPos, endPos)
+    : getSmoothStepPath({
+        sourceX: startPos.x,
+        sourceY: startPos.y,
+        sourcePosition: "Right",
+        targetX: endPos.x,
+        targetY: endPos.y,
+        targetPosition: "Left",
+        borderRadius: 20,
+        offset: 20,
+      });
 
   return path;
 };
@@ -130,7 +132,7 @@ export const Link = (props: { linkId: string; creating?: boolean }) => {
             state.chart,
             props.linkId,
             state.portOffset,
-            props.creating ? state.newLink : undefined
+            props.creating ? state.newLink : undefined,
           )}
           class={styles.Line}
         />

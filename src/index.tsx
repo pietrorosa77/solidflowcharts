@@ -4,6 +4,6 @@ import App from "./App";
 import("../testbot").then((state) => {
   render(
     () => <App initState={state.default} />,
-    document.getElementById("root") as HTMLElement
+    document.getElementById("root") as HTMLElement,
   );
 });

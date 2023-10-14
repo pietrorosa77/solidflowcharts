@@ -10,7 +10,7 @@ interface IDGProps {
   fontFace?: string;
   onLoad?: (ctions: IChartActions) => void;
   onHistoryChange?: (chart: IChart) => void;
-  onNodeChanged?:(oldNode: ExtendedNode, newNode: ExtendedNode) => void;
+  onNodeChanged?: (oldNode: ExtendedNode, newNode: ExtendedNode) => void;
   availableNodes: ISidebarNode[];
   root?: any;
   width?: string;
@@ -38,6 +38,6 @@ export function FChart(props: IDGProps, elementId: string) {
         customNodeContentRenderer={props.customNodeContentRenderer}
       />
     ),
-    document.getElementById(elementId) as HTMLElement
+    document.getElementById(elementId) as HTMLElement,
   );
 }

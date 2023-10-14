@@ -23,7 +23,7 @@ const MessageNode: ExtendedNode = {
     id: "messageout",
     type: "null",
   },
-  preventEdit:['ports', 'output'],
+  preventEdit: ["ports", "output"],
   ports: {
     default: {
       bgColor: "brand",
@@ -64,7 +64,7 @@ const QuestionNode: ExtendedNode = {
     textAlign: "start",
     displayAs: "message",
   },
-  preventEdit:['ports'],
+  preventEdit: ["ports"],
   ports: {
     default: {
       bgColor: "brand",

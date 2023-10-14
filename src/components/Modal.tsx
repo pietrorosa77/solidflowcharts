@@ -66,15 +66,15 @@ export const Modal = (props: ModalProps): JSX.Element => {
       getElements(
         local.children,
         (node) => node.className.indexOf("sb-modal-content") !== -1,
-        [{ open, toggle }]
-      ) ?? []
+        [{ open, toggle }],
+      ) ?? [],
   );
   const otherChildren = createMemo(() =>
     getElements(
       local.children,
       (node) => node.className.indexOf("sb-modal-content") === -1,
-      [{ open, toggle }]
-    )
+      [{ open, toggle }],
+    ),
   );
 
   let modalRef!: HTMLDivElement;
@@ -90,14 +90,14 @@ export const Modal = (props: ModalProps): JSX.Element => {
     if (header) {
       modalRef.setAttribute(
         "aria-labelledby",
-        header.id || (() => (header.id = `sb-modal-header-${modalCount}`))()
+        header.id || (() => (header.id = `sb-modal-header-${modalCount}`))(),
       );
     }
     const body = modalRef.querySelector(".sb-modal-body");
     if (body) {
       modalRef.setAttribute(
         "aria-describedby",
-        body.id || (() => (body.id = `sb-modal-body-${modalCount}`))()
+        body.id || (() => (body.id = `sb-modal-body-${modalCount}`))(),
       );
     }
   });
@@ -121,7 +121,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
               toggle(false);
             }
           }
-        : undefined
+        : undefined,
     )(),
     // eslint-disable-next-line
     onkeyup: createMemo(() =>
@@ -131,7 +131,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
               toggle(false);
             }
           }
-        : undefined
+        : undefined,
     )(),
   });
 

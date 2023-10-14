@@ -18,7 +18,8 @@ button.sb-button:hover:not(:active, [aria-disabled="true"]),
 button.sb-button:focus:not(:active, [aria-disabled="true"]),
 [role="button"].sb-button:hover:not(:active, [aria-disabled="true"]),
 [role="button"].sb-button:focus:not(:active, [aria-disabled="true"]) {
-  box-shadow: 0 0 0 0.125em var(--node-font-color),
+  box-shadow:
+    0 0 0 0.125em var(--node-font-color),
     0 0 0 0.25em var(--brand-color);
   text-decoration: none;
 }

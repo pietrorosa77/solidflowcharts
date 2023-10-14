@@ -94,7 +94,7 @@ export function AreaSelect(props: { children: any }) {
       (acc: any, key: string) => {
         const node = state.chart.nodes[key];
         const nodeEl = (window as any).DMBRoot.getElementById(
-          `${node.id}-drag-hat`
+          `${node.id}-drag-hat`,
         ) as HTMLElement;
         const nodeBox = {
           top: node.position.y,
@@ -108,7 +108,7 @@ export function AreaSelect(props: { children: any }) {
           [`${key}`]: boxIntersects(selectionRect, nodeBox),
         };
       },
-      {}
+      {},
     );
     return selection;
   };
@@ -147,7 +147,9 @@ const boxIntersects = (
   boxA:
     | { left: number; top: number; width: number; height: number }
     | undefined,
-  boxB: { left: number; top: number; width: number; height: number } | undefined
+  boxB:
+    | { left: number; top: number; width: number; height: number }
+    | undefined,
 ): boolean => {
   if (!boxA || !boxB) {
     return false;

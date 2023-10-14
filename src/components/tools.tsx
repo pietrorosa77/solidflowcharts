@@ -27,7 +27,7 @@ export const composeStyles = (...styles: (JSX.CSSProperties | string)[]) =>
 
 export const getNearestNode = (
   target: EventTarget | null | undefined,
-  name: string
+  name: string,
 ): Node | null | undefined => {
   if (!target) {
     return;
@@ -89,32 +89,32 @@ export const useMediaQuery = (query: MediaQueryString): Accessor<boolean> => {
 
 const parseStorage = <T extends any | string>(
   data: string | null | undefined,
-  useJson: boolean
+  useJson: boolean,
 ): T | undefined =>
   useJson ? (data ? JSON.parse(data) : undefined) : data ?? undefined;
 
 const putStorage = <T extends any | string>(key: string, data: T): void =>
   localStorage.setItem(
     key,
-    typeof data === "string" ? data : JSON.stringify(data)
+    typeof data === "string" ? data : JSON.stringify(data),
   );
 
 export function createLocalStorageSignal<T extends any | string>(
   key: string,
   initialValue?: T,
-  useJson = false
+  useJson = false,
 ): [Accessor<T | undefined>, Setter<T | undefined>] {
   if (localStorage.getItem(key) === null && initialValue !== undefined) {
     putStorage(key, initialValue);
   }
   const [value, setValue] = createSignal(
-    parseStorage<T>(localStorage.getItem(key), useJson)
+    parseStorage<T>(localStorage.getItem(key), useJson),
   );
 
   createEffect(() =>
     useJson && value() === undefined
       ? localStorage.removeItem(key)
-      : putStorage(key, value())
+      : putStorage(key, value()),
   );
 
   return [value, setValue];
@@ -125,7 +125,7 @@ export const useDarkMode = (localStorageKey = "COLOR_SCHEME") => {
   const [storedPrefersDark, setStoredPrefersDark] =
     createLocalStorageSignal<boolean>(localStorageKey, undefined, true);
   const darkMode = createMemo(
-    () => storedPrefersDark() ?? mediaQueryPrefersDark()
+    () => storedPrefersDark() ?? mediaQueryPrefersDark(),
   );
 
   createEffect(() => {
@@ -143,7 +143,7 @@ export const getElements = (
   /** if the children contains a callback, you may add an array of props */
   props: any = [],
   /** you can add prepended results if you want */
-  result = []
+  result = [],
 ): HTMLElement[] | undefined => {
   if (!children) {
     return;

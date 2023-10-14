@@ -47,7 +47,7 @@ const Sidebar: Component<{
         </a>
       </div>
       <div class={styles.nodesContainer}>
-        <For each={props.nodes.filter(n => !n.hide)}>
+        <For each={props.nodes.filter((n) => !n.hide)}>
           {(node) => {
             return (
               <Button

@@ -64,7 +64,7 @@ const Port = (props: {
           to: "",
           posTo: to,
           id: "newLinkCreating",
-        })
+        }),
       );
     };
 
@@ -140,7 +140,7 @@ const Port = (props: {
           height: `${state.portHeight}px`,
           width: "100%",
           "background-color": getPortBgColor(
-            state.chart.nodes[props.nodeId].ports[props.portId]
+            state.chart.nodes[props.nodeId].ports[props.portId],
           ),
         }}
       >
@@ -149,7 +149,7 @@ const Port = (props: {
             class={styles.PortText}
             style={{
               color: getPortColor(
-                state.chart.nodes[props.nodeId].ports[props.portId]
+                state.chart.nodes[props.nodeId].ports[props.portId],
               ),
             }}
           >
@@ -187,7 +187,7 @@ const Port = (props: {
 
 const getPortsSorted = (node: INode) =>
   Object.keys(node.ports || {}).sort(
-    (p1, p2) => node.ports[p2].index - node.ports[p1].index
+    (p1, p2) => node.ports[p2].index - node.ports[p1].index,
   );
 const Ports: Component<{
   nodeId: string;
