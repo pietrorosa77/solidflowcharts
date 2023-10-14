@@ -1814,7 +1814,7 @@ function vG() {
   }
 }
 vG();
-const pG = /* @__PURE__ */ EK(fG), gG = "_CanvasWrapper_sy7lb_1", mG = "_SelectedArea_sy7lb_7", yG = "_Canvas_sy7lb_1", bG = "_CanvasCommands_sy7lb_37", wG = "_CanvasCommandsDisabled_sy7lb_52", xG = "_CanvasCommand_sy7lb_37", kG = "_CanvasCommandsEnabled_sy7lb_63", jG = "_CanvasModal_sy7lb_75", SG = "_ModalHelp_sy7lb_80", Br = {
+const pG = /* @__PURE__ */ EK(fG), gG = "_CanvasWrapper_3aso6_1", mG = "_SelectedArea_3aso6_7", yG = "_Canvas_3aso6_1", bG = "_CanvasCommands_3aso6_37", wG = "_CanvasCommandsDisabled_3aso6_51", xG = "_CanvasCommand_3aso6_37", kG = "_CanvasCommandsEnabled_3aso6_62", jG = "_CanvasModal_3aso6_74", SG = "_ModalHelp_3aso6_79", Br = {
   CanvasWrapper: gG,
   SelectedArea: mG,
   Canvas: yG,
@@ -6905,7 +6905,8 @@ const MY = /* @__PURE__ */ ti("<div><div></div><div><span></span></div><div>"), 
       holderEl: document.getElementById(`node_content_${e.nodeId}`)
     })), console.debug("mounting node", e.nodeId);
   }), Cc(() => {
-    e.sizeObserver.unobserve(t), t.removeEventListener("touchstart", pS);
+    var u;
+    (u = document.getElementById(`node_content_${e.nodeId}`)) == null || u.dispatchEvent(new Event("unmountNode")), e.sizeObserver.unobserve(t), t.removeEventListener("touchstart", pS);
   });
   const i = () => {
     const u = n.chart.selected[e.nodeId];
@@ -7029,6 +7030,9 @@ const MY = /* @__PURE__ */ ti("<div><div></div><div><span></span></div><div>"), 
       sizeObserver: r,
       get canvasId() {
         return e.canvasId;
+      },
+      get onCustomEditNode() {
+        return e.onCustomEditNode;
       },
       get customNodeContentRenderer() {
         return e.customNodeContentRenderer;
@@ -44993,7 +44997,9 @@ const m2t = "_EditorNodeSettingsModal_1dfpb_1", y2t = {
   };
   wl(() => {
     if (n.editNodeSettings && !t) {
-      const s = n.chart.nodes[n.editNodeSettings], u = window.DMBRoot.getElementById(`${n.editNodeSettings}_editing_settings`), c = s.preventEdit || [], l = ul.omit(s, ["id", "preventEdit", "position", "size", "type", "user", "ports.default", ...c]), f = {
+      const s = n.chart.nodes[n.editNodeSettings], u = window.DMBRoot.getElementById(`${n.editNodeSettings}_editing_settings`);
+      u.style.height = "100%";
+      const c = s.preventEdit || [], l = ul.omit(s, ["id", "preventEdit", "position", "size", "type", "user", "ports.default", ...c]), f = {
         text: void 0,
         json: No({}, l)
       };

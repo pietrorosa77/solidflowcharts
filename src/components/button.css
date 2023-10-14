@@ -60,7 +60,6 @@ button.icon.sb-button,
 [role="button"].icon.sb-button {
   padding: 0.125em;
   border-color: transparent;
-  min-width: 1.75em;
   background: transparent;
   color: var(--node-font-color);
 }

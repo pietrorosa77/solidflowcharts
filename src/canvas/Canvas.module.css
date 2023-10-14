@@ -40,8 +40,7 @@
   right: 0;
   display: flex;
   flex-direction: row;
-  width: 400px;
-  height: 50px;
+  height: 60px;
   opacity: 0.8;
   background-color: var(--bars-color);
   border-top-left-radius: 8px;

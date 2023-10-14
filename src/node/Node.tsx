@@ -93,6 +93,7 @@ const Node: Component<{
   });
 
   onCleanup(() => {
+    document.getElementById(`node_content_${props.nodeId}`)?.dispatchEvent(new Event('unmountNode'));
     props.sizeObserver.unobserve(nodeRef);
     (nodeRef as HTMLDivElement).removeEventListener(
       "touchstart",
@@ -284,6 +285,7 @@ const Nodes: Component<{
             nodeId={key}
             sizeObserver={observer}
             canvasId={props.canvasId}
+            onCustomEditNode={props.onCustomEditNode}
             customNodeContentRenderer={props.customNodeContentRenderer}
           />
         );
