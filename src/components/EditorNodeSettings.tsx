@@ -43,6 +43,7 @@ const EditorNodeSettings: Component<{
       const target = (window as any).DMBRoot.getElementById(
         `${state.editNodeSettings}_editing_settings`,
       );
+      target.style.height = '100%';
       const nodeSpecificPreventEdit = node.preventEdit || [];
       const toEdit = omit(node, [
         "id",
