@@ -1,5 +1,5 @@
 import { Component, For, Show } from "solid-js";
-import { IChart, ILink, IPosition } from "../../definitions";
+import { IChart, ILink, INode, IPosition } from "../../definitions";
 import { useChartStore } from "../store/chartStore";
 import styles from "./Link.module.css";
 import { getSmoothStepPath } from "./SmoothStepPath";
@@ -9,8 +9,8 @@ export function calculatePosition(
   from: IPosition,
   to: IPosition,
   portIndex: number,
-  fromSize?: { h: number; w: number },
-  creating?: boolean,
+  fromSize?: { h: number; w: number }
+  // creating?: boolean,
 ) {
   //  10 + 100 +
   const offsetY = portOffset / 2;
@@ -25,7 +25,7 @@ export function calculatePosition(
 
   const endPos = {
     x: to.x - 5,
-    y: to.y + (creating ? 0 : 35),
+    y: to.y //+ (creating ? 0 : 35),
   };
 
   return {
@@ -54,6 +54,14 @@ export function straightPath(startPos: IPosition, endPos: IPosition) {
   return `M ${x1} ${y1} ${x2} ${y2}`;
 }
 
+const getFinalPosition = (node: INode) => {
+  const halfSize = (node.size?.h || 70) / 2;
+  return {
+    x: node.position.x,
+    y: node.position.y + halfSize
+  }
+}
+
 const getLinePoints = (
   chart: IChart,
   linkId: string,
@@ -62,7 +70,8 @@ const getLinePoints = (
 ) => {
   const link = newLink || chart.links[linkId];
   const nodeFrom = chart.nodes[link.from.nodeId];
-  const posTo = link.posTo || chart.nodes[link.to].position;
+  const posTo = link.posTo || getFinalPosition(chart.nodes[link.to]);
+  console.log(posTo)
   const isUsingBezier = !!chart.properties?.useBezierPath;
 
   const portIndex = nodeFrom.ports[link.from.portId].index;
@@ -71,8 +80,8 @@ const getLinePoints = (
     nodeFrom.position,
     posTo,
     portIndex,
-    nodeFrom.size,
-    newLink ? true : false,
+    nodeFrom.size
+    // newLink ? true : false,
   );
 
   const [path] = isUsingBezier

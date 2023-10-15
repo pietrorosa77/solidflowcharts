@@ -17,7 +17,7 @@
 
 .Line {
   stroke: var(--connection-color);
-  stroke-width: 5;
+  stroke-width: var(--connection-stroke-width);;
   fill: none;
 }
 

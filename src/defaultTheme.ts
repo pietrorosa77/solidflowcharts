@@ -17,6 +17,7 @@ export const getCssVariables = (
     --accent-color: ${customTheme?.accentColor || "rgba(81, 203, 238, 1)"};
     --border-color: ${customTheme?.borderColor || "rgb(248, 248, 248)"};
     --connection-color: ${customTheme?.connectionsColor || "cornflowerblue"};
+    --connection-stroke-width: ${customTheme?.connectionStrokeWidth || 3};
     --brand-color: ${customTheme?.brandColor || "#4a4d70"};
     --bars-color: ${customTheme?.barsColor || "#2b2e4b"};
     --ports-bg-color: ${customTheme?.portsBgColor || "#7D4CDB"};
@@ -71,4 +72,5 @@ export interface ICustomTheme {
   nodeHeadBgColor?: string;
   portsFontColor?: string;
   connectionHoverColor?: string;
+  connectionStrokeWidth?: number;
 }
