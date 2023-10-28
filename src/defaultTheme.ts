@@ -37,6 +37,7 @@ export const getCssVariables = (
     --connection-hover-color: ${
       customTheme?.connectionHoverColor || "rgba(81, 203, 238, 1)"
     };
+    --sidebar-headheight:  ${customTheme?.sidebarHeadHeight || "50px"};
   }
   ::-moz-selection { /* Code for Firefox */
     color: var(--text-selection-color);
@@ -73,4 +74,5 @@ export interface ICustomTheme {
   portsFontColor?: string;
   connectionHoverColor?: string;
   connectionStrokeWidth?: number;
+  sidebarHeadHeight?: string;
 }

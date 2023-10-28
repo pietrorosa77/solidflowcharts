@@ -71,7 +71,6 @@ const getLinePoints = (
   const link = newLink || chart.links[linkId];
   const nodeFrom = chart.nodes[link.from.nodeId];
   const posTo = link.posTo || getFinalPosition(chart.nodes[link.to]);
-  console.log(posTo)
   const isUsingBezier = !!chart.properties?.useBezierPath;
 
   const portIndex = nodeFrom.ports[link.from.portId].index;

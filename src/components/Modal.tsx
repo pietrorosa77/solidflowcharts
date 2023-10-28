@@ -55,7 +55,6 @@ export const Modal = (props: ModalProps): JSX.Element => {
     if (popupStatus === false) {
       props.onClose?.();
     }
-    console.log("popup is", open());
   });
 
   const toggle = (open?: boolean) => {

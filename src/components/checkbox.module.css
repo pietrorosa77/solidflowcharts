@@ -12,10 +12,12 @@
   height: 20px;
   line-height: 2em;
   position: relative;
+  background-color: transparent;
 }
 .sb-checkbox input[type="checkbox"]:checked,
 .sb-checkbox input[type="checkbox"]:hover {
   border-color: var(--accent-color);
+  background-image: none;
 }
 .sb-checkbox input[type="checkbox"]:before {
   content: " ";

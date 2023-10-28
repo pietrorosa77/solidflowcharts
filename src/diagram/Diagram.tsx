@@ -59,7 +59,6 @@ const Diagram: Component<{
           onSettingsChanged={onSettingsChanged}
         />
       </Show>
-      <Sidebar nodes={props.availableNodes} />
       <Canvas
         id={canvasId}
         onScale={onScale}
@@ -121,6 +120,7 @@ const DiagramWrapper: Component<{
         onHistoryChange={onHistoryChanged}
       >
         <ErrorBoundary fallback={(err) => err}>
+        <Sidebar nodes={props.availableNodes} />
           <Diagram
             width={props.width}
             height={props.height}
