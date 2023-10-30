@@ -46,7 +46,7 @@
   border-top-left-radius: 9px;
   border-top-right-radius: 9px;
   overflow: hidden;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .NodeHeadTitle {
