@@ -6667,7 +6667,7 @@ const QG = /* @__PURE__ */ ti("<div><div>"), XG = (e) => {
 const hY = /* @__PURE__ */ ti('<div class="lds-ring-container"><div class="lds-ring"><div></div><div></div><div></div><div>'), vY = () => hY(), pY = /* @__PURE__ */ ti("<div>"), gY = (e) => {
   const [t, n] = Bl(), r = (i) => dy(void 0, null, function* () {
     try {
-      return i.split("***").map((s) => `<div class="${na.NodeContentPart}"><div class="dumbot-content-body">${s}</div></div>`).join("");
+      return (Array.isArray(i) ? i : i.split("***")).map((s) => `<div class="${na.NodeContentPart}"><div class="dumbot-content-body">${s}</div></div>`).join("");
     } catch (o) {
       return console.error(o), "";
     }

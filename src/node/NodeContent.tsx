@@ -6,7 +6,7 @@ export const NodeContentReadonly = (props: { content: any }) => {
   const [nodeContent, setNodeContent] = createSignal<string>();
   const getNodeContent = async (md: string) => {
     try {
-      const parts = md.split("***");
+      const parts = Array.isArray(md)  ? md :  md.split("***");
       // await wait();
       const nodeHtmBloksHtml = parts.map(
         (p) =>
