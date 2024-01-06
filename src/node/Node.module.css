@@ -42,7 +42,7 @@
   font-weight: 600;
   width: 100%;
   justify-content: center;
-  padding: 3px;
+  padding: var(--node-head-padding);
   border-top-left-radius: 9px;
   border-top-right-radius: 9px;
   overflow: hidden;
@@ -50,8 +50,10 @@
 }
 
 .NodeHeadTitle {
+  display: flex;
   flex: 1 1 0%;
   margin-left: 6px;
+  align-self: center;
 }
 
 .NodeHeadTitle span {
@@ -103,5 +105,9 @@
 .NodeCommandsContainer {
   display: flex;
   gap: 5px;
+  align-self: center;
+}
+
+.NodeSelectorContainer {
   align-self: center;
 }

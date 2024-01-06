@@ -32,6 +32,7 @@ export const getCssVariables = (
     --node-content-bgcolor: ${customTheme?.nodeContentBgColor || "#4a4d70"};
     --node-content-font-color: ${customTheme?.nodeContentFontColor || "#fff"};
     --node-head-bgcolor: ${customTheme?.nodeHeadBgColor || "#4a4d70"};
+    --node-head-padding: ${customTheme?.nodeHeadPadding || "3px"};
     --text-selection-color:#000;
     --text-selection-bgcolor:#fff;
     --connection-hover-color: ${
@@ -75,4 +76,5 @@ export interface ICustomTheme {
   connectionHoverColor?: string;
   connectionStrokeWidth?: number;
   sidebarHeadHeight?: string;
+  nodeHeadPadding?: string;
 }

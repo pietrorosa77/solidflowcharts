@@ -42,7 +42,7 @@ const NodeHead = (props: {
   };
   return (
     <div class={styles.NodeHead}>
-      <div onPointerDown={preventNodeDrag}>
+      <div onPointerDown={preventNodeDrag} class={styles.NodeSelectorContainer}>
         <Checkbox onChange={onCheckboxChange} checked={!!props.selected} />
       </div>
       <div class={styles.NodeHeadTitle}>
