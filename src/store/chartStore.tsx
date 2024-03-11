@@ -289,7 +289,11 @@ export function ChartProvider(props: {
               setChart("chart", "paths", p, () => undefined as any);
             });
             setChart("chart", "nodes", nodeId, () => node);
-            setChart("chart", "nodes", nodeId, 'content', () => [...node.content]);
+            
+            if(Array.isArray(node.content)) {
+              setChart("chart", "nodes", nodeId, 'content', () => [...node.content]);
+            }
+           
 
             recordHistory(state.chart, "crtAction");
           });

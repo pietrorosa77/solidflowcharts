@@ -6185,7 +6185,7 @@ function VG(e) {
         }), p.forEach((g) => {
           i("chart", "paths", g, () => {
           });
-        }), i("chart", "nodes", a, () => s), i("chart", "nodes", a, "content", () => [...s.content]), n(r.chart, "crtAction");
+        }), i("chart", "nodes", a, () => s), Array.isArray(s.content) && i("chart", "nodes", a, "content", () => [...s.content]), n(r.chart, "crtAction");
       });
     },
     // eslint-disable-next-line
