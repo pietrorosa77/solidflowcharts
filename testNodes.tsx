@@ -64,7 +64,6 @@ const QuestionNode: ExtendedNode = {
     textAlign: "start",
     displayAs: "message",
   },
-  preventEdit: ["ports"],
   ports: {
     default: {
       bgColor: "brand",
@@ -72,7 +71,7 @@ const QuestionNode: ExtendedNode = {
       text: "default",
       index: 0,
       properties: {},
-    },
+    }
   },
 };
 

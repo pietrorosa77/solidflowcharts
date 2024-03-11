@@ -1,5 +1,3 @@
-import { OutputData } from "@editorjs/editorjs";
-
 export interface IPosition {
   x: number;
   y: number;
@@ -26,7 +24,7 @@ export interface INode {
   title: string;
   position: IPosition;
   size?: { w: number; h: number };
-  content: OutputData;
+  content: any;
   properties?: { [key: string]: any };
   ports: {
     [id: string]: IPort;

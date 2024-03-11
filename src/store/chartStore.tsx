@@ -258,7 +258,16 @@ export function ChartProvider(props: {
         // eslint-disable-next-line
         onNodeChanged(nodeId: string, node: ExtendedNode) {
           batch(() => {
-            debugger;
+            node.ports = Object.keys(node.ports).reverse().reduce((acc,curr, index) => {
+              acc[curr] = {
+                ...acc[curr],
+                index: index + 1
+              }
+
+              return acc;
+
+            }, node.ports);
+            
             const oldNode = state.chart.nodes[nodeId];
             const oldPortsKeys = Object.keys(oldNode.ports);
             const newPortKeys = Object.keys(node.ports);
@@ -289,7 +298,7 @@ export function ChartProvider(props: {
               setChart("chart", "paths", p, () => undefined as any);
             });
             setChart("chart", "nodes", nodeId, () => node);
-            
+
             if(Array.isArray(node.content)) {
               setChart("chart", "nodes", nodeId, 'content', () => [...node.content]);
             }

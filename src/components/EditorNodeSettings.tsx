@@ -45,7 +45,7 @@ const EditorNodeSettings: Component<{
       );
       target.style.height = '100%';
       const nodeSpecificPreventEdit = node.preventEdit || [];
-      const toEdit = omit(node, [
+      const toEdit: any = omit(node, [
         "id",
         "preventEdit",
         "position",
@@ -55,6 +55,12 @@ const EditorNodeSettings: Component<{
         "ports.default",
         ...nodeSpecificPreventEdit,
       ]);
+
+      //remove index that is autocalculated
+      Object.keys(toEdit.ports).forEach(port => {
+        delete toEdit.ports[port].index
+      });
+
       const content: any = {
         text: undefined,
         json: {
