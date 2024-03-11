@@ -41,7 +41,7 @@ const Sidebar: Component<{
         [`${styles.sidenavClosed}`]: !state.sidebar,
       }}
     >
-      <div class={styles.sidenavHead}>
+      <div class={`${styles.sidenavHead} sidebarHead`}>
         <a href="" class={styles.closebtn} onClick={onSidebarCloseClick}>
           &times;
         </a>

@@ -7399,7 +7399,7 @@ const QY = (e) => {
       const c = zs.sidenav, l = {
         [`${zs.sidenavOpened}`]: t.sidebar,
         [`${zs.sidenavClosed}`]: !t.sidebar
-      }, f = zs.sidenavHead, d = zs.closebtn, h = zs.nodesContainer;
+      }, f = `${zs.sidenavHead} sidebarHead`, d = zs.closebtn, h = zs.nodesContainer;
       return c !== u._v$ && Vr(i, u._v$ = c), u._v$2 = vv(i, l, u._v$2), f !== u._v$3 && Vr(o, u._v$3 = f), d !== u._v$4 && Vr(a, u._v$4 = d), h !== u._v$5 && Vr(s, u._v$5 = h), u;
     }, {
       _v$: void 0,
