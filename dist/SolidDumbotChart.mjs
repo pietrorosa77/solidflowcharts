@@ -6174,6 +6174,7 @@ function VG(e) {
     // eslint-disable-next-line
     onNodeChanged(a, s) {
       Do(() => {
+        debugger;
         const u = r.chart.nodes[a], c = Object.keys(u.ports), l = Object.keys(s.ports), f = c.filter((g) => !l.includes(g)), d = Object.keys(r.chart.links).filter((g) => {
           const y = r.chart.links[g];
           return f.includes(y.from.portId) && y.from.nodeId === u.id;
@@ -6184,7 +6185,7 @@ function VG(e) {
         }), p.forEach((g) => {
           i("chart", "paths", g, () => {
           });
-        }), i("chart", "nodes", a, () => s), n(r.chart, "crtAction");
+        }), i("chart", "nodes", a, () => s), i("chart", "nodes", a, "content", () => [...s.content]), n(r.chart, "crtAction");
       });
     },
     // eslint-disable-next-line

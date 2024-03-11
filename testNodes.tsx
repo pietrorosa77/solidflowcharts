@@ -13,7 +13,7 @@ const MessageNode: ExtendedNode = {
   id: "MessageNode",
   type: "message",
   user: false,
-  content: `this is your <strong>html</strong>formatted message***this is another content block`,
+  content: [`this is your <strong>html</strong>formatted messagen this is another content block`,`this is your <strong>html</strong>formatted messagen this is another content block`],
   position: {
     x: 0,
     y: 0,
