@@ -45023,7 +45023,8 @@ const b2t = "_EditorNodeSettingsModal_1dfpb_1", w2t = {
       const s = n.chart.nodes[n.editNodeSettings], u = window.DMBRoot.getElementById(`${n.editNodeSettings}_editing_settings`);
       u.style.height = "100%";
       const c = s.preventEdit || [], l = ul.omit(s, ["id", "preventEdit", "position", "size", "type", "user", "ports.default", ...c]);
-      Object.keys(l.ports).forEach((d) => {
+      Object.keys(l.ports || {}).forEach((d) => {
+        debugger;
         delete l.ports[d].index;
       });
       const f = {

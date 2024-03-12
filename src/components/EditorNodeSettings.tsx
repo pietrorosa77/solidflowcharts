@@ -57,7 +57,8 @@ const EditorNodeSettings: Component<{
       ]);
 
       //remove index that is autocalculated
-      Object.keys(toEdit.ports).forEach(port => {
+      Object.keys(toEdit.ports || {}).forEach(port => {
+        debugger
         delete toEdit.ports[port].index
       });
 
