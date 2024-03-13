@@ -41,3 +41,8 @@ export function FChart(props: IDGProps, elementId: string) {
     document.getElementById(elementId) as HTMLElement,
   );
 }
+
+export {
+  JSONEditor,
+  isTextContent,
+} from "vanilla-jsoneditor";

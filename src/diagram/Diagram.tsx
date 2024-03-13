@@ -15,6 +15,7 @@ import { ICustomTheme, getCssVariables } from "../defaultTheme";
 import Links, { Link as NewLink } from "../link/Link";
 import Sidebar, { ISidebarNode } from "../sidebar/Sidebar";
 import EditorNodeSettings from "../components/EditorNodeSettings";
+import { omit } from "lodash";
 
 const Diagram: Component<{
   onLoad?: (ctions: IChartActions) => void;
@@ -47,6 +48,24 @@ const Diagram: Component<{
 
   const onCustomEditNode = (nodeId: string) => {
     if (props.onCustomEditNode) {
+      const node = state.chart.nodes[nodeId]
+      const nodeSpecificPreventEdit = node.preventEdit || [];
+      const toEdit: any = omit(node, [
+        "id",
+        "preventEdit",
+        "position",
+        "size",
+        "type",
+        "user",
+        "ports.default",
+        ...nodeSpecificPreventEdit,
+      ]);
+
+      //remove index that is autocalculated
+      Object.keys(toEdit.ports || {}).forEach(port => {
+        debugger
+        delete toEdit.ports[port].index
+      });
       props.onCustomEditNode(state.chart.nodes[nodeId]);
     }
   };
