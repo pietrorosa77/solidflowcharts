@@ -66,7 +66,7 @@ const Diagram: Component<{
         debugger
         delete toEdit.ports[port].index
       });
-      props.onCustomEditNode(state.chart.nodes[nodeId]);
+      props.onCustomEditNode(toEdit);
     }
   };
 

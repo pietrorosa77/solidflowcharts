@@ -1,10 +1,7 @@
 import { Component, Show, createEffect, onCleanup } from "solid-js";
 import { Button } from "../components/Button";
 import {
-  JSONContent,
   JSONEditor,
-  TextContent,
-  isTextContent,
 } from "vanilla-jsoneditor";
 import styles from "./EditorNodeSettings.module.css";
 import {
@@ -19,7 +16,7 @@ import { useChartStore } from "../store/chartStore";
 
 import { ISidebarNode } from "../sidebar/Sidebar";
 import { ExtendedNode } from "../../definitions";
-import { omit } from "lodash";
+import { getNodeToEdit, updateNodeSettings } from "../store/utils";
 
 const contentStyle = { width: "100%", cursor: "unset", outline: "none" };
 const EditorNodeSettings: Component<{
@@ -44,23 +41,7 @@ const EditorNodeSettings: Component<{
         `${state.editNodeSettings}_editing_settings`,
       );
       target.style.height = '100%';
-      const nodeSpecificPreventEdit = node.preventEdit || [];
-      const toEdit: any = omit(node, [
-        "id",
-        "preventEdit",
-        "position",
-        "size",
-        "type",
-        "user",
-        "ports.default",
-        ...nodeSpecificPreventEdit,
-      ]);
-
-      //remove index that is autocalculated
-      Object.keys(toEdit.ports || {}).forEach(port => {
-        debugger
-        delete toEdit.ports[port].index
-      });
+      const toEdit = getNodeToEdit(node);
 
       const content: any = {
         text: undefined,
@@ -83,22 +64,8 @@ const EditorNodeSettings: Component<{
   });
 
   const onConfirm = async () => {
-    const value: JSONContent | TextContent = editor.get();
-    const updatedNodeValue = isTextContent(value)
-      ? JSON.parse((value as TextContent).text || "{}")
-      : (value as JSONContent).json;
-
     const oldNode = state.chart.nodes[state.editNodeSettings as string];
-
-    const updatedNode: ExtendedNode = {
-      ...oldNode,
-      ...(updatedNodeValue || {}),
-      ports: {
-        ...updatedNodeValue.ports,
-        default: oldNode.ports.default,
-      },
-    };
-
+    const updatedNode: ExtendedNode = updateNodeSettings(oldNode, editor);
     actions.onToggleEditNodeSettings(undefined);
     actions.onNodeChanged(updatedNode.id, updatedNode);
     props.onSettingsChanged(oldNode, updatedNode);

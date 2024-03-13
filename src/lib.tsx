@@ -46,3 +46,5 @@ export {
   JSONEditor,
   isTextContent,
 } from "vanilla-jsoneditor";
+
+export { getNodeToEdit, updateNodeSettings } from './store/utils';

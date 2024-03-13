@@ -1,3 +1,4 @@
+import { omit } from "lodash";
 import {
   ExtendedNode,
   IChart,
@@ -5,17 +6,18 @@ import {
   INode,
   IPosition,
 } from "../../definitions";
+import { JSONContent, JSONEditor, TextContent, isTextContent } from "vanilla-jsoneditor";
 
 export function getPositionWithParentBoundsSize(
   canvasSize: { w: number; h: number },
   nodeSize: { w: number; h: number },
   multiSelectOffsets:
     | {
-        offsetLeft: number;
-        offsetRight: number;
-        offsetTop: number;
-        offsetBottom: number;
-      }
+      offsetLeft: number;
+      offsetRight: number;
+      offsetTop: number;
+      offsetBottom: number;
+    }
     | undefined,
   x: number,
   y: number,
@@ -155,13 +157,52 @@ export const getVariables = (chart: IChart) => {
       const node = chart.nodes[key];
       return node.output
         ? {
-            key: node.output.id,
-            type: node.output.type,
-          }
+          key: node.output.id,
+          type: node.output.type,
+        }
         : {
-            key: null,
-            type: null,
-          };
+          key: null,
+          type: null,
+        };
     })
     .filter((out) => out.key && out.type && out.type !== "null");
 };
+
+export const getNodeToEdit = (node: ExtendedNode) => {
+  const nodeSpecificPreventEdit = node.preventEdit || [];
+  const toEdit: any = omit(node, [
+    "id",
+    "preventEdit",
+    "position",
+    "size",
+    "type",
+    "user",
+    "ports.default",
+    ...nodeSpecificPreventEdit,
+  ]);
+
+  //remove index that is autocalculated
+  Object.keys(toEdit.ports || {}).forEach(port => {
+    delete toEdit.ports[port].index
+  });
+
+  return toEdit;
+}
+
+export const updateNodeSettings = (oldNode: ExtendedNode, editor: JSONEditor) => {
+  const value: JSONContent | TextContent = editor.get();
+  const updatedNodeValue = isTextContent(value)
+    ? JSON.parse((value as TextContent).text || "{}")
+    : (value as JSONContent).json;
+
+  const updatedNode: ExtendedNode = {
+    ...oldNode,
+    ...(updatedNodeValue || {}),
+    ports: {
+      ...updatedNodeValue.ports,
+      default: oldNode.ports.default,
+    },
+  };
+
+  return updatedNode;
+}
